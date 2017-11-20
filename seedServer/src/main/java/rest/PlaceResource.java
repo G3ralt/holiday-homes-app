@@ -1,7 +1,5 @@
 package rest;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -15,14 +13,14 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import entity.Place;
 import facades.FacadeFactory;
+import static rest.JSONConverter.*;
 
 @Path("places")
-public class PlaceRest {
+public class PlaceResource {
 
-    private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final FacadeFactory FF;
 
-    public PlaceRest() {
+    public PlaceResource() {
         FF = new FacadeFactory();
         FF.setPlaceFacade();
     }
@@ -30,7 +28,7 @@ public class PlaceRest {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getAll() {
-        return gson.toJson(FF.getPlaceFacade().getAllPlaces());
+        return getJSONfromObject(FF.getPlaceFacade().getAllPlaces());
     }
 
     @POST
@@ -52,9 +50,9 @@ public class PlaceRest {
 
             pl = FF.getPlaceFacade().registerPlace(newPlace);
         } catch (JsonSyntaxException | NumberFormatException ex) {
-            Logger.getLogger(PlaceRest.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PlaceResource.class.getName()).log(Level.SEVERE, null, ex);
         }   
-        return gson.toJson(pl);
+        return getJSONfromObject(pl);
     }
 
 }

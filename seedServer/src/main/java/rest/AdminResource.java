@@ -16,13 +16,13 @@ import facades.FacadeFactory;
 import java.util.ArrayList;
 
 @Path("demoadmin")
-//@RolesAllowed("Admin")
-public class Admin {
+//@RolesAllowed("AdminResource")
+public class AdminResource {
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private final FacadeFactory FF;
 
-    public Admin() {
+    public AdminResource() {
         FF = new FacadeFactory();
         FF.setUserFacade();
     }

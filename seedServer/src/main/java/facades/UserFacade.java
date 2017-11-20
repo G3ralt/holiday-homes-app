@@ -1,9 +1,11 @@
 package facades;
 
+import customExceptions.CreateNewUserException;
 import security.IUserFacade;
 import entity.User;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.Response;
@@ -20,15 +22,13 @@ public class UserFacade implements IUserFacade {
     
     @Override
     public IUser getUserByUserId(String id) {
-        try {
+        
             return EM.find(User.class, id);
-        } finally {
-            EM.close();
-        }
+         
     }
 
     public List<User> getAllUsers() {
-        try {
+        
             EM.getTransaction().begin();
             Query q = EM.createQuery("Select u From SEED_USER u");
             
@@ -36,9 +36,7 @@ public class UserFacade implements IUserFacade {
             
             EM.getTransaction().commit();
             return q.getResultList();
-        } finally {
-            EM.close();
-        }
+         
     }
 
     /*
@@ -56,14 +54,14 @@ public class UserFacade implements IUserFacade {
         }
     }
 
-    public User registerUser(User user) {
+    public User registerUser(User user) throws CreateNewUserException {
         try {
             EM.getTransaction().begin();
             EM.persist(user);
             EM.getTransaction().commit();
-        } finally {
-            EM.close();
+            return user;
+        } catch (PersistenceException e) {
+            throw new CreateNewUserException("Username already existing in Database.");
         }
-        return user;
     }
 }
