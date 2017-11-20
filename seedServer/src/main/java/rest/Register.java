@@ -10,7 +10,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import entity.Role;
-import facades.UserFacade;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
@@ -18,11 +17,9 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
-import entity.User;
+import facades.FacadeFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import security.PasswordStorage;
 
 /**
@@ -34,8 +31,12 @@ import security.PasswordStorage;
 public class Register {
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu_development");
-    private UserFacade uf = new UserFacade(emf);
+    private final FacadeFactory FF;
+
+    public Register() {
+        FF = new FacadeFactory();
+        FF.setUserFacade();
+    }
 
     @Context
     private UriInfo context;
@@ -47,12 +48,12 @@ public class Register {
         entity.User us = null;
         try {
             JsonObject json = new JsonParser().parse(user).getAsJsonObject();
-            String username = json.get("").getAsString();
-            String password = json.get("").getAsString();
+            String username = json.get("username").getAsString();
+            String password = json.get("password").getAsString();
             entity.User newUser = new entity.User(username, password);
             Role userRole = new Role("User");
             newUser.addRole(userRole);
-            us = uf.registerUser(newUser);
+            us = FF.getUserFacade().registerUser(newUser);
         } catch (PasswordStorage.CannotPerformOperationException ex) {
             Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
         }

@@ -12,6 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import entity.User;
+import facades.FacadeFactory;
 import java.util.ArrayList;
 
 @Path("demoadmin")
@@ -19,13 +20,17 @@ import java.util.ArrayList;
 public class Admin {
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu_development");
-    private UserFacade uf = new UserFacade(emf);
+    private final FacadeFactory FF;
+
+    public Admin() {
+        FF = new FacadeFactory();
+        FF.setUserFacade();
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String getAllUsers() {
-        List<User> users = uf.getAllUsers();
+        List<User> users = FF.getUserFacade().getAllUsers();
         List<User_Map> mappedUsers = new ArrayList<>();
 
         for (User user : users) {

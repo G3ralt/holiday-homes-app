@@ -3,27 +3,21 @@ package facades;
 import entity.Place;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 public class PlaceFacade {
+    
+    private final EntityManager EM;
 
-    EntityManagerFactory emf;
-
-    public PlaceFacade(EntityManagerFactory emf) {
-        this.emf = emf;
-    }
-
-    private EntityManager getEntityManager() {
-        return emf.createEntityManager();
+    public PlaceFacade(EntityManager EM) {
+        this.EM = EM;
     }
 
     public List<Place> getAllPlaces() {
-        EntityManager em = getEntityManager();
         try {
-            em.getTransaction().begin();
-            Query q = em.createQuery("Select p from SEED_PLACE p");
-            em.getTransaction().commit();
+            EM.getTransaction().begin();
+            Query q = EM.createQuery("Select p from SEED_PLACE p");
+            EM.getTransaction().commit();
             return q.getResultList();
         } catch (Exception e) {
         }
@@ -31,13 +25,12 @@ public class PlaceFacade {
     }
     
         public Place registerPlace(Place place) {
-        EntityManager em = getEntityManager();
         try {
-            em.getTransaction().begin();
-            em.persist(place);
-            em.getTransaction().commit();
+            EM.getTransaction().begin();
+            EM.persist(place);
+            EM.getTransaction().commit();
         } finally {
-            em.close();
+            EM.close();
         }
         return place;
     }

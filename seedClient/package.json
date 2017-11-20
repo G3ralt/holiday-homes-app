@@ -1,6 +1,6 @@
 {
   "name": "seedclient",
-  "serverURL": "https://breindal.me/CA3/",
+  "serverURL": "http://localhost:8084/seedMaven/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

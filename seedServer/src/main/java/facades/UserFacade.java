@@ -4,7 +4,6 @@ import security.IUserFacade;
 import entity.User;
 import java.util.List;
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.Response;
@@ -13,38 +12,32 @@ import security.PasswordStorage;
 
 public class UserFacade implements IUserFacade {
 
-    EntityManagerFactory emf;
+    private final EntityManager EM;
 
-    public UserFacade(EntityManagerFactory emf) {
-        this.emf = emf;
+    public UserFacade(EntityManager EM) {
+        this.EM = EM;
     }
-
-    private EntityManager getEntityManager() {
-        return emf.createEntityManager();
-    }
-
+    
     @Override
     public IUser getUserByUserId(String id) {
-        EntityManager em = getEntityManager();
         try {
-            return em.find(User.class, id);
+            return EM.find(User.class, id);
         } finally {
-            em.close();
+            EM.close();
         }
     }
 
     public List<User> getAllUsers() {
-        EntityManager em = getEntityManager();
         try {
-            em.getTransaction().begin();
-            Query q = em.createQuery("Select u From SEED_USER u");
+            EM.getTransaction().begin();
+            Query q = EM.createQuery("Select u From SEED_USER u");
             
             //Map
             
-            em.getTransaction().commit();
+            EM.getTransaction().commit();
             return q.getResultList();
         } finally {
-            em.close();
+            EM.close();
         }
     }
 
@@ -64,13 +57,12 @@ public class UserFacade implements IUserFacade {
     }
 
     public User registerUser(User user) {
-        EntityManager em = getEntityManager();
         try {
-            em.getTransaction().begin();
-            em.persist(user);
-            em.getTransaction().commit();
+            EM.getTransaction().begin();
+            EM.persist(user);
+            EM.getTransaction().commit();
         } finally {
-            em.close();
+            EM.close();
         }
         return user;
     }
