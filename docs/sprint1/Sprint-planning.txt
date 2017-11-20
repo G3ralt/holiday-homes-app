@@ -2,3 +2,9 @@ Questions:
 User added places - rentable or no? only admin?
 2 types of locations? rentables and not rentables?
 
+summary of meeting
+2 types of places - locations and rentables
+userstory for creating rentables
+focus on rentable in sprint 1
+sprint 2 app and location
+sprint 3 combo
