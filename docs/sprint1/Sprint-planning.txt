@@ -1,0 +1,4 @@
+Questions:
+User added places - rentable or no? only admin?
+2 types of locations? rentables and not rentables?
+

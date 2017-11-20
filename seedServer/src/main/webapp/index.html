@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+  <head>
+    <title>CA3 Server</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 style="color:steelblue">Semester Seed - REST Backend</h1>
+
+      <p>This is a backend for this matching
+        <a href="https://github.com/Lars-m/semesterSeedReactClient.git">React Front End</a></p>
+      <h3>This Backend provides, out of the box:</h3>
+      <ul>
+        <li>Token Based Authentication</li>
+        <li>Ready to use with JPA. It ships with a <em>User</em> and a <em>Role</em> Entity class, meant for Authentication and Authorization </li>
+        <li>Ready to use with JAX-RS. Ships with a few dummy REST endpoints, see the <code>rest</code> package</li>
+        <li>Role based authorization, with two predefined user roles (with a simple sample REST-endpoint for each)
+          <ul>
+            <li>User</li>
+            <li>Admin</li>
+          </ul>
+        </li>
+        <li>
+          The seed is meant as an easy start, so when the option <code>makeTestUser</code> is set to true in web.xml, it create the following role and users:
+          <ul>
+            <li>ROLE: User </li>
+            <li>ROLE: Admin </li>
+            <li><b>User:</b> username: user, password: test</li>
+            <li><b>admin:</b> username: admin, password: test</li>
+            <li><b>user_admin:</b> username: user_admin, password: test </li>
+          </ul>
+        </li>
+        <li>Passwords are hashed and salted using <code>PasswordStorage.js</code> from <a href='https://github.com/defuse/password-hashing'>here</a>
+        <li>Does <b>not</b> include a persistence.xml file (this file is git-ignored).<br/>
+          You must setup your own local database, and use the NetBeans wizard to create a <code>persistence.xml</code> file. <br/>
+          The name of this persistence unit MUST BE: <b><em>pu_development</em></b></li>
+        <li>Built in filters to allow <b>CORS</b> (If you are hosting  backend and frontend on the same URL) 
+            you can disable CORS by commenting out the <code>@Provider</code> anotations in the the two CORS-filters (see the <code>cors</code> package </li>
+      </ul>
+      <br/>
+      <h3>Using the seed: <a href="https://docs.google.com/document/d/1pt9ZVOtY9MID8xXGRDtDWy07GYPKs90Pj2wS2T8F9Lg/edit?usp=sharing">Guidelines</a></h3>
+      <br/>
+      <h4>Using the two projects</h2>
+        <ul>
+          <li>For development just start this server, and start the client using <code>npm start</code> (in this order) and it should work </li>
+          <li>For deployment:
+            <ul>
+              <li>either deploy on separate servers (rememember to set  <em>serverURL</em> in the clients <code>package.json</code>)</li>
+              <li>or TBD (deploy on Nginx)</li>
+            </ul>
+          </li>
+        </ul>
+
+    </div>
+  </body>
+</html>
