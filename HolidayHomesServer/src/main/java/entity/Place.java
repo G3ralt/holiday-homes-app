@@ -52,7 +52,7 @@ public class Place implements Serializable {
     
     @Transient
     @Expose
-    private boolean userHasVoted;
+    private int userRating; //Current user`s rating
     
     
     public Place() {
@@ -70,13 +70,6 @@ public class Place implements Serializable {
         this.gpsLong = gpsLong;
     }
 
-    public String getLocationName() {
-        return placeName;
-    }
-
-    public void setLocationName(String locationName) {
-        this.placeName = locationName;
-    }
 
     public String getDescription() {
         return description;
@@ -125,15 +118,22 @@ public class Place implements Serializable {
     public void setRating(double rating) {
         this.rating = rating;
     }
-    
-    public boolean isUserHasVoted() {
-        return userHasVoted;
+
+    public String getPlaceName() {
+        return placeName;
     }
 
-    public void setUserHasVoted(boolean userHasVoted) {
-        this.userHasVoted = userHasVoted;
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
-    
+
+    public int getUserRating() {
+        return userRating;
+    }
+
+    public void setUserRating(int userRating) {
+        this.userRating = userRating;
+    }
 
     @Override
     public int hashCode() {

@@ -7,6 +7,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 
 public class PlaceFacade {
@@ -33,12 +34,12 @@ public class PlaceFacade {
             throw new DBException("facades.PlaceFacade.getAllPlaces");
         }
         for (Place p : toReturn) {
-            double rating = getRatingForPlace(p.getLocationName()); // Get the rating from Databae
+            double rating = getRatingForPlace(p.getPlaceName()); // Get the rating from Databae
             p.setRating(rating);
 
             if (!userName.equals("unauthorized")) { //If the user is logged in
-                boolean voted = hasUserVoted(userName, p.getLocationName()); // Get the user vote on this location
-                p.setUserHasVoted(voted);
+                int userRating = getUserRating(userName, p.getPlaceName()); // Get the user vote on this location
+                p.setUserRating(userRating);
             }
         }
         return toReturn;
@@ -100,15 +101,19 @@ public class PlaceFacade {
 
     /*
         This method is used to check if the user has already voted for a specific location.
-        Return true 
+        Return the user`s rating or 0 if the user hasn`t voted
      */
-    private boolean hasUserVoted(String userName, String placeName) throws DBException {
+    private int getUserRating(String userName, String placeName) throws DBException {
         try {
-            Query q = EM.createNativeQuery("SELECT count(rating) FROM place_rating WHERE place_name = ? AND user_name = ?;");
+            Query q = EM.createNativeQuery("SELECT rating FROM place_rating WHERE place_name = ? AND user_name = ?;");
             q.setParameter(1, placeName);
             q.setParameter(2, userName);
-            long count = (long) q.getSingleResult();
-            return (count > 0); //Has voted if count > 0
+            int rating = (int) q.getSingleResult();
+            return rating; 
+            
+        } catch (NoResultException e) {
+            return 0; //User hasn`t rated the place
+            
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.hasUserVoted");
         }
