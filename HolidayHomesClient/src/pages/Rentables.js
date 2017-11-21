@@ -6,7 +6,7 @@ class Rentables extends Component{
         
   constructor(){
       super();
-	  this.state = { rentableInfo: [], whatToRender: this.props.match.params.whatToRender, userItself: { username: "unauthorized" } };;
+	  this.state = { rentableInfo: [], userItself: { username: "unauthorized" } };;
     }
     
   componentWillMount() {
@@ -53,7 +53,6 @@ class Rentables extends Component{
 
 
   render() {
-		var rows = this.mapData(this.state.data);
       return (
         <div>
 		<h2>All Rentables</h2>

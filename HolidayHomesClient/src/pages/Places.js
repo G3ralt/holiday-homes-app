@@ -6,7 +6,7 @@ class Places extends Component{
         
   constructor(){
       super();
-	  this.state = { placeInfo: [], whatToRender: this.props.match.params.whatToRender, userItself: { username: "unauthorized" } };;
+	  this.state = { placeInfo: [], userItself: { username: "unauthorized" } };;
     }
     
   componentWillMount() {
@@ -53,7 +53,6 @@ class Places extends Component{
 
 
   render() {
-		var rows = this.mapData(this.state.data);
       return (
         <div>
 		<h2>All Nice Places</h2>

@@ -11,6 +11,7 @@ import Features from "./Documentation";
 import WhoDidWhat from "./WhoDidWhat";
 import DownloadApp from "./DownloadApp";
 import FutureImplementations from "./FutureImplementations";
+import Rentables from "./Rentables";
 
 
 function App() {
@@ -27,7 +28,8 @@ function App() {
                 <Route path="/features" component={Features} />
                 <Route path="/whodidwhat" component={WhoDidWhat} />
                 <Route path="/downloadapp" component={DownloadApp} />
-                <Route path="/futureimplementations" component={FutureImplementations} />
+				<Route path="/futureimplementations" component={FutureImplementations} />
+				<Route path="/rentables" component={Rentables} />
                 </Switch>
             </div>
             );
