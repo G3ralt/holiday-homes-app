@@ -21,7 +21,7 @@ public class User implements IUser, Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userName")
     private Collection<Booking> bookingCollection;
     
-    @OneToMany(mappedBy = "userName")
+    @OneToMany(mappedBy = "user")
     private Collection<Place> userPlaceCollection;
 
     //You will need to change this to save a Hashed/salted password 
