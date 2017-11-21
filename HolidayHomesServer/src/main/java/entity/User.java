@@ -1,5 +1,6 @@
 package entity;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,9 +29,11 @@ public class User implements IUser, Serializable {
     private String passwordHash;
 
     @Id
+    @Expose
     @Column(length = 35, name = "USER_NAME", nullable = false)
     private String userName;
 
+    @Expose
     @ManyToMany
     List<Role> roles;
 

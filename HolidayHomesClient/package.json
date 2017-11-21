@@ -1,5 +1,5 @@
 {
-  "name": "seedclient",
+  "name": "HolidayHomesClient",
   "serverURL": "http://localhost:8084/HolidayHomesServer/",
   "version": "0.1.0",
   "private": true,
