@@ -3,20 +3,17 @@ package entity;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "rentable")
 public class Rentable implements Serializable {
+
+    @JoinColumn(name = "admin_name", referencedColumnName = "USER_NAME")
+    @ManyToOne
+    private User adminName;
 
     private static final long serialVersionUID = 1L;
 
@@ -59,13 +56,6 @@ public class Rentable implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @NotNull
-    @Size(min = 1, max = 45)
-    @Column(name = "admin_name")
-//    @JoinColumn(name = "user_name", referencedColumnName = "USER_NAME")
-//    @ManyToOne
-    private String adminName;
-
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rentableName")
     private Collection<Booking> bookingCollection;
 
@@ -83,7 +73,7 @@ public class Rentable implements Serializable {
         this.rentableName = rentableName;
     }
 
-    public Rentable(String rentableName, String street, String city, int zipcode, String country, double price, String imgURL, String description, String adminName) {
+    public Rentable(String rentableName, String street, String city, int zipcode, String country, double price, String imgURL, String description) {
         this.rentableName = rentableName;
         this.street = street;
         this.city = city;
@@ -92,7 +82,6 @@ public class Rentable implements Serializable {
         this.price = price;
         this.imgURL = imgURL;
         this.description = description;
-        this.adminName = adminName;
     }
 
     public String getRentableName() {
@@ -159,15 +148,6 @@ public class Rentable implements Serializable {
         this.description = description;
     }
 
-    public String getAdminName() {
-        return adminName;
-    }
-
-    public void setAdminName(String adminName) {
-        this.adminName = adminName;
-    }
-
-    @XmlTransient
     public Collection<Booking> getBookingCollection() {
         return bookingCollection;
     }
@@ -215,5 +195,13 @@ public class Rentable implements Serializable {
     @Override
     public String toString() {
         return "entity.Rentable[ rentableName=" + rentableName + " ]";
+    }
+
+    public User getAdminName() {
+        return adminName;
+    }
+
+    public void setAdminName(User adminName) {
+        this.adminName = adminName;
     }
 }

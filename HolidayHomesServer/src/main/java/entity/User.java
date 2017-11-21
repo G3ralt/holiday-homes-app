@@ -4,24 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.persistence.*;
 import security.IUser;
 import security.PasswordStorage;
 
 @Entity(name = "SEED_USER")
 public class User implements IUser, Serializable {
 
+    @OneToMany(mappedBy = "adminName")
+    private Collection<Rentable> rentableCollection;
+
     @ManyToMany(mappedBy = "userCollection")
     private Collection<Role> roleCollection;
-    
-//    @OneToMany(mappedBy = "adminName")
-    private Collection<Rentable> rentableCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userName")
     private Collection<Booking> bookingCollection;
@@ -86,7 +80,6 @@ public class User implements IUser, Serializable {
         return userName;
     }
 
-    @XmlTransient
     public Collection<Role> getRoleCollection() {
         return roleCollection;
     }
@@ -95,7 +88,6 @@ public class User implements IUser, Serializable {
         this.roleCollection = roleCollection;
     }
 
-    @XmlTransient
     public Collection<Booking> getBookingCollection() {
         return bookingCollection;
     }
@@ -104,7 +96,6 @@ public class User implements IUser, Serializable {
         this.bookingCollection = bookingCollection;
     }
 
-    @XmlTransient
     public Collection<Place> getUserPlaceCollection() {
         return userPlaceCollection;
     }
@@ -113,7 +104,6 @@ public class User implements IUser, Serializable {
         this.userPlaceCollection = userPlaceCollection;
     }
 
-    @XmlTransient
     public Collection<Rentable> getRentableCollection() {
         return rentableCollection;
     }

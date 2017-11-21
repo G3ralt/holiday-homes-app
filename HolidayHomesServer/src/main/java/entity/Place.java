@@ -2,7 +2,6 @@ package entity;
 
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -21,30 +20,25 @@ public class Place implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @Id
-    @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "place_name")
     private String placeName;
     
-    @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1000)
     @Column(name = "description")
     private String description;
     
-    @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1000)
     @Column(name = "imgURL")
     private String imgURL;
     
-    @Basic(optional = false)
     @NotNull
     @Column(name = "gps_lat")
     private double gpsLat;
     
-    @Basic(optional = false)
     @NotNull
     @Column(name = "gps_long")
     private double gpsLong;
