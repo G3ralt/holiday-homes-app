@@ -36,10 +36,10 @@ class Places extends Component{
             }).then((data) => {
                 let pInfo = data.map(place => {
                     return (
-                        <div key={place.locationName} className="row nicePlace">
+                        <div key={place.placeName} className="row nicePlace">
                             <Image pIMG={place.imgURL} />
-							<PlaceName pName={place.locationName} />
-							<CreatedBy uName={place.username} />
+							<PlaceName pName={place.placeName} />
+							<CreatedBy uName={place.user.userName} />
                             <Rating pRating={place.rating} />
                             <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
                             <PlaceDescription pDesc={place.description} />
