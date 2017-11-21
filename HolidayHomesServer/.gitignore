@@ -1,6 +1,5 @@
 target/
 
-/src/main/resources/META-INF/persistence.xml
 /seedClient/package.json
 
 pom.xml.tag
