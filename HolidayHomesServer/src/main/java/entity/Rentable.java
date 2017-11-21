@@ -11,6 +11,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -33,52 +34,66 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Rentable implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "rentable_name")
     private String rentableName;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "street")
     private String street;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "city")
     private String city;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "zipcode")
     private int zipcode;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "country")
     private String country;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "price")
     private double price;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1000)
     @Column(name = "imgURL")
     private String imgURL;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1000)
     @Column(name = "description")
     private String description;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "admin_name")
     private String adminName;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rentableName")
     private Collection<Booking> bookingCollection;
+    
+    @Transient
+    private double rating;
+    
 
     public Rentable() {
     }
@@ -179,6 +194,16 @@ public class Rentable implements Serializable {
     public void setBookingCollection(Collection<Booking> bookingCollection) {
         this.bookingCollection = bookingCollection;
     }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+    
+    
 
     @Override
     public int hashCode() {

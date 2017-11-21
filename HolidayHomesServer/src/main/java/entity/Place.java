@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Place implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @Basic(optional = false)
     @NotNull
@@ -40,23 +42,33 @@ public class Place implements Serializable {
     @Size(min = 1, max = 1000)
     @Column(name = "description")
     private String description;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1000)
     @Column(name = "imgURL")
     private String imgURL;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "gps_lat")
     private double gpsLat;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "gps_long")
     private double gpsLong;
+    
     @JoinColumn(name = "user_name", referencedColumnName = "USER_NAME")
     @ManyToOne
     private User userName;
-
+    
+    @Transient
+    private double rating;
+    
+    
+    
+    
     public Place() {
     }
 
@@ -119,6 +131,15 @@ public class Place implements Serializable {
     public void setUserName(User userName) {
         this.userName = userName;
     }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
+    }
+    
 
     @Override
     public int hashCode() {
