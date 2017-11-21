@@ -2,11 +2,11 @@ import React, {Component} from "react";
 import { Address, PlaceDescription, GPSinfo, Image, PlaceName, Rating, CreatedBy } from '../components/importContainers';
 import placesData from "../facades/placesFacade";
 import auth from '../authorization/auth';
-class Places extends Component{
+class Rentables extends Component{
         
   constructor(){
       super();
-	  this.state = { placeInfo: [], whatToRender: this.props.match.params.whatToRender, userItself: { username: "unauthorized" } };;
+	  this.state = { rentableInfo: [], whatToRender: this.props.match.params.whatToRender, userItself: { username: "unauthorized" } };;
     }
     
   componentWillMount() {
@@ -29,23 +29,23 @@ class Places extends Component{
             headers: { "Content-Type": "application/json" }
         }
 
-        fetch(URL + "api/niceplace/all", options)
+        fetch(URL + "api/rentable/all", options)
             .then((res) => {
                 return res.json();
             }).then((data) => {
-                let pInfo = data.map(place => {
+                let rInfo = data.map(rentable => {
                     return (
-                        <div key={place.locationName} className="row nicePlace">
-                            <Image pIMG={place.imgURL} />
-							<PlaceName pName={place.locationName} />
-							<CreatedBy uName={place.username} />
-                            <Rating pRating={place.rating} />
-                            <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
-                            <PlaceDescription pDesc={place.description} />
+                        <div key={rentable.locationName} className="row nicePlace">
+                            <Image pIMG={rentable.imgURL} />
+							<PlaceName pName={rentable.locationName} />
+							<CreatedBy uName={rentable.username} />
+                            <Rating pRating={rentable.rating} />
+                            <GPSinfo pGPSlat={rentable.gpsLat} pGPSlong={rentable.gpsLong} />
+                            <PlaceDescription pDesc={rentable.description} />
                         </div>
                     )
                 });
-                this.setState({ placeInfo: pInfo });
+                this.setState({ rentableInfo: rInfo });
             }).catch(err => {
                 console.log(JSON.stringify(err));
             })
@@ -56,9 +56,9 @@ class Places extends Component{
 		var rows = this.mapData(this.state.data);
       return (
         <div>
-		<h2>All Nice Places</h2>
+		<h2>All Rentables</h2>
 		<div className="container-fluid nicePlaces">
-			{this.state.placeInfo}
+			{this.state.rentableInfo}
 		</div>
 		{this.state.data1 && (
 			<div className="alert alert-danger errmsg-left" role="alert">
@@ -69,5 +69,5 @@ class Places extends Component{
       );
     }
 }
-export default Places;
+export default Rentables;
 
