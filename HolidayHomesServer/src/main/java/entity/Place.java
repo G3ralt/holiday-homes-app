@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -20,13 +18,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Entity
 @Table(name = "user_place")
 @XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "UserPlace.findAll", query = "SELECT u FROM UserPlace u")
-    , @NamedQuery(name = "UserPlace.findByLocationName", query = "SELECT u FROM UserPlace u WHERE u.locationName = :locationName")
-    , @NamedQuery(name = "UserPlace.findByDescription", query = "SELECT u FROM UserPlace u WHERE u.description = :description")
-    , @NamedQuery(name = "UserPlace.findByImgURL", query = "SELECT u FROM UserPlace u WHERE u.imgURL = :imgURL")
-    , @NamedQuery(name = "UserPlace.findByGpsLat", query = "SELECT u FROM UserPlace u WHERE u.gpsLat = :gpsLat")
-    , @NamedQuery(name = "UserPlace.findByGpsLong", query = "SELECT u FROM UserPlace u WHERE u.gpsLong = :gpsLong")})
 public class Place implements Serializable {
 
     private static final long serialVersionUID = 1L;

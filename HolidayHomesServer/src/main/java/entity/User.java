@@ -20,7 +20,7 @@ public class User implements IUser, Serializable {
     @ManyToMany(mappedBy = "userCollection")
     private Collection<Role> roleCollection;
     
-    @OneToMany(mappedBy = "adminName")
+//    @OneToMany(mappedBy = "adminName")
     private Collection<Rentable> rentableCollection;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userName")

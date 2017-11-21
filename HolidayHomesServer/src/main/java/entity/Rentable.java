@@ -8,6 +8,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -35,70 +37,62 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Rentable implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    
+
     @Id
-    @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "rentable_name")
     private String rentableName;
-    
-    @Basic(optional = false)
+
     @NotNull
     @Size(min = 1, max = 100)
     @Column(name = "street")
     private String street;
-    
-    @Basic(optional = false)
+
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "city")
     private String city;
-    
-    @Basic(optional = false)
+
     @NotNull
     @Column(name = "zipcode")
     private int zipcode;
-    
-    @Basic(optional = false)
+
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "country")
     private String country;
-    
-    @Basic(optional = false)
+
     @NotNull
     @Column(name = "price")
     private double price;
-    
-    @Basic(optional = false)
+
     @NotNull
     @Size(min = 1, max = 1000)
     @Column(name = "imgURL")
     private String imgURL;
-    
-    @Basic(optional = false)
+
     @NotNull
     @Size(min = 1, max = 1000)
     @Column(name = "description")
     private String description;
-    
-    @Basic(optional = false)
+
     @NotNull
     @Size(min = 1, max = 45)
     @Column(name = "admin_name")
+//    @JoinColumn(name = "user_name", referencedColumnName = "USER_NAME")
+//    @ManyToOne
     private String adminName;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rentableName")
     private Collection<Booking> bookingCollection;
-    
+
     @Transient
     private double rating;
-    
+
     @Transient
     @Expose
     private boolean userHasVoted;
-    
 
     public Rentable() {
     }
@@ -207,7 +201,7 @@ public class Rentable implements Serializable {
     public void setRating(double rating) {
         this.rating = rating;
     }
-    
+
     public boolean isUserHasVoted() {
         return userHasVoted;
     }
@@ -215,8 +209,6 @@ public class Rentable implements Serializable {
     public void setUserHasVoted(boolean userHasVoted) {
         this.userHasVoted = userHasVoted;
     }
-    
-    
 
     @Override
     public int hashCode() {
