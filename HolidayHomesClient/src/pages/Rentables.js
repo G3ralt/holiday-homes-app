@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Address, PlaceDescription, GPSinfo, Image, PlaceName, Rating, CreatedBy } from '../components/importContainers';
+import { Address, PlaceDescription, GPSinfo, Image, PlaceName, Rating, CreatedByUser } from '../components/importContainers';
 import placesData from "../facades/placesFacade";
 import auth from '../authorization/auth';
 class Rentables extends Component{
@@ -38,7 +38,7 @@ class Rentables extends Component{
                         <div key={rentable.locationName} className="row nicePlace">
                             <Image pIMG={rentable.imgURL} />
 							<PlaceName pName={rentable.locationName} />
-							<CreatedBy uName={rentable.username} />
+							<CreatedByUser uName={rentable.username} />
                             <Rating pRating={rentable.rating} />
                             <GPSinfo pGPSlat={rentable.gpsLat} pGPSlong={rentable.gpsLong} />
                             <PlaceDescription pDesc={rentable.description} />
