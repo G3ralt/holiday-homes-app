@@ -51,7 +51,7 @@ public class Place implements Serializable {
     @Expose
     @JoinColumn(name = "user_name", referencedColumnName = "USER_NAME")
     @ManyToOne
-    private User userName;
+    private User user;
     
     @Expose
     @Transient
@@ -118,11 +118,11 @@ public class Place implements Serializable {
     }
 
     public User getUserName() {
-        return userName;
+        return user;
     }
 
-    public void setUserName(User userName) {
-        this.userName = userName;
+    public void setUserName(User user) {
+        this.user = user;
     }
 
     public double getRating() {
