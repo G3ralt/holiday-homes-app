@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import entity.Place;
 import facades.FacadeFactory;
+import java.util.List;
 import javax.ws.rs.core.Response;
 import static rest.JSONConverter.*;
 
@@ -23,10 +24,26 @@ public class PlaceResource {
         FF.setPlaceFacade();
     }
 
-    @GET
+    @Path("/all")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String getAll() {
-        return getJSONfromObject(FF.getPlaceFacade().getAllPlaces());
+    public Response getAllPlaces(String jsonString) {
+        try {
+            JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
+            String userName = json.get("username").getAsString();
+            
+            List<Place> locations = FF.getPlaceFacade().getAllPlaces(userName); //Get the locations from Database.
+            
+            return Response.status(200).entity(getJSONfromObject(locations)).build(); //Return the locations as JSON
+
+        } catch (Exception e) {
+            return Response.status(503).entity(e.getMessage()).build(); //Service unavailable if something is wrong
+
+        } finally {
+            FF.close();
+        }
+
     }
 
     @Path("/create")
@@ -36,7 +53,9 @@ public class PlaceResource {
     public Response createNewPlace(String jsonString) {
         try {
             Place place = getPlaceFromJSON(jsonString);
+            
             FF.getPlaceFacade().createNewPlace(place);
+            
             return Response.status(201).entity(getJSONfromObject("Location created!")).build();
 
         } catch (Exception e) {
@@ -55,13 +74,14 @@ public class PlaceResource {
         try {
             //Get the information from the request
             JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
-            String locationName = json.get("locationName").getAsString();
+            String placeName = json.get("placeName").getAsString();
             String userName = json.get("username").getAsString();
             int rating = json.get("rating").getAsInt();
             
-            FF.getPlaceFacade().addRatingForLocation(locationName, rating, userName);
+            FF.getPlaceFacade().addRatingForPlace(placeName, rating, userName);
             
             return Response.status(201).entity(getJSONfromObject("Rating added!")).build();
+            
         } catch (Exception e) {
             return Response.status(503).entity(e.getMessage()).build();
         }
