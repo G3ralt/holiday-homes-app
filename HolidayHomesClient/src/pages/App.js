@@ -12,6 +12,7 @@ import WhoDidWhat from "./WhoDidWhat";
 import DownloadApp from "./DownloadApp";
 import FutureImplementations from "./FutureImplementations";
 import Rentables from "./Rentables";
+import AddRentable from "./AddRentable";
 
 
 function App() {
@@ -30,6 +31,8 @@ function App() {
                 <Route path="/downloadapp" component={DownloadApp} />
 				<Route path="/futureimplementations" component={FutureImplementations} />
 				<Route path="/rentables" component={Rentables} />
+				<Route path="/addrentable" component={AddRentable} />
+
                 </Switch>
             </div>
             );
