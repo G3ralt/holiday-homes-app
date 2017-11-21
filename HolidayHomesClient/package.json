@@ -1,6 +1,6 @@
 {
   "name": "seedclient",
-  "serverURL": "http://localhost:8084/seedMaven/",
+  "serverURL": "http://localhost:8084/HolidayHomes/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
