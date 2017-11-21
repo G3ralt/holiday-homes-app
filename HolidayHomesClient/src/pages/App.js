@@ -32,7 +32,6 @@ function App() {
 				<Route path="/futureimplementations" component={FutureImplementations} />
 				<Route path="/rentables" component={Rentables} />
 				<Route path="/addrentable" component={AddRentable} />
-
                 </Switch>
             </div>
             );
