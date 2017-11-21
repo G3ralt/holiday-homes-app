@@ -229,5 +229,4 @@ public class Rentable implements Serializable {
     public String toString() {
         return "entity.Rentable[ rentableName=" + rentableName + " ]";
     }
-
 }

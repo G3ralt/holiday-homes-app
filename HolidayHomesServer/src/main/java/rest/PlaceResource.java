@@ -2,9 +2,6 @@ package rest;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import entity.Place;
 import facades.FacadeFactory;
+import javax.ws.rs.core.Response;
 import static rest.JSONConverter.*;
 
 @Path("places")
@@ -31,28 +29,42 @@ public class PlaceResource {
         return getJSONfromObject(FF.getPlaceFacade().getAllPlaces());
     }
 
+    @Path("/create")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String registerPlace(String place) {
-        entity.Place pl = null;
+    public Response createNewPlace(String jsonString) {
         try {
-            JsonObject json = new JsonParser().parse(place).getAsJsonObject();
+            Place place = getPlaceFromJSON(jsonString);
+            FF.getPlaceFacade().createNewPlace(place);
+            return Response.status(201).entity(getJSONfromObject("Location created!")).build();
 
-            String city = json.get("city").getAsString();
-            int zip = Integer.parseInt(json.get("zip").getAsString());
-            String street = json.get("street").getAsString();
-            String gpsLocation = json.get("gpsLocation").getAsString();
-            String description = json.get("description").getAsString();
-            int rating = Integer.parseInt(json.get("rating").getAsString());
-            String imgUri = json.get("imgUri").getAsString();
-            Place newPlace = new Place(city, zip, street, gpsLocation, description, rating, imgUri);
+        } catch (Exception e) {
+            return Response.status(503).entity(e.getMessage()).build();
 
-            pl = FF.getPlaceFacade().registerPlace(newPlace);
-        } catch (JsonSyntaxException | NumberFormatException ex) {
-            Logger.getLogger(PlaceResource.class.getName()).log(Level.SEVERE, null, ex);
-        }   
-        return getJSONfromObject(pl);
+        } finally {
+            FF.close();
+        }
+    }
+    
+    @Path("/addRating")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addNewRatingForPlace(String jsonString) {
+        try {
+            //Get the information from the request
+            JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
+            String locationName = json.get("locationName").getAsString();
+            String userName = json.get("username").getAsString();
+            int rating = json.get("rating").getAsInt();
+            
+            FF.getPlaceFacade().addRatingForLocation(locationName, rating, userName);
+            
+            return Response.status(201).entity(getJSONfromObject("Rating added!")).build();
+        } catch (Exception e) {
+            return Response.status(503).entity(e.getMessage()).build();
+        }
     }
 
 }
