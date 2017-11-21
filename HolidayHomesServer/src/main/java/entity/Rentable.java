@@ -72,7 +72,7 @@ public class Rentable implements Serializable {
 
     @Transient
     @Expose
-    private boolean userHasVoted;
+    private int userRating; //Current user`s rating
 
     public Rentable() {
     }
@@ -172,12 +172,12 @@ public class Rentable implements Serializable {
         this.rating = rating;
     }
 
-    public boolean isUserHasVoted() {
-        return userHasVoted;
+    public int getUserRating() {
+        return userRating;
     }
 
-    public void setUserHasVoted(boolean userHasVoted) {
-        this.userHasVoted = userHasVoted;
+    public void setUserRating(int userRating) {
+        this.userRating = userRating;
     }
 
     @Override
