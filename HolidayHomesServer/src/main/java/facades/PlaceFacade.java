@@ -27,7 +27,7 @@ public class PlaceFacade {
     public List<Place> getAllPlaces(String userName) throws DBException {
         List<Place> toReturn = new ArrayList();
         try {
-            Query q = EM.createQuery("SELECT p FROM user_place p");
+            Query q = EM.createQuery("SELECT p FROM Place p");
             toReturn = q.getResultList();
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.getAllPlaces");

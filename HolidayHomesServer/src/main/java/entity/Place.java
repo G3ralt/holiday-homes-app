@@ -12,12 +12,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 
 
 @Entity
 @Table(name = "user_place")
-@XmlRootElement
 public class Place implements Serializable {
 
     private static final long serialVersionUID = 1L;

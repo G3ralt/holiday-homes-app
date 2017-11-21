@@ -3,37 +3,19 @@ package entity;
 import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Entity
 @Table(name = "rentable")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Rentable.findAll", query = "SELECT r FROM Rentable r")
-    , @NamedQuery(name = "Rentable.findByRentableName", query = "SELECT r FROM Rentable r WHERE r.rentableName = :rentableName")
-    , @NamedQuery(name = "Rentable.findByStreet", query = "SELECT r FROM Rentable r WHERE r.street = :street")
-    , @NamedQuery(name = "Rentable.findByCity", query = "SELECT r FROM Rentable r WHERE r.city = :city")
-    , @NamedQuery(name = "Rentable.findByZipcode", query = "SELECT r FROM Rentable r WHERE r.zipcode = :zipcode")
-    , @NamedQuery(name = "Rentable.findByCountry", query = "SELECT r FROM Rentable r WHERE r.country = :country")
-    , @NamedQuery(name = "Rentable.findByPrice", query = "SELECT r FROM Rentable r WHERE r.price = :price")
-    , @NamedQuery(name = "Rentable.findByImgURL", query = "SELECT r FROM Rentable r WHERE r.imgURL = :imgURL")
-    , @NamedQuery(name = "Rentable.findByDescription", query = "SELECT r FROM Rentable r WHERE r.description = :description")
-    , @NamedQuery(name = "Rentable.findByAdminName", query = "SELECT r FROM Rentable r WHERE r.adminName = :adminName")})
 public class Rentable implements Serializable {
 
     private static final long serialVersionUID = 1L;
