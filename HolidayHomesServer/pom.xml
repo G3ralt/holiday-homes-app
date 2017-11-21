@@ -3,11 +3,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>lam</groupId>
-  <artifactId>seedMaven</artifactId>
+  <artifactId>HolidayHomesServer</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
-  <name>seedMaven</name>
+  <name>HolidayHomesServer</name>
 
   <properties>
     <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
