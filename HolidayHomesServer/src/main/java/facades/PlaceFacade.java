@@ -4,6 +4,7 @@ import customExceptions.DBException;
 import entity.Place;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -16,15 +17,31 @@ public class PlaceFacade {
         this.EM = EM;
     }
 
-    public List<Place> getAllPlaces() {
+    /*
+        This method is used to retrieve all locations from the databse.
+        The method also retrieves the ratings for the locations through the getRatingForLocation method.
+        The method also retrieves if the user has already rated this location.
+        Throws DBException if soemthing is wrong with the database.
+        Returns a list with all the locations and their info.
+     */
+    public List<Place> getAllPlaces(String userName) throws DBException {
+        List<Place> toReturn = new ArrayList();
         try {
-            EM.getTransaction().begin();
-            Query q = EM.createQuery("Select p from SEED_PLACE p");
-            EM.getTransaction().commit();
-            return q.getResultList();
+            Query q = EM.createQuery("SELECT p FROM user_place p");
+            toReturn = q.getResultList();
         } catch (Exception e) {
+            throw new DBException("facades.PlaceFacade.getAllPlaces");
         }
-        return null;
+        for (Place p : toReturn) {
+            double rating = getRatingForPlace(p.getLocationName()); // Get the rating from Databae
+            p.setRating(rating);
+
+            if (!userName.equals("unauthorized")) { //If the user is logged in
+                boolean voted = hasUserVoted(userName, p.getLocationName()); // Get the user vote on this location
+                p.setUserHasVoted(voted);
+            }
+        }
+        return toReturn;
     }
 
     //Creates new location in the database, returns null if failed
@@ -33,13 +50,11 @@ public class PlaceFacade {
             EM.getTransaction().begin();
             EM.persist(location);
             EM.getTransaction().commit();
-            
+
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.createNewPlace");
         }
     }
-
-    
 
     /*
         This method is used for adding ratings for locations given the user and the location name.
@@ -60,42 +75,42 @@ public class PlaceFacade {
         }
 
     }
-    
+
     /*
         This method is used to retrieve the rating for a specific location given its name.
         The method is used by getAllLocations and getLocation.
         Throws DBExceptions if there is something wrong with the Database.
      */
-    private double getRatingForLocation(String locationName) throws DBException {
+    private double getRatingForPlace(String placeName) throws DBException {
         double rating = 0;
 
         try {
             DecimalFormat df = new DecimalFormat(".#");
-            Query q = EM.createNativeQuery("SELECT AVG(rating) FROM ratings WHERE location_name = '" + locationName + "';");
+            Query q = EM.createNativeQuery("SELECT AVG(rating) FROM place_rating WHERE place_name = ?;");
+            q.setParameter(1, placeName);
             BigDecimal result = (BigDecimal) q.getSingleResult(); //get the result from DB
             if (result != null) {
                 rating = Double.parseDouble(df.format(result)); //format the result and parse it to double
             }
-
+            return rating;
         } catch (Exception e) {
-            throw new DBException("facades.LocationFacade.getRatingForLocation");
+            throw new DBException("facades.PlaceFacade.getRatingForPlace");
         }
-        return rating;
     }
 
     /*
         This method is used to check if the user has already voted for a specific location.
         Return true 
      */
-    private boolean hasUserVoted(String userName, String locationName) throws DBException {
+    private boolean hasUserVoted(String userName, String placeName) throws DBException {
         try {
-            Query q = EM.createNativeQuery("SELECT count(rating) FROM ratings WHERE location_name = ? AND user_name = ?;");
-            q.setParameter(1, locationName);
+            Query q = EM.createNativeQuery("SELECT count(rating) FROM place_rating WHERE place_name = ? AND user_name = ?;");
+            q.setParameter(1, placeName);
             q.setParameter(2, userName);
             long count = (long) q.getSingleResult();
             return (count > 0); //Has voted if count > 0
         } catch (Exception e) {
-            throw new DBException("facades.LocationFacade.hasUserVoted");
+            throw new DBException("facades.PlaceFacade.hasUserVoted");
         }
     }
 }

@@ -1,5 +1,6 @@
 package entity;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -66,7 +67,9 @@ public class Place implements Serializable {
     @Transient
     private double rating;
     
-    
+    @Transient
+    @Expose
+    private boolean userHasVoted;
     
     
     public Place() {
@@ -138,6 +141,14 @@ public class Place implements Serializable {
 
     public void setRating(double rating) {
         this.rating = rating;
+    }
+    
+    public boolean isUserHasVoted() {
+        return userHasVoted;
+    }
+
+    public void setUserHasVoted(boolean userHasVoted) {
+        this.userHasVoted = userHasVoted;
     }
     
 
