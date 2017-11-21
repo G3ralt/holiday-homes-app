@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { Address, PlaceDescription, GPSinfo, Image, PlaceName, Rating, CreatedBy } from '../components/importContainers';
 import placesData from "../facades/placesFacade";
 import auth from '../authorization/auth';
+const URL = require("../../package.json").serverURL;
 class Places extends Component{
         
   constructor(){
@@ -29,7 +30,7 @@ class Places extends Component{
             headers: { "Content-Type": "application/json" }
         }
 
-        fetch(URL + "api/niceplace/all", options)
+        fetch(URL + "api/places/all", options)
             .then((res) => {
                 return res.json();
             }).then((data) => {
