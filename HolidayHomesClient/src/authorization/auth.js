@@ -139,10 +139,10 @@ class AuthenticationHandler {
 	  })
 	  return;
   }
-  addPlace = (city, zip, street, gpsLocation, description, rating, imgUri, cb) => {
+  addPlace = (gpsLat, gpsLong, description, rating, imgUri, cb) => {
 	  this._errorMessage = "";
 	  
-	  var newPlace = { city, zip, street, gpsLocation, description, rating, imgUri };
+	  var newPlace = { gpsLat, gpsLong, description, rating, imgUri };
 
 	  var options = {
 		  method: "POST",
@@ -160,6 +160,28 @@ class AuthenticationHandler {
 	  })
 	  return;
   }
+
+  addRentable = (zip, city, street, description, rating, imgUri, cb) => {
+	this._errorMessage = "";
+	
+	var newPlace = { zip, city, street, description, rating, imgUri };
+
+	var options = {
+		method: "POST",
+		body: JSON.stringify(newPlace),
+		headers: new Headers({
+			"Content-Type": "application/json"
+		})
+	}
+		console.log(options)
+	fetch(URL + "api/places", options)
+	.then(res => {
+		return res.json();
+	}).then(data => {
+
+	})
+	return;
+}
 
 }
 

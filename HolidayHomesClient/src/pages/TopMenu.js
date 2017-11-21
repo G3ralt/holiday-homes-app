@@ -29,8 +29,8 @@ class TopMenu extends Component {
               <a className="navbar-brand" href="/" style={{pointerEvents: "none"}}>COS5</a>
             </div>
             <ul className="nav navbar-nav">
-			  <li><Link to="/register">Register</Link></li>
 			  <li><Link to="/places">Places</Link></li>
+			  <li><Link to="/rentables">Rentables</Link></li>
 			  <li><Link to="/features">Features</Link></li>
 			  <li><Link to="/futureimplementations">Future Implementations</Link></li>
 			  <li><Link to="/whodidwhat">Who Did What</Link></li>
@@ -39,7 +39,8 @@ class TopMenu extends Component {
               {this.state.isAdmin && (<li><Link to="/admin">Page for Admins </Link></li>)}
             </ul>
             <ul className="nav navbar-nav navbar-right">
-              <li className="navbar-text" style={{ color: "steelBlue" }}>{logInStatus}</li>
+			  <li className="navbar-text" style={{ color: "steelBlue" }}>{logInStatus}</li>
+			  {!this.state.loggedIn && (<li><Link to="/register">Register</Link></li>) }
               <li>
                 {this.state.loggedIn ?
                   (
