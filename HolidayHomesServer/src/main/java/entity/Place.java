@@ -1,77 +1,82 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlRootElement;
 
-@Entity(name = "SEED_PLACE")
-public class Place implements Serializable{
 
-    public Place(){
-        
-    }
+@Entity
+@Table(name = "user_place")
+@XmlRootElement
+@NamedQueries({
+    @NamedQuery(name = "UserPlace.findAll", query = "SELECT u FROM UserPlace u")
+    , @NamedQuery(name = "UserPlace.findByLocationName", query = "SELECT u FROM UserPlace u WHERE u.locationName = :locationName")
+    , @NamedQuery(name = "UserPlace.findByDescription", query = "SELECT u FROM UserPlace u WHERE u.description = :description")
+    , @NamedQuery(name = "UserPlace.findByImgURL", query = "SELECT u FROM UserPlace u WHERE u.imgURL = :imgURL")
+    , @NamedQuery(name = "UserPlace.findByGpsLat", query = "SELECT u FROM UserPlace u WHERE u.gpsLat = :gpsLat")
+    , @NamedQuery(name = "UserPlace.findByGpsLong", query = "SELECT u FROM UserPlace u WHERE u.gpsLong = :gpsLong")})
+public class Place implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-    @Column(length = 255, name = "CITY", nullable = false)
-    private String city;
-    @Column(length = 25, name = "ZIP", nullable = false)
-    private int zip;
-    @Column(length = 255, name = "STREET", nullable = false)
-    private String street;
-    @Column(length = 255, name = "GPS_LOCATION", nullable = true)
-    private String gpsLocation;
-    @Column(length = 255, name = "DESCRIPTION", nullable = false)
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 100)
+    @Column(name = "location_name")
+    private String locationName;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1000)
+    @Column(name = "description")
     private String description;
-    @Column(length = 25, name = "RATING", nullable = false)
-    private int rating;
-    @Column(length = 255, name = "IMAGE_URI", nullable = false)
-    private String imgUri;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 1000)
+    @Column(name = "imgURL")
+    private String imgURL;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "gps_lat")
+    private double gpsLat;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "gps_long")
+    private double gpsLong;
+    @JoinColumn(name = "user_name", referencedColumnName = "USER_NAME")
+    @ManyToOne
+    private User userName;
 
-    public Place(String city, int zip, String street, String gpsLocation, String description, int rating, String imgUri) {
-        this.city = city;
-        this.zip = zip;
-        this.street = street;
-        this.gpsLocation = gpsLocation;
+    public Place() {
+    }
+
+    public Place(String locationName) {
+        this.locationName = locationName;
+    }
+
+    public Place(String locationName, String description, String imgURL, double gpsLat, double gpsLong) {
+        this.locationName = locationName;
         this.description = description;
-        this.rating = rating;
-        this.imgUri = imgUri;
+        this.imgURL = imgURL;
+        this.gpsLat = gpsLat;
+        this.gpsLong = gpsLong;
     }
 
-    public String getCity() {
-        return city;
+    public String getLocationName() {
+        return locationName;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public int getZip() {
-        return zip;
-    }
-
-    public void setZip(int zip) {
-        this.zip = zip;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getGpsLocation() {
-        return gpsLocation;
-    }
-
-    public void setGpsLocation(String gpsLocation) {
-        this.gpsLocation = gpsLocation;
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 
     public String getDescription() {
@@ -82,22 +87,61 @@ public class Place implements Serializable{
         this.description = description;
     }
 
-    public int getRating() {
-        return rating;
+    public String getImgURL() {
+        return imgURL;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
+    public void setImgURL(String imgURL) {
+        this.imgURL = imgURL;
     }
 
-    public String getImgUri() {
-        return imgUri;
+    public double getGpsLat() {
+        return gpsLat;
     }
 
-    public void setImgUri(String imgUri) {
-        this.imgUri = imgUri;
+    public void setGpsLat(double gpsLat) {
+        this.gpsLat = gpsLat;
     }
-   
 
-    
+    public double getGpsLong() {
+        return gpsLong;
+    }
+
+    public void setGpsLong(double gpsLong) {
+        this.gpsLong = gpsLong;
+    }
+
+    public User getUserName() {
+        return userName;
+    }
+
+    public void setUserName(User userName) {
+        this.userName = userName;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        hash += (locationName != null ? locationName.hashCode() : 0);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof Place)) {
+            return false;
+        }
+        Place other = (Place) object;
+        if ((this.locationName == null && other.locationName != null) || (this.locationName != null && !this.locationName.equals(other.locationName))) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "entity.UserPlace[ locationName=" + locationName + " ]";
+    }
+
 }
