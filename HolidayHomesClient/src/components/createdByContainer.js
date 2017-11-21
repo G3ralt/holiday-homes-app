@@ -3,9 +3,9 @@ import React from 'react';
 const CreatedByUser = (props) => {
     return (
         <div className="col-md-4 createdBy">
-            <h3>CreatedBy ("{props.createdByProp}")</h3>
+            <h3>Created By {props.uName}</h3>
         </div>
     );
-}
+};
 
 export default CreatedByUser;
