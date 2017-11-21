@@ -21,32 +21,39 @@ public class Place implements Serializable {
     
     @Id
     @NotNull
+    @Expose
     @Size(min = 1, max = 100)
     @Column(name = "place_name")
     private String placeName;
     
     @NotNull
+    @Expose
     @Size(min = 1, max = 1000)
     @Column(name = "description")
     private String description;
     
     @NotNull
+    @Expose
     @Size(min = 1, max = 1000)
     @Column(name = "imgURL")
     private String imgURL;
     
     @NotNull
+    @Expose
     @Column(name = "gps_lat")
     private double gpsLat;
     
     @NotNull
+    @Expose
     @Column(name = "gps_long")
     private double gpsLong;
     
+    @Expose
     @JoinColumn(name = "user_name", referencedColumnName = "USER_NAME")
     @ManyToOne
     private User userName;
     
+    @Expose
     @Transient
     private double rating;
     

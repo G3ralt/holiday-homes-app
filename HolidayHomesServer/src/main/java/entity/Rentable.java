@@ -20,29 +20,35 @@ public class Rentable implements Serializable {
     @Id
     @NotNull
     @Size(min = 1, max = 100)
+    @Expose
     @Column(name = "rentable_name")
     private String rentableName;
 
     @NotNull
     @Size(min = 1, max = 100)
+    @Expose
     @Column(name = "street")
     private String street;
 
     @NotNull
     @Size(min = 1, max = 45)
+    @Expose
     @Column(name = "city")
     private String city;
 
     @NotNull
+    @Expose
     @Column(name = "zipcode")
     private int zipcode;
 
     @NotNull
     @Size(min = 1, max = 45)
+    @Expose
     @Column(name = "country")
     private String country;
 
     @NotNull
+    @Expose
     @Column(name = "price")
     private double price;
 
@@ -53,12 +59,14 @@ public class Rentable implements Serializable {
 
     @NotNull
     @Size(min = 1, max = 1000)
+    @Expose
     @Column(name = "description")
     private String description;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rentableName")
     private Collection<Booking> bookingCollection;
 
+    @Expose
     @Transient
     private double rating;
 
