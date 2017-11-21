@@ -43,9 +43,8 @@ export default class Places extends React.Component{
                         <div key={place.placeName} className="row nicePlace">
                             <Image pIMG={place.imgURL} />
 							<PlaceName pName={place.placeName} />
-							<CreatedBy uName={place.user.userName} />
                             <Rating pRating={place.rating} />
-                           {} <CreatedByUser createdByProp={this.state.createdByUser} />
+                            <CreatedByUser createdByProp={this.state.createdByUser} />
                             <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
                             <PlaceDescription pDesc={place.description} />
                         </div>
