@@ -19,8 +19,13 @@ public class User implements IUser, Serializable {
 
     @ManyToMany(mappedBy = "userCollection")
     private Collection<Role> roleCollection;
+    
+    @OneToMany(mappedBy = "adminName")
+    private Collection<Rentable> rentableCollection;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userName")
     private Collection<Booking> bookingCollection;
+    
     @OneToMany(mappedBy = "userName")
     private Collection<Place> userPlaceCollection;
 
@@ -106,6 +111,15 @@ public class User implements IUser, Serializable {
 
     public void setUserPlaceCollection(Collection<Place> userPlaceCollection) {
         this.userPlaceCollection = userPlaceCollection;
+    }
+
+    @XmlTransient
+    public Collection<Rentable> getRentableCollection() {
+        return rentableCollection;
+    }
+
+    public void setRentableCollection(Collection<Rentable> rentableCollection) {
+        this.rentableCollection = rentableCollection;
     }
 
 }

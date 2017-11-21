@@ -32,8 +32,9 @@ public class Place implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 100)
-    @Column(name = "location_name")
-    private String locationName;
+    @Column(name = "place_name")
+    private String placeName;
+    
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 1000)
@@ -60,11 +61,11 @@ public class Place implements Serializable {
     }
 
     public Place(String locationName) {
-        this.locationName = locationName;
+        this.placeName = locationName;
     }
 
     public Place(String locationName, String description, String imgURL, double gpsLat, double gpsLong) {
-        this.locationName = locationName;
+        this.placeName = locationName;
         this.description = description;
         this.imgURL = imgURL;
         this.gpsLat = gpsLat;
@@ -72,11 +73,11 @@ public class Place implements Serializable {
     }
 
     public String getLocationName() {
-        return locationName;
+        return placeName;
     }
 
     public void setLocationName(String locationName) {
-        this.locationName = locationName;
+        this.placeName = locationName;
     }
 
     public String getDescription() {
@@ -122,7 +123,7 @@ public class Place implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (locationName != null ? locationName.hashCode() : 0);
+        hash += (placeName != null ? placeName.hashCode() : 0);
         return hash;
     }
 
@@ -133,7 +134,7 @@ public class Place implements Serializable {
             return false;
         }
         Place other = (Place) object;
-        if ((this.locationName == null && other.locationName != null) || (this.locationName != null && !this.locationName.equals(other.locationName))) {
+        if ((this.placeName == null && other.placeName != null) || (this.placeName != null && !this.placeName.equals(other.placeName))) {
             return false;
         }
         return true;
@@ -141,7 +142,7 @@ public class Place implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.UserPlace[ locationName=" + locationName + " ]";
+        return "entity.UserPlace[ locationName=" + placeName + " ]";
     }
 
 }
