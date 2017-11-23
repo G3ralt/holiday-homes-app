@@ -50,6 +50,7 @@ public class Rentable implements Serializable {
     private double price;
 
     @NotNull
+    @Expose
     @Size(min = 1, max = 1000)
     @Column(name = "imgURL")
     private String imgURL;

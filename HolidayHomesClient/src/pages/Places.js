@@ -1,5 +1,5 @@
 import React from 'react';
-import { Address, PlaceDescription, GPSinfo, Image, PlaceName, Rating, CreatedByUser } from '../components/importContainers';
+import { Address, Description, GPSinfo, Image, PlaceName, RatingAvg, RatingUser, CreatedByUser } from '../components/importContainers';
 import placesData from "../facades/placesFacade";
 import auth from '../authorization/auth';
 const URL = require("../../package.json").serverURL;
@@ -41,12 +41,13 @@ export default class Places extends React.Component{
                     }
                     return (
                         <div key={place.placeName} className="row nicePlace">
-                            <Image pIMG={place.imgURL} />
+                            <Image img={place.imgURL} />
 							<PlaceName pName={place.placeName} />
-                            <Rating pRating={place.rating} />
-                            <CreatedByUser createdByProp={this.state.createdByUser} />
+                            <RatingAvg avgRating={place.rating} />
+                            <RatingUser userRating={place.userRating} />
+                            <CreatedByUser uName={this.state.createdByUser} />
                             <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
-                            <PlaceDescription pDesc={place.description} />
+                            <Description desc={place.description} />
                         </div>
                     )
                 });

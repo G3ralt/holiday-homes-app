@@ -1,7 +1,9 @@
 import React, {Component} from "react";
-import { Address, PlaceDescription, GPSinfo, Image, PlaceName, Rating, CreatedByUser } from '../components/importContainers';
+import { Address, Description, GPSinfo, Image, RentableName, RatingAvg, RatingUser, Price, CreatedByUser } from '../components/importContainers';
 import placesData from "../facades/placesFacade";
 import auth from '../authorization/auth';
+const URL = require("../../package.json").serverURL;
+
 class Rentables extends Component{
         
   constructor(){
@@ -29,19 +31,21 @@ class Rentables extends Component{
             headers: { "Content-Type": "application/json" }
         }
 
-        fetch(URL + "api/rentable/all", options)
+        fetch(URL + "api/rentables/all", options)
             .then((res) => {
                 return res.json();
             }).then((data) => {
                 let rInfo = data.map(rentable => {
                     return (
-                        <div key={rentable.locationName} className="row nicePlace">
-                            <Image pIMG={rentable.imgURL} />
-							<PlaceName pName={rentable.locationName} />
-							<CreatedByUser uName={rentable.username} />
-                            <Rating pRating={rentable.rating} />
-                            <GPSinfo pGPSlat={rentable.gpsLat} pGPSlong={rentable.gpsLong} />
-                            <PlaceDescription pDesc={rentable.description} />
+                        <div key={rentable.rentableName} className="row nicePlace">
+                            <Image img={rentable.imgURL} />
+							<RentableName rName={rentable.rentableName} />
+							<CreatedByUser uName={rentable.adminName.userName} />
+                            <RatingAvg avgRating={rentable.rating} />
+                            <RatingUser userRating={rentable.userRating} />
+                            <Address street={rentable.street} city={rentable.city}  zipCode={rentable.zipcode} country={rentable.country}/> {/* Passed like address object */}
+                            <Price rPrice={rentable.price} />
+                            <Description desc={rentable.description} />
                         </div>
                     )
                 });
