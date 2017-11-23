@@ -2,6 +2,8 @@ import React, {Component} from "react";
 import { Address, PlaceDescription, GPSinfo, Image, PlaceName, Rating, CreatedByUser } from '../components/importContainers';
 import placesData from "../facades/placesFacade";
 import auth from '../authorization/auth';
+const URL = require("../../package.json").serverURL;
+
 class Rentables extends Component{
         
   constructor(){
@@ -29,7 +31,7 @@ class Rentables extends Component{
             headers: { "Content-Type": "application/json" }
         }
 
-        fetch(URL + "api/rentable/all", options)
+        fetch(URL + "api/rentables/all", options)
             .then((res) => {
                 return res.json();
             }).then((data) => {
