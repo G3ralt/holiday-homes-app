@@ -66,8 +66,8 @@ public class PlaceFacade {
     public boolean checkForPlaceName(String placeName) throws DBException {
         try {
             EM.getTransaction().begin();
-            Query q = EM.createQuery("SELECT p FROM Place p WHERE p.placeName = ?");
-            q.setParameter(1, placeName);
+            Query q = EM.createQuery("SELECT p FROM Place p WHERE p.placeName = :placeName");
+            q.setParameter("placeName", placeName);
             Place p = (Place) q.getSingleResult();
             
         } catch (NoResultException e) {

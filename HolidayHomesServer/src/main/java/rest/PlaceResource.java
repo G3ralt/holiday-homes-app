@@ -65,22 +65,22 @@ public class PlaceResource {
         }
     }
     
-//    @Path("/checkName/{placeName}")
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response checkPlaceName(@PathParam("placeName") String placeName) {
-//        try {
-//            boolean existing = FF.getPlaceFacade().checkForPlaceName(placeName);
-//            
-//            return existing ? Response.status(409).build() : Response.status(202).build(); //If username is used - 409, otherwise 202
-//
-//        } catch (Exception e) {
-//            return Response.status(503).entity(e.getMessage()).build(); //Service unavailable if something is wrong
-//
-//        } finally {
-//            FF.close();
-//        }
-//    }
+    @Path("/checkName/{placeName}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response checkPlaceName(@PathParam("placeName") String placeName) {
+        try {
+            boolean existing = FF.getPlaceFacade().checkForPlaceName(placeName);
+            
+            return existing ? Response.status(409).build() : Response.status(202).build(); //If username is used - 409, otherwise 202
+
+        } catch (Exception e) {
+            return Response.status(503).entity(e.getMessage()).build(); //Service unavailable if something is wrong
+
+        } finally {
+            FF.close();
+        }
+    }
 
     @Path("/addRating")
     @POST
