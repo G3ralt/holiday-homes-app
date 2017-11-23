@@ -13,6 +13,7 @@ public class Rentable implements Serializable {
 
     @JoinColumn(name = "admin_name", referencedColumnName = "USER_NAME")
     @ManyToOne
+    @Expose
     private User adminName;
 
     private static final long serialVersionUID = 1L;
