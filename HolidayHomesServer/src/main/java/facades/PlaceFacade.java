@@ -46,10 +46,10 @@ public class PlaceFacade {
     }
 
     //Creates new location in the database, returns null if failed
-    public void createNewPlace(Place location) throws DBException {
+    public void createNewPlace(Place place) throws DBException {
         try {
             EM.getTransaction().begin();
-            EM.persist(location);
+            EM.persist(place);
             EM.getTransaction().commit();
 
         } catch (Exception e) {
