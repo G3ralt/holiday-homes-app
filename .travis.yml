@@ -1,5 +1,4 @@
 language: java
 jdk: oraclejdk8
 script: 
-- mvn -f HolidayHomesServer/pom.xml clean verify
-- mvn test -B
+- mvn -f HolidayHomesServer/pom.xml test -B
