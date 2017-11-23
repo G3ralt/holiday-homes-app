@@ -45,7 +45,7 @@ export default class Places extends React.Component{
 							<PlaceName pName={place.placeName} />
                             <RatingAvg avgRating={place.rating} />
                             <RatingUser userRating={place.userRating} />
-                            <CreatedByUser createdByProp={this.state.createdByUser} />
+                            <CreatedByUser uName={this.state.createdByUser} />
                             <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
                             <Description desc={place.description} />
                         </div>
