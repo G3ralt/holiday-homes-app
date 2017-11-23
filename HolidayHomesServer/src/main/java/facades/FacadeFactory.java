@@ -11,6 +11,7 @@ public class FacadeFactory {
     
     private UserFacade userFacade;
     private PlaceFacade placeFacade;
+    private RentableFacade rentableFacade;
 
     public FacadeFactory() {
         this.EMF = Persistence.createEntityManagerFactory("pu_development");
@@ -37,4 +38,14 @@ public class FacadeFactory {
     public void setPlaceFacade() {
         this.placeFacade = new PlaceFacade(EM);
     }
+
+    public RentableFacade getRentableFacade() {
+        return rentableFacade;
+    }
+
+    public void setRentableFacade() {
+        this.rentableFacade = new RentableFacade(EM);
+    }
+    
+    
 }

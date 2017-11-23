@@ -13,6 +13,7 @@ import DownloadApp from "./DownloadApp";
 import FutureImplementations from "./FutureImplementations";
 import Rentables from "./Rentables";
 import AddRentable from "./AddRentable";
+import CreatePlace from './CreatePlace';
 
 
 function App() {
@@ -23,7 +24,8 @@ function App() {
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
                 <Route path="/logout" component={Logout} />
-                <Route path="/places" component={Places} />
+                <Route exact path="/places" component={Places} />
+                <Route path="/places/create" component={CreatePlace} />
                 <Route path="/addplace" component={AddPlace} />
                 <Route path="/admin" component={AdminPage} />
                 <Route path="/features" component={Features} />

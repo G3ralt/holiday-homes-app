@@ -62,7 +62,7 @@ public class Rentable implements Serializable {
     @Expose
     @Column(name = "description")
     private String description;
-
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rentableName")
     private Collection<Booking> bookingCollection;
 
@@ -72,7 +72,7 @@ public class Rentable implements Serializable {
 
     @Transient
     @Expose
-    private boolean userHasVoted;
+    private int userRating; //Current user`s rating
 
     public Rentable() {
     }
@@ -172,12 +172,12 @@ public class Rentable implements Serializable {
         this.rating = rating;
     }
 
-    public boolean isUserHasVoted() {
-        return userHasVoted;
+    public int getUserRating() {
+        return userRating;
     }
 
-    public void setUserHasVoted(boolean userHasVoted) {
-        this.userHasVoted = userHasVoted;
+    public void setUserRating(int userRating) {
+        this.userRating = userRating;
     }
 
     @Override

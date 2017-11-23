@@ -115,6 +115,10 @@ margin-top: 15px;
 background-color: greenyellow;
 }
 
+.createdBy {
+	background-color: bisque;
+}
+
 .placeRating {
 background-color: blueviolet;
 }

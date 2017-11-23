@@ -41,7 +41,8 @@ class TopMenu extends Component {
             </ul>
             <ul className="nav navbar-nav navbar-right">
 			  <li className="navbar-text" style={{ color: "steelBlue" }}>{logInStatus}</li>
-			  {!this.state.loggedIn && (<li><Link to="/register">Register</Link></li>) }
+        {!this.state.loggedIn && (<li><Link to="/register">Register</Link></li>) }
+        {this.state.loggedIn && (<li><Link to="/places/create">Create a Place</Link></li>) }
               <li>
                 {this.state.loggedIn ?
                   (

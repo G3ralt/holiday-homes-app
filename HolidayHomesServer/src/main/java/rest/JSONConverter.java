@@ -15,8 +15,14 @@ public class JSONConverter {
     public static Place getPlaceFromJSON(String json) {
         return GSON.fromJson(json, Place.class);
     }
+    
+    public static Rentable getRentableFromJSON(String json) {
+        return GSON.fromJson(json, Rentable.class);
+    }
 
     public static User getUserFromJSON(String json) {
         return GSON.fromJson(json, User.class);
     }
+    
+    
 }
