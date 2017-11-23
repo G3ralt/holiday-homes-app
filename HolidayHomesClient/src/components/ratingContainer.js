@@ -1,12 +1,12 @@
 import React from 'react';
 
-const Rating = (props) => {
+const RatingAvg = (props) => {
     return (
         <div className="col-md-4 placeRating">
-            <h3>Rating("{props.pRating}")</h3>
-            <p>stars here</p>
+            <h3>Rating (average)("{props.avgRating}")</h3>
+            <p>no stars, just number</p>
         </div>
     );
 }
 
-export default Rating;
+export default RatingAvg;
