@@ -65,21 +65,21 @@ public class PlaceResource {
         }
     }
     
-    @Path("/checkName/{placeName}")
-    public Response checkPlaceName(@PathParam("placeName") String placeName) {
-        try {
-
-            List<Place> locations = FF.getPlaceFacade().getAllPlaces(userName); //Get the locations from Database.
-
-            return Response.status(200).entity(getJSONfromObject(locations)).build(); //Return the locations as JSON
-
-        } catch (Exception e) {
-            return Response.status(503).entity(e.getMessage()).build(); //Service unavailable if something is wrong
-
-        } finally {
-            FF.close();
-        }
-    }
+//    @Path("/checkName/{placeName}")
+//    public Response checkPlaceName(@PathParam("placeName") String placeName) {
+//        try {
+//
+//            List<Place> locations = FF.getPlaceFacade().getAllPlaces(userName); //Get the locations from Database.
+//
+//            return Response.status(200).entity(getJSONfromObject(locations)).build(); //Return the locations as JSON
+//
+//        } catch (Exception e) {
+//            return Response.status(503).entity(e.getMessage()).build(); //Service unavailable if something is wrong
+//
+//        } finally {
+//            FF.close();
+//        }
+//    }
 
     @Path("/addRating")
     @POST
