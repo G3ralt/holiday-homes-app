@@ -91,7 +91,7 @@ public class PlaceFacade {
             q.setParameter(1, placeName);
             BigDecimal result = (BigDecimal) q.getSingleResult(); //get the result from DB
             if (result != null) {
-                rating = Double.parseDouble(df.format(result)); //format the result and parse it to double
+                rating = result.doubleValue();
             }
             return rating;
         } catch (Exception e) {
