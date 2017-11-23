@@ -4,11 +4,8 @@ import customExceptions.DBException;
 import entity.Place;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
+import java.util.*;
+import javax.persistence.*;
 
 public class PlaceFacade {
 
@@ -19,10 +16,10 @@ public class PlaceFacade {
     }
 
     /*
-        This method is used to retrieve all places from the databse.
+        This method is used to retrieve all places from the database.
         The method also retrieves the ratings for the places through the getRatingForLocation method.
-        The method also retrieves if the user has already rated this place.
-        Throws DBException if soemthing is wrong with the database.
+        The method also retrieves the user`s rating (if authorized).
+        Throws DBException if something is wrong with the database.
         Returns a list with all the locations and their info.
      */
     public List<Place> getAllPlaces(String userName) throws DBException {
@@ -30,9 +27,11 @@ public class PlaceFacade {
         try {
             Query q = EM.createQuery("SELECT p FROM Place p");
             toReturn = q.getResultList();
+            
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.getAllPlaces");
         }
+        
         for (Place p : toReturn) {
             double rating = getRatingForPlace(p.getPlaceName()); // Get the rating from Database
             p.setRating(rating);
@@ -45,7 +44,10 @@ public class PlaceFacade {
         return toReturn;
     }
 
-    //Creates new location in the database, returns null if failed
+    /*
+        Creates new Place in the database
+        Throws DBException if the placename already used
+    */
     public void createNewPlace(Place place) throws DBException {
         try {
             EM.getTransaction().begin();
@@ -57,8 +59,24 @@ public class PlaceFacade {
         }
     }
     
+    /*
+        Checks the databse for availability of a given placeName.
+        Throws DBException if something is wrong with the Database
+    */
     public boolean checkForPlaceName(String placeName) throws DBException {
-        return true;
+        try {
+            EM.getTransaction().begin();
+            Query q = EM.createQuery("SELECT p FROM Place p WHERE p.placeName = ?");
+            q.setParameter(1, placeName);
+            Place p = (Place) q.getSingleResult();
+            
+        } catch (NoResultException e) {
+            return false; //Return false = NON EXISTING NAME
+            
+        } catch (Exception e) {
+            throw new DBException("facades.PlaceFacade.checkForPlaceName");
+        }
+        return true; //Return true if NAME is found
     }
 
     /*
@@ -97,7 +115,7 @@ public class PlaceFacade {
                 rating = Double.parseDouble(df.format(result)); //format the result and parse it to double
             }
             return rating;
-            
+
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.getRatingForPlace");
         }
@@ -113,11 +131,11 @@ public class PlaceFacade {
             q.setParameter(1, placeName);
             q.setParameter(2, userName);
             int rating = (int) q.getSingleResult();
-            return rating; 
-            
+            return rating;
+
         } catch (NoResultException e) {
             return 0; //User hasn`t rated the place
-            
+
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.hasUserVoted");
         }
