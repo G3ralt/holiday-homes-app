@@ -33,7 +33,7 @@ public class PlaceResource {
             return Response.status(200).entity(getJSONfromObject(locations)).build(); //Return the locations as JSON
 
         } catch (Exception e) {
-            return Response.status(503).entity(e.getMessage()).build(); //Service unavailable if something is wrong
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable if something is wrong
 
         } finally {
             FF.close();
@@ -55,10 +55,10 @@ public class PlaceResource {
 
         } catch (DBException e) {
             //When the Place name is already in use
-            return Response.status(406).entity(e.getMessage()).build();
+            return Response.status(406).entity(getJSONfromObject(e.getMessage())).build();
 
         } catch (Exception e) {
-            return Response.status(503).entity(e.getMessage()).build();
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
 
         } finally {
             FF.close();
@@ -72,10 +72,10 @@ public class PlaceResource {
         try {
             boolean existing = FF.getPlaceFacade().checkForPlaceName(placeName);
             
-            return existing ? Response.status(409).build() : Response.status(202).build(); //If username is used - 409, otherwise 202
+            return existing ? Response.status(409).build() : Response.status(202).build(); //If placeName is used - 409, otherwise 202
 
         } catch (Exception e) {
-            return Response.status(503).entity(e.getMessage()).build(); //Service unavailable if something is wrong
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable if something is wrong
 
         } finally {
             FF.close();
@@ -99,7 +99,28 @@ public class PlaceResource {
             return Response.status(201).entity(getJSONfromObject("Rating added!")).build();
 
         } catch (Exception e) {
-            return Response.status(503).entity(e.getMessage()).build();
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
+        }
+    }
+    
+    @Path("/updateRating")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateNewRatingForPlace(String jsonString) {
+        try {
+            //Get the information from the request
+            JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
+            String placeName = json.get("placeName").getAsString();
+            String userName = json.get("username").getAsString();
+            int rating = json.get("rating").getAsInt();
+
+            FF.getPlaceFacade().updateRatingForPlace(placeName, rating, userName);
+
+            return Response.status(201).entity(getJSONfromObject("Rating update!")).build();
+
+        } catch (Exception e) {
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
         }
     }
 

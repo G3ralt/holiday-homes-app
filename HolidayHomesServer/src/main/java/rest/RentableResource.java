@@ -40,7 +40,7 @@ public class RentableResource {
             return Response.status(200).entity(getJSONfromObject(rentables)).build(); //Return the locations as JSON
 
         } catch (Exception e) {
-            return Response.status(503).entity(e.getMessage()).build(); //Service unavailable if something is wrong
+            return Response.status(503).entity(getJSONfromObject(getJSONfromObject(e.getMessage()))).build(); //Service unavailable if something is wrong
 
         } finally {
             FF.close();
@@ -62,10 +62,10 @@ public class RentableResource {
 
         } catch (DBException e) {
             //When the Place name is already in use
-            return Response.status(406).entity(e.getMessage()).build();
+            return Response.status(406).entity(getJSONfromObject(e.getMessage())).build();
 
         } catch (Exception e) {
-            return Response.status(503).entity(e.getMessage()).build();
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
 
         } finally {
             FF.close();
@@ -89,7 +89,7 @@ public class RentableResource {
             return Response.status(201).entity(getJSONfromObject("Rating added!")).build();
 
         } catch (Exception e) {
-            return Response.status(503).entity(e.getMessage()).build();
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
         }
     }
 

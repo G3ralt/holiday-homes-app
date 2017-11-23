@@ -85,6 +85,10 @@ public class PlaceFacade {
      */
     public void addRatingForPlace(String placeName, int rating, String userName) throws DBException {
         try {
+            int userRating = getUserRating(userName, placeName);
+            if(userRating != 0) { // If the rating is different from 0 == user has voted
+                throw new Exception();
+            }
             EM.getTransaction().begin();
             Query q = EM.createNativeQuery("INSERT INTO place_rating (place_name, rating, user_name) VALUES (?, ?, ?);");
             q.setParameter(1, placeName);
@@ -95,6 +99,26 @@ public class PlaceFacade {
 
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.addRatingForPlace");
+        }
+
+    }
+    
+    /*
+        This method is used for updating ratings for place given the user and the location name.
+        Throws DBException if the Database refuses the creation.
+     */
+    public void updateRatingForPlace(String placeName, int rating, String userName) throws DBException {
+        try {
+            EM.getTransaction().begin();
+            Query q = EM.createNativeQuery("UPDATE place_rating SET rating = ? WHERE user_name = ? AND place_name = ?");
+            q.setParameter(1, rating);
+            q.setParameter(2, userName);
+            q.setParameter(3, placeName);
+            q.executeUpdate();
+            EM.getTransaction().commit();
+
+        } catch (Exception e) {
+            throw new DBException("facades.PlaceFacade.updateRatingForPlace");
         }
 
     }

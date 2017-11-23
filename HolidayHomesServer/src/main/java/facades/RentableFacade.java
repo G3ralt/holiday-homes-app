@@ -19,20 +19,22 @@ public class RentableFacade {
     }
 
     /*
-        This method is used to retrieve all locations from the databse.
-        The method also retrieves the ratings for the locations through the getRatingForLocation method.
-        The method also retrieves if the user has already rated this location.
-        Throws DBException if soemthing is wrong with the database.
-        Returns a list with all the locations and their info.
+        This method is used to retrieve all rentables from the databse.
+        The method also retrieves the ratings for the rentables through the getRatingForRentable method.
+        The method also retrieves if the user has already rated this rentable.
+        Throws DBException if something is wrong with the database.
+        Returns a list with all the rentables and their info.
      */
     public List<Rentable> getAllRentables(String userName) throws DBException {
         List<Rentable> toReturn = new ArrayList();
         try {
             Query q = EM.createQuery("SELECT r FROM Rentable r");
             toReturn = q.getResultList();
+            
         } catch (Exception e) {
             throw new DBException("facades.RentableFacade.getAllRentables");
         }
+        
         for (Rentable r : toReturn) {
             double rating = getRatingForRentable(r.getRentableName()); // Get the rating from Databae
             r.setRating(rating);
@@ -42,6 +44,7 @@ public class RentableFacade {
                 r.setUserRating(userRating);
             }
         }
+        
         return toReturn;
     }
 
@@ -63,6 +66,11 @@ public class RentableFacade {
      */
     public void addRatingForRentable(String rentableName, int rating, String userName) throws DBException {
         try {
+            int userRating = getUserRating(userName, rentableName);
+            if(userRating != 0) { // If the rating is different from 0 == user has voted
+                throw new Exception();
+            }
+            
             EM.getTransaction().begin();
             Query q = EM.createNativeQuery("INSERT INTO rentable_rating (rentable_name, rating, user_name) VALUES (?, ?, ?);");
             q.setParameter(1, rentableName);
@@ -100,7 +108,7 @@ public class RentableFacade {
     }
 
     /*
-        This method is used to check if the user has already voted for a specific location.
+        This method is used to check if the user has already voted for a specific rentable.
         Return the user`s rating or 0 if the user hasn`t voted
      */
     private int getUserRating(String userName, String rentableName) throws DBException {
