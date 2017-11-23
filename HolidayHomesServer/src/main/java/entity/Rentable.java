@@ -65,7 +65,7 @@ public class Rentable implements Serializable {
 
     @Expose
     @Transient
-    private double rating;
+    private double rating; // Average rating for the rentable
     
     @Expose
     @JoinColumn(name = "admin_name", referencedColumnName = "USER_NAME")

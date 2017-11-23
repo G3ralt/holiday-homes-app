@@ -19,9 +19,9 @@ public class PlaceFacade {
     }
 
     /*
-        This method is used to retrieve all locations from the databse.
-        The method also retrieves the ratings for the locations through the getRatingForLocation method.
-        The method also retrieves if the user has already rated this location.
+        This method is used to retrieve all places from the databse.
+        The method also retrieves the ratings for the places through the getRatingForLocation method.
+        The method also retrieves if the user has already rated this place.
         Throws DBException if soemthing is wrong with the database.
         Returns a list with all the locations and their info.
      */
@@ -34,7 +34,7 @@ public class PlaceFacade {
             throw new DBException("facades.PlaceFacade.getAllPlaces");
         }
         for (Place p : toReturn) {
-            double rating = getRatingForPlace(p.getPlaceName()); // Get the rating from Databae
+            double rating = getRatingForPlace(p.getPlaceName()); // Get the rating from Database
             p.setRating(rating);
 
             if (!userName.equals("unauthorized")) { //If the user is logged in
@@ -55,6 +55,10 @@ public class PlaceFacade {
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.createNewPlace");
         }
+    }
+    
+    public boolean checkForPlaceName(String placeName) throws DBException {
+        return true;
     }
 
     /*
@@ -83,9 +87,8 @@ public class PlaceFacade {
         Throws DBExceptions if there is something wrong with the Database.
      */
     private double getRatingForPlace(String placeName) throws DBException {
-        double rating = 0;
-
         try {
+            double rating = 0;
             DecimalFormat df = new DecimalFormat(".#");
             Query q = EM.createNativeQuery("SELECT AVG(rating) FROM place_rating WHERE place_name = ?;");
             q.setParameter(1, placeName);
@@ -94,6 +97,7 @@ public class PlaceFacade {
                 rating = Double.parseDouble(df.format(result)); //format the result and parse it to double
             }
             return rating;
+            
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.getRatingForPlace");
         }

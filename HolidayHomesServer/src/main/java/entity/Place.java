@@ -55,7 +55,7 @@ public class Place implements Serializable {
     
     @Expose
     @Transient
-    private double rating;
+    private double rating; //Average rating for the place
     
     @Transient
     @Expose

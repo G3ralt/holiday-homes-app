@@ -1,17 +1,12 @@
 package rest;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import customExceptions.DBException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import entity.Place;
 import facades.FacadeFactory;
 import java.util.List;
-import javax.ws.rs.core.Response;
 import static rest.JSONConverter.*;
 
 @Path("places")
@@ -23,7 +18,7 @@ public class PlaceResource {
         FF = new FacadeFactory();
         FF.setPlaceFacade();
     }
-
+    
     @Path("/all")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -64,6 +59,22 @@ public class PlaceResource {
 
         } catch (Exception e) {
             return Response.status(503).entity(e.getMessage()).build();
+
+        } finally {
+            FF.close();
+        }
+    }
+    
+    @Path("/checkName/{placeName}")
+    public Response checkPlaceName(@PathParam("placeName") String placeName) {
+        try {
+
+            List<Place> locations = FF.getPlaceFacade().getAllPlaces(userName); //Get the locations from Database.
+
+            return Response.status(200).entity(getJSONfromObject(locations)).build(); //Return the locations as JSON
+
+        } catch (Exception e) {
+            return Response.status(503).entity(e.getMessage()).build(); //Service unavailable if something is wrong
 
         } finally {
             FF.close();
