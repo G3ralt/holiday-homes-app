@@ -37,7 +37,7 @@ export default class Places extends React.Component{
             }).then((data) => {
                 let pInfo = data.map(place => {
                     if (place.hasOwnProperty("user")) {
-                        this.setState({createdByUser: place.user.userName});
+                        this.setState({createdByUser: place.user.username});
                     }
                     return (
                         <div key={place.placeName} className="row nicePlace">

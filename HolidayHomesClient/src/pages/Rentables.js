@@ -40,7 +40,7 @@ class Rentables extends Component{
                         <div key={rentable.rentableName} className="row nicePlace">
                             <Image img={rentable.imgURL} />
 							<RentableName rName={rentable.rentableName} />
-							<CreatedByUser uName={rentable.adminName.userName} />
+							<CreatedByUser uName={rentable.admin.username} />
                             <RatingAvg avgRating={rentable.rating} />
                             <RatingUser userRating={rentable.userRating} />
                             <Address street={rentable.street} city={rentable.city}  zipCode={rentable.zipcode} country={rentable.country}/> {/* Passed like address object */}
