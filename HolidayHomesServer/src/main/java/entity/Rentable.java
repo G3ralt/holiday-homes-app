@@ -11,10 +11,7 @@ import javax.validation.constraints.Size;
 @Table(name = "rentable")
 public class Rentable implements Serializable {
 
-    @JoinColumn(name = "admin_name", referencedColumnName = "USER_NAME")
-    @ManyToOne
-    private User adminName;
-
+    
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -69,6 +66,11 @@ public class Rentable implements Serializable {
     @Expose
     @Transient
     private double rating;
+    
+    @Expose
+    @JoinColumn(name = "admin_name", referencedColumnName = "USER_NAME")
+    @ManyToOne
+    private User admin;
 
     @Transient
     @Expose
@@ -206,10 +208,10 @@ public class Rentable implements Serializable {
     }
 
     public User getAdminName() {
-        return adminName;
+        return admin;
     }
 
-    public void setAdminName(User adminName) {
-        this.adminName = adminName;
+    public void setAdminName(User admin) {
+        this.admin = admin;
     }
 }

@@ -12,7 +12,7 @@ import security.PasswordStorage;
 @Entity(name = "SEED_USER")
 public class User implements IUser, Serializable {
 
-    @OneToMany(mappedBy = "adminName")
+    @OneToMany(mappedBy = "admin")
     private Collection<Rentable> rentableCollection;
 
     @ManyToMany(mappedBy = "userCollection")
@@ -31,7 +31,7 @@ public class User implements IUser, Serializable {
     @Id
     @Expose
     @Column(length = 35, name = "USER_NAME", nullable = false)
-    private String userName;
+    private String username;
 
     @Expose
     @ManyToMany
@@ -40,8 +40,8 @@ public class User implements IUser, Serializable {
     public User() {
     }
 
-    public User(String userName, String password) throws PasswordStorage.CannotPerformOperationException {
-        this.userName = userName;
+    public User(String username, String password) throws PasswordStorage.CannotPerformOperationException {
+        this.username = username;
         this.passwordHash = PasswordStorage.createHash(password);
     }
 
@@ -80,7 +80,7 @@ public class User implements IUser, Serializable {
 
     @Override
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public Collection<Role> getRoleCollection() {

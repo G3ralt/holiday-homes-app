@@ -53,7 +53,7 @@ public class RentableFacade {
             EM.getTransaction().commit();
 
         } catch (Exception e) {
-            throw new DBException("facades.RentableFacade.createNewPlace");
+            throw new DBException("facades.RentableFacade.createNewRentable");
         }
     }
 
