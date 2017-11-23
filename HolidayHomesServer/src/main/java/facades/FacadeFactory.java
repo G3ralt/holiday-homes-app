@@ -43,8 +43,8 @@ public class FacadeFactory {
         return rentableFacade;
     }
 
-    public void setRentableFacade(RentableFacade rentableFacade) {
-        this.rentableFacade = rentableFacade;
+    public void setRentableFacade() {
+        this.rentableFacade = new RentableFacade(EM);
     }
     
     

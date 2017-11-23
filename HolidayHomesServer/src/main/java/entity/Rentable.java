@@ -62,7 +62,7 @@ public class Rentable implements Serializable {
     @Expose
     @Column(name = "description")
     private String description;
-
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "rentableName")
     private Collection<Booking> bookingCollection;
 

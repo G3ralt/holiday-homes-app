@@ -28,13 +28,13 @@ public class RentableFacade {
     public List<Rentable> getAllRentables(String userName) throws DBException {
         List<Rentable> toReturn = new ArrayList();
         try {
-            Query q = EM.createQuery("SELECT p FROM Place p");
+            Query q = EM.createQuery("SELECT r FROM Rentable r");
             toReturn = q.getResultList();
         } catch (Exception e) {
-            throw new DBException("facades.RentableFacade.getAllPlaces");
+            throw new DBException("facades.RentableFacade.getAllRentables");
         }
         for (Rentable r : toReturn) {
-            double rating = getRatingForPlace(r.getRentableName()); // Get the rating from Databae
+            double rating = getRatingForRentable(r.getRentableName()); // Get the rating from Databae
             r.setRating(rating);
 
             if (!userName.equals("unauthorized")) { //If the user is logged in
@@ -61,7 +61,7 @@ public class RentableFacade {
         This method is used for adding ratings for locations given the user and the location name.
         Throws DBException if the Database refuses the creation.
      */
-    public void addRatingForPlace(String rentableName, int rating, String userName) throws DBException {
+    public void addRatingForRentable(String rentableName, int rating, String userName) throws DBException {
         try {
             EM.getTransaction().begin();
             Query q = EM.createNativeQuery("INSERT INTO rentable_rating (rentable_name, rating, user_name) VALUES (?, ?, ?);");
@@ -82,20 +82,20 @@ public class RentableFacade {
         The method is used by getAllLocations and getLocation.
         Throws DBExceptions if there is something wrong with the Database.
      */
-    private double getRatingForPlace(String placeName) throws DBException {
+    private double getRatingForRentable(String rentableName) throws DBException {
         double rating = 0;
 
         try {
             DecimalFormat df = new DecimalFormat(".#");
-            Query q = EM.createNativeQuery("SELECT AVG(rating) FROM place_rating WHERE place_name = ?;");
-            q.setParameter(1, placeName);
+            Query q = EM.createNativeQuery("SELECT AVG(rating) FROM rentable_rating WHERE rentable_name = ?;");
+            q.setParameter(1, rentableName);
             BigDecimal result = (BigDecimal) q.getSingleResult(); //get the result from DB
             if (result != null) {
                 rating = Double.parseDouble(df.format(result)); //format the result and parse it to double
             }
             return rating;
         } catch (Exception e) {
-            throw new DBException("facades.PlaceFacade.getRatingForPlace");
+            throw new DBException("facades.RentableFacade.getRatingForRentable");
         }
     }
 
@@ -103,10 +103,10 @@ public class RentableFacade {
         This method is used to check if the user has already voted for a specific location.
         Return the user`s rating or 0 if the user hasn`t voted
      */
-    private int getUserRating(String userName, String placeName) throws DBException {
+    private int getUserRating(String userName, String rentableName) throws DBException {
         try {
-            Query q = EM.createNativeQuery("SELECT rating FROM place_rating WHERE place_name = ? AND user_name = ?;");
-            q.setParameter(1, placeName);
+            Query q = EM.createNativeQuery("SELECT rating FROM rentable_rating WHERE rentable_name = ? AND user_name = ?;");
+            q.setParameter(1, rentableName);
             q.setParameter(2, userName);
             int rating = (int) q.getSingleResult();
             return rating; 
@@ -115,7 +115,7 @@ public class RentableFacade {
             return 0; //User hasn`t rated the place
             
         } catch (Exception e) {
-            throw new DBException("facades.PlaceFacade.hasUserVoted");
+            throw new DBException("facades.RentableFacade.hasUserVoted");
         }
     }
 }

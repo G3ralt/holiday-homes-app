@@ -8,7 +8,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import entity.Place;
+import entity.Rentable;
 import facades.FacadeFactory;
 import java.util.List;
 import javax.ws.rs.core.Response;
@@ -23,21 +23,21 @@ public class RentableResource {
 
     public RentableResource() {
         FF = new FacadeFactory();
-        FF.setPlaceFacade();
+        FF.setRentableFacade();
     }
 
     @Path("/all")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllPlaces(String jsonString) {
+    public Response getAllRentables(String jsonString) {
         try {
             JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
             String userName = json.get("username").getAsString();
 
-            List<Place> locations = FF.getPlaceFacade().getAllPlaces(userName); //Get the locations from Database.
+            List<Rentable> rentables = FF.getRentableFacade().getAllRentables(userName); //Get the locations from Database.
 
-            return Response.status(200).entity(getJSONfromObject(locations)).build(); //Return the locations as JSON
+            return Response.status(200).entity(getJSONfromObject(rentables)).build(); //Return the locations as JSON
 
         } catch (Exception e) {
             return Response.status(503).entity(e.getMessage()).build(); //Service unavailable if something is wrong
@@ -52,13 +52,13 @@ public class RentableResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewPlace(String jsonString) {
+    public Response createNewRentable(String jsonString) {
         try {
-            Place place = getPlaceFromJSON(jsonString);
+            Rentable rentable = getRentableFromJSON(jsonString);
 
-            FF.getPlaceFacade().createNewPlace(place);
+            FF.getRentableFacade().createNewRentable(rentable);
 
-            return Response.status(201).entity(getJSONfromObject("Location created!")).build();
+            return Response.status(201).entity(getJSONfromObject("Rentable created!")).build();
 
         } catch (DBException e) {
             //When the Place name is already in use
