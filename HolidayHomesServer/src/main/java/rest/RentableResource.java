@@ -76,7 +76,7 @@ public class RentableResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addNewRatingForPlace(String jsonString) {
+    public Response addNewRatingForRentable(String jsonString) {
         try {
             //Get the information from the request
             JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
