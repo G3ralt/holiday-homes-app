@@ -18,7 +18,7 @@ public class User implements IUser, Serializable {
     @ManyToMany(mappedBy = "userCollection")
     private Collection<Role> roleCollection;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userName")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private Collection<Booking> bookingCollection;
     
     @OneToMany(mappedBy = "user")

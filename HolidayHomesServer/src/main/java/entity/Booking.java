@@ -1,5 +1,6 @@
 package entity;
 
+import com.google.gson.annotations.Expose;
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -24,21 +25,28 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Booking implements Serializable {
 
     private static final long serialVersionUID = 1L;
+    
     @Id
     @Basic(optional = false)
     @NotNull
     @Column(name = "id")
     private Integer id;
+    
+    @Expose
     @Basic(optional = false)
     @NotNull
     @Column(name = "week_number")
     private short weekNumber;
+    
+    @Expose
     @JoinColumn(name = "rentable_name", referencedColumnName = "rentable_name")
     @ManyToOne(optional = false)
     private Rentable rentableName;
+    
+    @Expose
     @JoinColumn(name = "user_name", referencedColumnName = "USER_NAME")
     @ManyToOne(optional = false)
-    private User userName;
+    private User user;
 
     public Booking() {
     }
@@ -76,12 +84,12 @@ public class Booking implements Serializable {
         this.rentableName = rentableName;
     }
 
-    public User getUserName() {
-        return userName;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserName(User userName) {
-        this.userName = userName;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
