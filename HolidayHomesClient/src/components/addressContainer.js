@@ -4,10 +4,10 @@ const Address = (props) => {
     return (
         <div className="col-md-4 placeAddress">
             <h3>Address:</h3>
-            <p>Street:   {props.pStreet}</p>
-            <p>City:     {props.pCity}</p>
-            <p>ZIP Code: {props.pZIP}</p>
-            <p>Country:  {props.pCountry}</p>
+            <p>Street:   {props.street}</p>
+            <p>City:     {props.city}</p>
+            <p>ZIP Code: {props.zipCode}</p>
+            <p>Country:  {props.country}</p>
         </div>
     );
 }

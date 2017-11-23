@@ -1,9 +1,12 @@
 import Address from './addressContainer';
-import PlaceDescription from './descriptionContainer';
+import Description from './descriptionContainer';
 import GPSinfo from './gpsContainer';
 import Image from './imageContainer';
 import PlaceName from './placeNameContainer';
-import Rating from './ratingContainer';
+import RentableName from './rentableNameContainer';
+import RatingAvg from './ratingContainer';
+import RatingUser from './userRatingContainer';
 import CreatedByUser from "./createdByContainer";
+import Price from './priceContainer';
 
-export { Address, PlaceDescription, GPSinfo, Image, PlaceName, Rating, CreatedByUser };
+export { Address, Description, GPSinfo, Image, PlaceName, RentableName, RatingAvg, RatingUser, CreatedByUser, Price };

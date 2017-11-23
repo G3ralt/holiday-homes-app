@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/G3ralt/GROUP8-SP.svg?branch=master)](https://travis-ci.org/Jegp/cphbusiness-sem3-ci)
+[![Build Status](https://travis-ci.org/G3ralt/GROUP8-SP.svg?branch=master)](https://travis-ci.org/G3ralt/GROUP8-SP)
 
 # GROUP8-SP
 Semester project of COS - Group 8
