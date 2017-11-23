@@ -41,7 +41,7 @@ export default class Places extends React.Component{
                     }
                     return (
                         <div key={place.placeName} className="row nicePlace">
-                            <Image pIMG={place.imgURL} />
+                            <Image img={place.imgURL} />
 							<PlaceName pName={place.placeName} />
                             <RatingAvg avgRating={place.rating} />
                             <RatingUser userRating={place.userRating} />
