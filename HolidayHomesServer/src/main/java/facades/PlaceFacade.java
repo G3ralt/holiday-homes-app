@@ -37,7 +37,7 @@ public class PlaceFacade {
             p.setRating(rating);
 
             if (!userName.equals("unauthorized")) { //If the user is logged in
-                int userRating = getUserRating(userName, p.getPlaceName()); // Get the user vote on this location
+                int userRating = getUserRating(userName, p.getPlaceName()); // Get the user vote on this place
                 p.setUserRating(userRating);
             }
         }
@@ -76,19 +76,22 @@ public class PlaceFacade {
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.checkForPlaceName");
         }
+        
         return true; //Return true if NAME is found
     }
 
     /*
-        This method is used for adding ratings for locations given the user and the location name.
+        This method is used for adding ratings for places given the user and the place name.
         Throws DBException if the Database refuses the creation.
      */
     public void addRatingForPlace(String placeName, int rating, String userName) throws DBException {
         try {
+            //Check if current user has already voted
             int userRating = getUserRating(userName, placeName);
             if(userRating != 0) { // If the rating is different from 0 == user has voted
                 throw new Exception();
             }
+            
             EM.getTransaction().begin();
             Query q = EM.createNativeQuery("INSERT INTO place_rating (place_name, rating, user_name) VALUES (?, ?, ?);");
             q.setParameter(1, placeName);
@@ -104,7 +107,7 @@ public class PlaceFacade {
     }
     
     /*
-        This method is used for updating ratings for place given the user and the location name.
+        This method is used for updating ratings for place given the user and the place name.
         Throws DBException if the Database refuses the creation.
      */
     public void updateRatingForPlace(String placeName, int rating, String userName) throws DBException {
@@ -124,8 +127,8 @@ public class PlaceFacade {
     }
 
     /*
-        This method is used to retrieve the rating for a specific location given its name.
-        The method is used by getAllLocations and getLocation.
+        This method is used to retrieve the rating for a specific place given its name.
+        The method is used by getAllPlaces and getPlace.
         Throws DBExceptions if there is something wrong with the Database.
      */
     private double getRatingForPlace(String placeName) throws DBException {
@@ -146,7 +149,7 @@ public class PlaceFacade {
     }
 
     /*
-        This method is used to check if the user has already voted for a specific location.
+        This method is used to check if the user has already voted for a specific place.
         Return the user`s rating or 0 if the user hasn`t voted
      */
     private int getUserRating(String userName, String placeName) throws DBException {
