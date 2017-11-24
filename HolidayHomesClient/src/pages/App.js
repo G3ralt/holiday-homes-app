@@ -14,6 +14,7 @@ import FutureImplementations from "./FutureImplementations";
 import Rentables from "./Rentables";
 import AddRentable from "./AddRentable";
 import CreatePlace from './CreatePlace';
+import CreateRentable from './CreateRentable';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
                 <Route path="/logout" component={Logout} />
                 <Route exact path="/places" component={Places} />
                 <Route path="/places/create" component={CreatePlace} />
+                <Route path="/rentables/create" component={CreateRentable} />
                 <Route path="/addplace" component={AddPlace} />
                 <Route path="/admin" component={AdminPage} />
                 <Route path="/features" component={Features} />

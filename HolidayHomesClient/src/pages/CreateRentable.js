@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class CreatePlace extends React.Component {
+export default class CreateRentable extends React.Component {
     constructor() {
         super();
         this.state = { newPlace: { placeName: "", street: "", city: "", zipCode: 0, country: "" } };
@@ -23,14 +23,20 @@ export default class CreatePlace extends React.Component {
         return (
           <div className="container">
             <form className="form-signin" onSubmit={this.handleSubmit}>
-              <h3 className="form-signin-heading">Create a NicePlace</h3>
+              <h3 className="form-signin-heading">Create Rentable</h3>
               <p>Please fill in the necessary information:</p>
-              <label htmlFor="placeName" className="sr-only">Place Name</label>
+              <label htmlFor="placeName" className="sr-only">Rentable Name</label>
               <input type="text" value={this.state.placeName} onChange={this.onChange} id="placeName" className="form-control" placeholder="Give it a catchy name ;)" required autoFocus />
-              <label htmlFor="zip" className="sr-only">GPS Latitude</label>
-              <input type="text" value={this.state.zipCode} onChange={this.onChange} id="zip" className="form-control" placeholder="GPS Latitude" required />
-              <label htmlFor="coutry" className="sr-only">GPS Longtitude</label>
-              <input type="text" value={this.state.country} onChange={this.onChange} id="coutry" className="form-control" placeholder="GPS Longtitude" required />
+              <label htmlFor="street" className="sr-only">Street</label>
+              <input type="text" value={this.state.street} onChange={this.onChange} id="street" className="form-control" placeholder="Street" required />
+              <label htmlFor="city" className="sr-only">City</label>
+              <input type="text" value={this.state.city} onChange={this.onChange} id="city" className="form-control" placeholder="City" required />
+              <label htmlFor="zip" className="sr-only">ZIP Code</label>
+              <input type="text" value={this.state.zipCode} onChange={this.onChange} id="zip" className="form-control" placeholder="ZIP Code (e.g. 2810)" required />
+              <label htmlFor="coutry" className="sr-only">Coutry</label>
+              <input type="text" value={this.state.country} onChange={this.onChange} id="coutry" className="form-control" placeholder="Coutry" required />
+              <label htmlFor="coutry" className="sr-only">Price</label>
+              <input type="text" value={this.state.country} onChange={this.onChange} id="coutry" className="form-control" placeholder="Price" required />
               <label htmlFor="coutry" className="sr-only">Description</label>
               <input type="text" value={this.state.country} onChange={this.onChange} id="coutry" className="form-control" placeholder="Description" required />
               <hr />
