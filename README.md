@@ -24,7 +24,7 @@ Monday: 9:00-17:00
 
 Tuesday: 9:00-17:00
 
-Wednesday: --
+Wednesday: 9:00-whenever possible.
 
 Thursday:  --
 
