@@ -71,7 +71,7 @@ public class Rentable implements Serializable {
     @Expose
     @JoinColumn(name = "admin_name", referencedColumnName = "USER_NAME")
     @ManyToOne
-    private User admin;
+    private User admin; //Admin who added the rentable
 
     @Transient
     @Expose

@@ -1,22 +1,11 @@
 package rest;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import javax.servlet.ServletContext;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import javax.ws.rs.*;
+import javax.ws.rs.core.*;
 import org.glassfish.jersey.media.multipart.*;
 import static rest.JSONConverter.getJSONfromObject;
 
@@ -25,8 +14,8 @@ public class ImgUploadResource {
 
     private final ArrayList<String> TYPES = new ArrayList(Arrays.asList(".jpg", ".jpeg", ".png"));
     private final String s = File.separator;
-    private String imagesFolder = "/var/lib/tomcat8/webapps/uploads/";
-    private String host = "www.g3ralt.club";
+    private String imagesFolder = "/var/lib/tomcat8/webapps/uploads/"; //This is the expected location for the images
+    private String host = "www.g3ralt.club"; //Write here the droplet domain
 
     @Context
     ServletContext context;
@@ -37,10 +26,13 @@ public class ImgUploadResource {
     public Response uploadFile(@DefaultValue("") @FormDataParam("file") InputStream file,
             @FormDataParam("file") FormDataContentDisposition fileDisposition,
             @FormDataParam("locationName") String locationName) {
+        
         try {
+            //Get the location dynamically
             String contextPath = context.getRealPath("/index.html");
-            int index = contextPath.indexOf("CA3_Server");
+            int index = contextPath.indexOf("HolidayHomesServer");
             imagesFolder = contextPath.substring(0, index).concat("uploads".concat(s));
+            
             //Check if image
             String fileName = fileDisposition.getFileName();
             String fileType = fileName.substring(fileName.lastIndexOf("."), fileName.length());
@@ -49,20 +41,13 @@ public class ImgUploadResource {
             }
 
             //Save the file
-            String imgURL = saveFile(file, locationName, fileType);
-            return Response.ok("{\"imgURL:\" \"" + imgURL + "\"}").build();
-
+            //String imgURL = saveFile(file, locationName, fileType);
+            //return Response.ok("{\"imgURL\": \"" + imgURL + "\"}").build();
+            return Response.ok("{\"imgURL\": \"https://wyncode.co/wp-content/uploads/2014/08/31.jpg\"}").build(); //DELETE THIS and uncomment 52,53
         } catch (Exception e) {
             return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable
         }
     }
-
-    @GET
-    public Response get() throws IOException {
-        return Response.status(200).entity("GET IS WORKING!").build();
-    }
-
-    
 
     private String saveFile(InputStream is, String fileName, String fileType) throws IOException {
         String location = imagesFolder + fileName + fileType;
