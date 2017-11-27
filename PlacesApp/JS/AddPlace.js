@@ -24,20 +24,23 @@ class AddPlace extends React.Component{
 		},(error) => this.setState({ err: error.message }),
 		{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
 	  );
-	  this.setState({placeImg: "https://loremflickr.com/300/300/city"})
-	}
+	  this.setState({
+	  	placeImg: "https://loremflickr.com/300/300/city"
+	  })
+	  }
 
-	addPlace = (cb) => {
-		alert
-		this._errorMessage = "";
-		this._messageFromServer = "";
-		let resFromFirstPromise = null; //Pass on response the "second" promise so we can read errors from server
-		var data = "placeName:" + this.state.placeName + ", description:" + this.state.placeDesc + ", imgURL:" + this.state.placeImg + ", gpsLat:" + this.state.gpsLat + "gpsLong:"+this.state.gpsLong
-		const options = fetchHelper.makeOptions("POST", false, data);
-		fetch(URL + "api/places/create", options)
-			.then((res) => {
-				resFromFirstPromise = res;
-				return res.json();
+	  addPlace = (cb) => {
+	  		this._errorMessage = "";
+	  		this._messageFromServer = "";
+	  		let resFromFirstPromise = null; //Pass on response the "second" promise so we can read errors from server
+	  		var data = "placeName:" + this.state.placeName + ", description:" + this.state.placeDesc + ", imgURL:" + this.state.placeImg +
+	  			", gpsLat:" + this.state.gpsLat + "gpsLong:" + this.state.gpsLong + ", user{ username:" + this.state.placeUser + "}";
+	  		console.log(data);
+	  		const options = fetchHelper.makeOptions("POST", false, data);
+	  		fetch(URL + "api/places/create", options)
+	  			.then((res) => {
+	  					resFromFirstPromise = res;
+	  					return res.json();
 			}).then((data) => {
 				errorChecker(resFromFirstPromise, data);
 				if (cb) {
