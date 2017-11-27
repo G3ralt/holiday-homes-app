@@ -42,7 +42,7 @@ class Rentables extends Component{
 							<RentableName rName={rentable.rentableName} />
 							<CreatedByUser uName={rentable.admin.username} />
                             <RatingAvg avgRating={rentable.rating} />
-                            {auth.isloggedIn && (<RatingUser userRating={rentable.userRating} />) }
+                            {auth.isloggedIn && auth.isUser && (<RatingUser userRating={rentable.userRating} />) }
                             <Address street={rentable.street} city={rentable.city}  zipCode={rentable.zipcode} country={rentable.country}/> {/* Passed like address object */}
                             <Price rPrice={rentable.price} />
                             <Description desc={rentable.description} />
