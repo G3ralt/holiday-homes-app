@@ -4,7 +4,7 @@ import fetchHelper, {errorChecker} from "./fetchHelpers";
 const URL = require("../package.json").serverURL;
 
 class Places extends React.Component{
-	static navigationOptions = {title:"All places in Database"};
+	static navigationOptions = {title:"All the places!"};
 
 
 	constructor(){
@@ -21,26 +21,30 @@ class Places extends React.Component{
 	}
 
 	getPlaces = (cb) => {
-        this._errorMessage = "";
+		this._errorMessage = "";
 		this._messageFromServer = "";
-        let resFromFirstPromise = null;  //Pass on response the "second" promise so we can read errors from server
-        const options = fetchHelper.makeOptions("GET", true);
-        fetch(URL + "api/places", options)
-                .then((res) => {
-                    resFromFirstPromise = res;
-                    return res.json();
-                }).then((data) => {
-            errorChecker(resFromFirstPromise, data);
-            if (cb) {
-                cb(null, data)
-            }
-        }).catch(err => {
-            console.log(JSON.stringify(err))
-            if (cb) {
-                cb({err: fetchHelper.addJustErrorMessage(err)})
-            }
-        })
-    }
+		let resFromFirstPromise = null; //Pass on response the "second" promise so we can read errors from server
+		const options = fetchHelper.makeOptions("POST", false);
+		console.log(options);
+		fetch(URL + "api/places/all", options)
+			.then((res) => {
+				resFromFirstPromise = res;
+				console.log(res.json());
+				return res.json();
+			}).then((data) => {
+				errorChecker(resFromFirstPromise, data);
+				if (cb) {
+					cb(null, data)
+				}
+			}).catch(err => {
+				console.log(JSON.stringify(err))
+				if (cb) {
+					cb({
+						err: err
+					})
+				}
+			})
+	}
 
 	mapData = (a) => {
 		if(a === ""){
@@ -53,22 +57,20 @@ class Places extends React.Component{
 	}
 
 	_renderItem = ({item}) => (
-		<ListItem
-		roundAvatar
-		title={item.placeName}
-		avatar={{uri : item.imgURL}}
-		keyExtractor={item => item.placeName}
-		/>
-		//<Text style={styles.item}>{item.placeName}, {item.gpsLat}, {item.gpsLong}, {item.description}, {item.rating}</Text>
+	//	<ListItem
+	//	roundAvatar
+	//	title={item.placeName}
+	//	subtitle={`${item.gpsLat} ${item.gpsLong}`}
+	//	avatar={{uri : item.imgURL}}
+	//	keyExtractor={item => item.placeName}
+	//	/>
+	<Text style={styles.item}>{item.placeName}, {item.gpsLat}, {item.gpsLong}, {item.description}, {item.rating}</Text>
 	);
 	
 	render(){
-		
 		var rows = this.mapData(this.state.data);
-
 		return(
 			<View style={styles.container}>
-			<Text style={styles.header}>City, Zip, Street, Gps, Desc, Rating</Text>
 			<FlatList
 			data = {rows}
 			renderItem={this._renderItem}
