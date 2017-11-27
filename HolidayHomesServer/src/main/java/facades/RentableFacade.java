@@ -126,4 +126,20 @@ public class RentableFacade {
             throw new DBException("facades.RentableFacade.hasUserVoted");
         }
     }
+    
+    public void updateRatingForRentable(String rentableName, int rating, String userName) throws DBException {
+        try {
+            EM.getTransaction().begin();
+            Query q = EM.createNativeQuery("UPDATE rentable_rating SET rating = ? WHERE user_name = ? AND rentable_name = ?");
+            q.setParameter(1, rating);
+            q.setParameter(2, userName);
+            q.setParameter(3, rentableName);
+            q.executeUpdate();
+            EM.getTransaction().commit();
+
+        } catch (Exception e) {
+            throw new DBException("facades.RentableFacade.updateRatingForRentable");
+        }
+
+    }
 }
