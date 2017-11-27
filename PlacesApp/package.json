@@ -1,8 +1,8 @@
 {
-  "name": "CA3App",
+  "name": "Group8SP-App",
   "version": "0.1.0",
   "private": true,
-  "serverURL": "https://breindal.me/CA3/",
+  "serverURL": "https://breindal.me/Group8SP/",
   "devDependencies": {
     "react-native-scripts": "1.5.0",
     "jest-expo": "^21.0.2",

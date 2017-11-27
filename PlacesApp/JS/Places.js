@@ -53,7 +53,9 @@ class Places extends React.Component{
 	}
 
 	render(){
+		
 		var rows = this.mapData(this.state.data);
+
 		return(
 			<View style={styles.container}>
 			<Text style={styles.header}>City, Zip, Street, Gps, Desc, Rating</Text>

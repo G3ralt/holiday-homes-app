@@ -14,16 +14,16 @@ const Touchable = (props) => (
 
 
 class HomeScreen extends React.Component {
-  static navigationOptions = { title: 'CA3 - Placr' };
+  static navigationOptions = { title: 'CA3 - Places' };
   render() {
     const { navigate } = this.props.navigation;
     return (
       	<ScrollView >
 	  	<Text style={{ textAlign: "center", fontSize: 20 }}>Placr™</Text>
-      <Text style={{ textAlign: "center", fontSize: 20 }}>by Kasper Ravn Breindal</Text>
+      <Text style={{ textAlign: "center", fontSize: 20 }}>by Kasper, Anton, Andrian and Alexander</Text>
 		  <Touchable onPress={() => navigate('documentation')} title="Documentation" />
       <Touchable onPress={() => navigate("places")} title="Places" />
-      <Text style={{ textAlign: "center", fontSize: 16 }}>http://github.com/kasperonfire/CA3</Text>
+      <Text style={{ textAlign: "center", fontSize: 16 }}>https://github.com/G3ralt/GROUP8-SP</Text>
       	</ScrollView>
     )
   }
