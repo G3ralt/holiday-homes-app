@@ -44,7 +44,7 @@ export default class Places extends React.Component{
                             <Image img={place.imgURL} />
 							<PlaceName pName={place.placeName} />
                             <RatingAvg avgRating={place.rating} />
-                            { auth.isloggedIn && (<RatingUser userRating={place.userRating} />) }
+                            { auth.isloggedIn && auth.isUser && (<RatingUser userRating={place.userRating} />) }
                             <CreatedByUser uName={this.state.createdByUser} />
                             <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
                             <Description desc={place.description} />
