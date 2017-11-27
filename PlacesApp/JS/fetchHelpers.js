@@ -7,15 +7,20 @@ export default {
    */
   makeOptions: function(method, authenticate, data) {
     let headers = {
-      "Content-type": "Application/json"
+	  "Content-type": "Application/json",
+	  "Accept": "Application"
     };
     let options = {
       method,
       headers
     }
     if (data !== undefined) {
-      options.body = JSON.stringify(data);
-    }
+	  options.body = JSON.stringify(data);
+	  console.log(options.body);
+	} else{
+		options.body = "username: unauthorized";
+	}
+	
     return options;
   },
 
