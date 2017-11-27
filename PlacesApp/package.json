@@ -2,7 +2,7 @@
   "name": "PlacesApp",
   "version": "0.1.0",
   "private": true,
-  "serverURL": "https://breindal.me/Group8SP/",
+  "serverURL": "https://breindal.me/HolidayHomesServer/",
   "devDependencies": {
     "react-native-scripts": "1.5.0",
     "jest-expo": "^21.0.2",

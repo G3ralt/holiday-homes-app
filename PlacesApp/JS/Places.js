@@ -52,6 +52,16 @@ class Places extends React.Component{
 		return rows;
 	}
 
+	_renderItem = ({item}) => (
+		<ListItem
+		roundAvatar
+		title={item.placeName}
+		avatar={{uri : item.imgURL}}
+		keyExtractor={item => item.placeName}
+		/>
+		//<Text style={styles.item}>{item.placeName}, {item.gpsLat}, {item.gpsLong}, {item.description}, {item.rating}</Text>
+	);
+	
 	render(){
 		
 		var rows = this.mapData(this.state.data);
@@ -61,9 +71,7 @@ class Places extends React.Component{
 			<Text style={styles.header}>City, Zip, Street, Gps, Desc, Rating</Text>
 			<FlatList
 			data = {rows}
-			renderItem={({item}) => 
-			<Text style={styles.item}>{item.city}, {item.zip}, {item.street}, {item.gps}, {item.description}, {item.rating}</Text>
-		}
+			renderItem={this._renderItem}
 			/>
 			</View>
 		)
