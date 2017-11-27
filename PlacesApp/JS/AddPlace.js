@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, FlatList, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { Text, View, FlatList, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
 import fetchHelper, {errorChecker} from "./fetchHelpers";
 import MapView from 'react-native-maps';
 const URL = require("../package.json").serverURL;
@@ -9,8 +9,9 @@ class AddPlace extends React.Component{
 
 	constructor(){
 		super();
-		this.state = {data: "", err:"", placeName:"", gpsLat:0, gpsLong:0, placeDesc:""};
+		this.state = {data: "", err:"", placeName:"", gpsLat:0, gpsLong:0, placeDesc:"", placeImg:"https://loremflickr.com/300/300/city", placeUser:"user"};
 	}
+
 
 	componentDidMount(){
 		navigator.geolocation.getCurrentPosition(
@@ -23,35 +24,55 @@ class AddPlace extends React.Component{
 		},(error) => this.setState({ err: error.message }),
 		{ enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
 	  );
+	  this.setState({placeImg: "https://loremflickr.com/300/300/city"})
 	}
 
 	addPlace = (cb) => {
 		alert
-        this._errorMessage = "";
+		this._errorMessage = "";
 		this._messageFromServer = "";
-        let resFromFirstPromise = null;  //Pass on response the "second" promise so we can read errors from server
-        const options = fetchHelper.makeOptions("POST", true);
-        fetch(URL + "api/places/all", options)
-                .then((res) => {
-                    resFromFirstPromise = res;
-                    return res.json();
-                }).then((data) => {
-            errorChecker(resFromFirstPromise, data);
-            if (cb) {
-                cb(null, data)
-            }
-        }).catch(err => {
-            console.log(JSON.stringify(err))
-            if (cb) {
-                cb({err: fetchHelper.addJustErrorMessage(err)})
-            }
-        })
+		let resFromFirstPromise = null; //Pass on response the "second" promise so we can read errors from server
+		var data = "placeName:" + this.state.placeName + ", description:" + this.state.placeDesc + ", imgURL:" + this.state.placeImg + ", gpsLat:" + this.state.gpsLat + "gpsLong:"+this.state.gpsLong
+		const options = fetchHelper.makeOptions("POST", false, data);
+		fetch(URL + "api/places/create", options)
+			.then((res) => {
+				resFromFirstPromise = res;
+				return res.json();
+			}).then((data) => {
+				errorChecker(resFromFirstPromise, data);
+				if (cb) {
+					cb(null, data)
+				}
+			}).catch(err => {
+				console.log(JSON.stringify(err))
+				if (cb) {
+					cb({
+						err: fetchHelper.addJustErrorMessage(err)
+					})
+				}
+			})
 	}
+
+	/*{
+	"placeName": "Test Place1",
+	"description": "description",
+	"imgURL": "URL",
+	"gpsLat": 34.25,
+	"gpsLong": 45.65,
+	"user": {
+		"username": "user"
+		
+	}
+}
+*/
 	
 	render(){
 		return(
 			<View style={styles.container}>
-
+			<Image
+			style={{width:300, height:300}}
+				source={{uri: this.state.placeImg}}
+			/>
 			<Text style={styles.inputHeader}>Place Name:</Text>
 			<TextInput
 			style={styles.inputField}
