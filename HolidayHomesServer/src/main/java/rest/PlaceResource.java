@@ -111,11 +111,11 @@ public class PlaceResource {
         try {
             //Get the information from the request
             JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
-            String placeName = json.get("placeName").getAsString();
+            String rentableName = json.get("rentableName").getAsString();
             String userName = json.get("username").getAsString();
             int rating = json.get("rating").getAsInt();
 
-            FF.getPlaceFacade().updateRatingForPlace(placeName, rating, userName);
+            FF.getPlaceFacade().updateRatingForPlace(rentableName, rating, userName);
 
             return Response.status(201).entity(getJSONfromObject("Rating update!")).build();
 
