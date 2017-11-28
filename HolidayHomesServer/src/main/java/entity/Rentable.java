@@ -80,11 +80,7 @@ public class Rentable implements Serializable {
     public Rentable() {
     }
 
-    public Rentable(String rentableName) {
-        this.rentableName = rentableName;
-    }
-
-    public Rentable(String rentableName, String street, String city, int zipcode, String country, double price, String imgURL, String description) {
+    public Rentable(String rentableName, String street, String city, int zipcode, String country, double price, String imgURL, String description, User admin) {
         this.rentableName = rentableName;
         this.street = street;
         this.city = city;
@@ -93,6 +89,7 @@ public class Rentable implements Serializable {
         this.price = price;
         this.imgURL = imgURL;
         this.description = description;
+        this.admin = admin;
     }
 
     public String getRentableName() {
