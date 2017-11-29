@@ -45,7 +45,7 @@ class Rentables extends Component{
                             <RatingAvg avgRating={rentable.rating} />
                             {auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={rentable.userRating} rName={rentable.rentableName} currentUser={this.state.userItself} />) }
                             <Address street={rentable.street} city={rentable.city}  zipCode={rentable.zipcode} country={rentable.country}/> {/* Passed like address object */}
-                            <Price rPrice={rentable.price} />
+                            <Price rPrice={rentable.price} weeks={rentable.availableWeeks} rName={rentable.rentableName} uName={auth.username} />
                             <Description desc={rentable.description} />
                         </div>
                     )
