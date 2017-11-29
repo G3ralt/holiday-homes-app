@@ -1,10 +1,14 @@
 import React from 'react';
+const URL = require("../../package.json").serverURL;
+
 
 export default class CreatePlace extends React.Component {
     constructor() {
         super();
         this.state = { newPlace: { placeName: "", street: "", city: "", zipCode: 0, country: "" } };
       }
+
+      
     
       componentWillMount() {
     
@@ -16,6 +20,37 @@ export default class CreatePlace extends React.Component {
         let newPlace = this.state.newPlace;
         newPlace[propertyName] = value;
         this.setState({ newPlace });
+      }
+
+      handleSubmit = (event) => {
+        const options = {
+          method: "POST",
+          body: JSON.stringify(this.state.userItself),
+          headers: { "Content-Type": "application/json" }
+      }
+        event.preventDefault();
+        let placeName = this.state.placeName;
+        console.log(placeName);
+        let status;
+        fetch(URL + "api/checkName/" + placeName)
+        .then(res => {
+          status = res.status;
+          console.log(status);
+        }).catch(error => {
+          console.log(error);
+        })
+        switch(status) {
+          case 202: //placeName is free
+            this.imgUpload; //Next fetch
+            break;
+          case 409: //placeName is already used
+            break;
+          case 503: //Something went wrong
+        }
+      }
+
+      imgUpload = () => {
+        
       }
     
     
