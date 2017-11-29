@@ -47,6 +47,23 @@ public class RentableFacade {
         
         return toReturn;
     }
+    
+    public boolean checkForRentableName(String rentableName) throws DBException {
+        try {
+            EM.getTransaction().begin();
+            Query q = EM.createQuery("SELECT r FROM Rentable r WHERE r.rentableName = :rentableName");
+            q.setParameter("rentableName", rentableName);
+            Rentable r = (Rentable) q.getSingleResult();
+            
+        } catch (NoResultException e) {
+            return false; //Return false = NON EXISTING NAME
+            
+        } catch (Exception e) {
+            throw new DBException("facades.RentableFacade.checkForRentableName");
+        }
+        
+        return true; //Return true if NAME is found
+    }
 
     //Creates new location in the database, returns null if failed
     public void createNewRentable(Rentable rentable) throws DBException {
