@@ -6,11 +6,11 @@ class TopMenu extends Component {
 
   constructor(props){
     super(props);
-    this.state = {loggedIn: auth.loggedIn, userName:auth.userName,isUser:false,isAdmin:false}
+    this.state = {loggedIn: auth.loggedIn, username:auth.username,isUser:false,isAdmin:false}
   }
 
-  loginStatus = (status,userName,isUser,isAdmin) =>{
-    this.setState({loggedIn: status, userName,isUser,isAdmin});
+  loginStatus = (status,username,isUser,isAdmin) =>{
+    this.setState({loggedIn: status, username,isUser,isAdmin});
   }
 
   componentDidMount(){
@@ -19,8 +19,7 @@ class TopMenu extends Component {
 
   render() {
 
-    const logInStatus = this.state.loggedIn ? "Logged in as: " + this.state.userName : "";
-    //console.log("RENDERING - REMOVE ME",JSON.stringify(this.state));
+    const logInStatus = this.state.loggedIn ? "Logged in as: " + this.state.username : "";
     return (
       <div>
         <nav className="navbar navbar-default" >
@@ -35,7 +34,7 @@ class TopMenu extends Component {
 			  <li><Link to="/futureimplementations">Future Implementations</Link></li>
 			  <li><Link to="/whodidwhat">Who Did What</Link></li>
 			  <li><Link to="/downloadapp">App Download</Link></li>
-              {this.state.isUser  || this.state.isAdmin && (<li><Link to="/addplace">Add Place</Link></li>)}
+              {(this.state.isUser  || this.state.isAdmin) && (<li><Link to="/addplace">Add Place</Link></li>)}
               {this.state.isAdmin && (<li><Link to="/addrentable">Add Rentable</Link></li>)}
               {this.state.isAdmin && (<li><Link to="/admin">Page for Admins </Link></li>)}
             </ul>

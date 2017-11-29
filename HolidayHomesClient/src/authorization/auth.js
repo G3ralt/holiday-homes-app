@@ -1,5 +1,5 @@
 import jwtDecode from "jwt-decode";
-import fetchHelper, { errorChecker } from "../facades/fetchHelpers"
+import fetchHelper, { errorChecker } from "../facades/fetchHelpers";
 
 const URL = require("../../package.json").serverURL;
 
@@ -8,7 +8,7 @@ class AuthenticationHandler {
   constructor() {
     this._token = null;  //Keps users logged in, even after a refresh of the page
     //this.failedLogin = false;
-    this._userName = "";
+    this._username = "";
     this._isAdmin = false;
     this._isUser = false;
     this._errorMessage = "";
@@ -25,8 +25,8 @@ class AuthenticationHandler {
   get isAdmin() {
     return this._isAdmin;
   }
-  get userName() {
-    return this._userName;
+  get username() {
+    return this._username;
   }
 
   setLoginObserver = (observer) => {
@@ -45,7 +45,7 @@ class AuthenticationHandler {
     console.log("Initializing Data From Token");
     this._token = sessionStorage.token;
     var decoded = jwtDecode(this._token);
-    this._userName = decoded.username;
+    this._username = decoded.username;
     this._isAdmin = false;
     this._isUser = false;
     decoded.roles.forEach(function (role) {
@@ -62,12 +62,12 @@ class AuthenticationHandler {
   logout = () => {
     delete sessionStorage.token;
     this._token = null;
-    this._userName = "";
+    this._username = "";
     this._isAdmin = false;
     this._isUser = false;
     this._errorMessage = "";
     if (this._loginObserver) {
-      this._loginObserver(false, this._userName,this._isUser,this._isAdmin);
+      this._loginObserver(false, this._username,this._isUser,this._isAdmin);
     }
   }
 
@@ -75,7 +75,7 @@ class AuthenticationHandler {
     if (cb) {
       cb(null, true);
       if (this._loginObserver) {
-        this._loginObserver(true, this._userName,this._isUser,this._isAdmin);
+        this._loginObserver(true, this._username,this._isUser,this._isAdmin);
       }
       return;
     }

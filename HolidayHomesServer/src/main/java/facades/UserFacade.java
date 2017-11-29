@@ -43,11 +43,11 @@ public class UserFacade implements IUserFacade {
   Return the Roles if users could be authenticated, otherwise null
      */
     @Override
-    public List<String> authenticateUser(String userName, String password) {
+    public List<String> authenticateUser(String username, String password) {
         try {
-            System.out.println("User Before:" + userName + ", " + password);
-            IUser user = getUserByUserId(userName);
-            System.out.println("User After:" + user.getUserName() + ", " + user.getPasswordHash());
+            System.out.println("User Before:" + username + ", " + password);
+            IUser user = getUserByUserId(username);
+            System.out.println("User After:" + user.getUsername() + ", " + user.getPasswordHash());
             return user != null && PasswordStorage.verifyPassword(password, user.getPasswordHash()) ? user.getRolesAsStrings() : null;
         } catch (PasswordStorage.CannotPerformOperationException | PasswordStorage.InvalidHashException ex) {
             throw new NotAuthorizedException("Invalid username or password", Response.Status.FORBIDDEN);

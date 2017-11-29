@@ -22,8 +22,7 @@ class AdminPage extends Component {
 }
 
   mapData = (a) => {
-	console.log(a);
-	var html = ""
+	/*console.log(a);*/
 	if(a === null){
 		return "";
 	}

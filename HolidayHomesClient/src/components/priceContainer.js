@@ -3,8 +3,8 @@ import React from 'react';
 const Price = (props) => {
     return (
         <div className="col-md-4 rentablePrice">
-            <h3 class="pricePrice">Price("{props.rPrice}")</h3>
-            <button type="button" class="btn btn-danger btn-lg rentButton">RENT</button>
+            <h4 className="pricePrice">Price("{props.rPrice}")</h4>
+            <button type="button" className="btn btn-danger btn-lg rentButton">RENT</button>
             <br/>
             <p>Availability:</p>
             <select>

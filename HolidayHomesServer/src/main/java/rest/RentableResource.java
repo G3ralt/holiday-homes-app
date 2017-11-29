@@ -89,5 +89,25 @@ public class RentableResource {
             return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
         }
     }
+    
+    @Path("/updateRating")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateNewRatingForRentable(String jsonString) {
+        try {
+            //Get the information from the request
+            JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
+            String rentableName = json.get("rentableName").getAsString();
+            String userName = json.get("username").getAsString();
+            int rating = json.get("rating").getAsInt();
 
+            FF.getRentableFacade().updateRatingForRentable(rentableName, rating, userName);
+
+            return Response.status(201).entity(getJSONfromObject("Rating updated!")).build();
+
+        } catch (Exception e) {
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
+        }
+    }
 }

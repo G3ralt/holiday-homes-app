@@ -79,7 +79,7 @@ public class User implements IUser, Serializable {
     }
 
     @Override
-    public String getUserName() {
+    public String getUsername() {
         return username;
     }
 

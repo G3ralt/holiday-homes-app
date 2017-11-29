@@ -1,6 +1,5 @@
 import React from 'react';
-import { Address, Description, GPSinfo, Image, PlaceName, RatingAvg, RatingUser, CreatedByUser } from '../components/importContainers';
-import placesData from "../facades/placesFacade";
+import { Description, GPSinfo, Image, PlaceName, RatingAvg, CreatedByUser, Zvezdichka } from '../components/importContainers';
 import auth from '../authorization/auth';
 const URL = require("../../package.json").serverURL;
 
@@ -17,13 +16,15 @@ export default class Places extends React.Component{
 
 	getAllPlaces = (cb) => {
         let userItself = this.state.userItself;
-        console.log("Is the user logged in? : ", auth.isloggedIn);
+        /*console.log("Is the user logged in? : ", auth.isloggedIn);*/
         if (auth.isloggedIn) {
-            userItself.username = auth.userName;
+            userItself.username = auth.username;
             this.setState({ userItself: userItself });
         }
-        console.log("USER NAME from auth: ", auth.userName);
-        console.log("User Name from State: ", this.state.userItself.username);
+        /*
+        console.log("Username from auth: ", auth.username);
+        console.log("Username from State: ", this.state.userItself.username);
+        */
 
         const options = {
             method: "POST",
@@ -43,8 +44,8 @@ export default class Places extends React.Component{
                         <div key={place.placeName} className="row nicePlace">
                             <Image img={place.imgURL} />
 							<PlaceName pName={place.placeName} />
-                            <RatingAvg avgRating={place.rating} />
-                            { auth.isloggedIn && auth.isUser && (<RatingUser userRating={place.userRating} />) }
+                            <RatingAvg avgRating={place.rating} pName={place.placeName} />
+                            { auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={place.userRating} pName={place.placeName} currentUser={this.state.userItself}/>) }
                             <CreatedByUser uName={this.state.createdByUser} />
                             <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
                             <Description desc={place.description} />

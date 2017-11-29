@@ -111,7 +111,7 @@ public class PlaceResource {
         try {
             //Get the information from the request
             JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
-            String rentableName = json.get("rentableName").getAsString();
+            String rentableName = json.get("placeName").getAsString();
             String userName = json.get("username").getAsString();
             int rating = json.get("rating").getAsInt();
 

@@ -1,6 +1,5 @@
 import React, {Component} from "react";
-import { Address, Description, GPSinfo, Image, RentableName, RatingAvg, RatingUser, Price, CreatedByUser } from '../components/importContainers';
-import placesData from "../facades/placesFacade";
+import { Address, Description, Image, RentableName, RatingAvg, Price, CreatedByUser, Zvezdichka } from '../components/importContainers';
 import auth from '../authorization/auth';
 const URL = require("../../package.json").serverURL;
 
@@ -17,13 +16,15 @@ class Rentables extends Component{
 
 	getAllPlaces = (cb) => {
         let userItself = this.state.userItself;
-        console.log("Is the user logged in? : ", auth.isloggedIn);
+        /*console.log("Is the user logged in? : ", auth.isloggedIn);*/
         if (auth.isloggedIn) {
-            userItself.username = auth.userName;
+            userItself.username = auth.username;
             this.setState({ userItself: userItself });
         }
-        console.log("USER NAME from auth: ", auth.userName);
+        /*
+        console.log("USER NAME from auth: ", auth.username);
         console.log("User Name from State: ", this.state.userItself.username);
+        */
 
         const options = {
             method: "POST",
@@ -42,7 +43,7 @@ class Rentables extends Component{
 							<RentableName rName={rentable.rentableName} />
 							<CreatedByUser uName={rentable.admin.username} />
                             <RatingAvg avgRating={rentable.rating} />
-                            {auth.isloggedIn && auth.isUser && (<RatingUser userRating={rentable.userRating} />) }
+                            {auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={rentable.userRating} rName={rentable.rentableName} currentUser={this.state.userItself} />) }
                             <Address street={rentable.street} city={rentable.city}  zipCode={rentable.zipcode} country={rentable.country}/> {/* Passed like address object */}
                             <Price rPrice={rentable.price} />
                             <Description desc={rentable.description} />
