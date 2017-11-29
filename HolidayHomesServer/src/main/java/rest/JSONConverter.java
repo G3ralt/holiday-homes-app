@@ -24,5 +24,7 @@ public class JSONConverter {
         return GSON.fromJson(json, User.class);
     }
     
-    
+    public static Booking getBookingFromJSON(String json) {
+        return GSON.fromJson(json, Booking.class);
+    }
 }

@@ -26,6 +26,7 @@ public class ApplicationConfig extends Application {
         resources.add(httpErrors.GenericExceptionMapper.class);
         resources.add(httpErrors.NotFoundExceptionMapper.class);
         resources.add(rest.AdminResource.class);
+        resources.add(rest.BookingResource.class);
         resources.add(rest.ImgUploadResource.class);
         resources.add(rest.Login.class);
         resources.add(rest.PlaceResource.class);

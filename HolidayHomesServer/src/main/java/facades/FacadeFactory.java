@@ -10,10 +10,19 @@ public class FacadeFactory {
     private UserFacade userFacade;
     private PlaceFacade placeFacade;
     private RentableFacade rentableFacade;
+    private BookingFacade bookingFacade;
 
     public FacadeFactory() {
         this.EMF = Persistence.createEntityManagerFactory("pu_development");
         this.EM = EMF.createEntityManager();
+    }
+
+    public BookingFacade getBookingFacade() {
+        return bookingFacade;
+    }
+
+    public void setBookingFacade() {
+        this.bookingFacade = new BookingFacade(EM);
     }
 
     public UserFacade getUserFacade() {
@@ -22,11 +31,6 @@ public class FacadeFactory {
 
     public void setUserFacade() {
         this.userFacade = new UserFacade(EM);
-    }
-    
-    public void close() {
-        this.EM.close();
-        this.EMF.close();
     }
     
     public PlaceFacade getPlaceFacade() {
@@ -45,5 +49,9 @@ public class FacadeFactory {
         this.rentableFacade = new RentableFacade(EM);
     }
     
+     public void close() {
+        this.EM.close();
+        this.EMF.close();
+    }
     
 }

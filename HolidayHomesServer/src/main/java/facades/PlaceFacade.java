@@ -164,7 +164,7 @@ public class PlaceFacade {
             return 0; //User hasn`t rated the place
 
         } catch (Exception e) {
-            throw new DBException("facades.PlaceFacade.hasUserVoted");
+            throw new DBException("facades.PlaceFacade.getUserRating");
         }
     }
 }
