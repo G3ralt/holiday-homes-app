@@ -76,6 +76,10 @@ public class Rentable implements Serializable {
     @Transient
     @Expose
     private int userRating; //Current user`s rating
+    
+    @Transient
+    @Expose
+    private Collection<String> availableWeeks;
 
     public Rentable() {
     }
@@ -90,6 +94,22 @@ public class Rentable implements Serializable {
         this.imgURL = imgURL;
         this.description = description;
         this.admin = admin;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
+    public Collection<String> getAvailableWeeks() {
+        return availableWeeks;
+    }
+
+    public void setAvailableWeeks(Collection<String> availableWeeks) {
+        this.availableWeeks = availableWeeks;
     }
 
     public String getRentableName() {
