@@ -12,7 +12,6 @@ import javax.ws.rs.core.Response;
 import static rest.JSONConverter.*;
 
 
-//ANTON IS WORKING ON THIS. NOT DONE.
 @Path("rentables")
 public class RentableResource {
 
@@ -69,6 +68,23 @@ public class RentableResource {
         }
     }
 
+    @Path("/checkName/{placeName}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response checkPlaceName(@PathParam("rentableName") String rentableName) {
+        try {
+            boolean existing = FF.getRentableFacade().checkForRentableName(rentableName);
+            
+            return existing ? Response.status(409).build() : Response.status(202).build(); //If placeName is used - 409, otherwise 202
+
+        } catch (Exception e) {
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable if something is wrong
+
+        } finally {
+            FF.close();
+        }
+    }
+    
     @Path("/addRating")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -84,6 +100,27 @@ public class RentableResource {
             FF.getPlaceFacade().addRatingForPlace(placeName, rating, userName);
 
             return Response.status(201).entity(getJSONfromObject("Rating added!")).build();
+
+        } catch (Exception e) {
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
+        }
+    }
+    
+    @Path("/updateRating")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateNewRatingForRentable(String jsonString) {
+        try {
+            //Get the information from the request
+            JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
+            String placeName = json.get("rentableName").getAsString();
+            String userName = json.get("username").getAsString();
+            int rating = json.get("rating").getAsInt();
+
+            FF.getPlaceFacade().updateRatingForPlace(placeName, rating, userName);
+
+            return Response.status(201).entity(getJSONfromObject("Rating update!")).build();
 
         } catch (Exception e) {
             return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
