@@ -54,23 +54,18 @@ public class Place implements Serializable {
     @Transient
     @Expose
     private int userRating; //Current user`s rating
-    
-    
+
     public Place() {
     }
 
-    public Place(String locationName) {
-        this.placeName = locationName;
-    }
-
-    public Place(String locationName, String description, String imgURL, double gpsLat, double gpsLong) {
-        this.placeName = locationName;
+    public Place(String placeName, String description, String imgURL, double gpsLat, double gpsLong, User user) {
+        this.placeName = placeName;
         this.description = description;
         this.imgURL = imgURL;
         this.gpsLat = gpsLat;
         this.gpsLong = gpsLong;
+        this.user = user;
     }
-
 
     public String getDescription() {
         return description;

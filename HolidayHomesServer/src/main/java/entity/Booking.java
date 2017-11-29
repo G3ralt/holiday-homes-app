@@ -28,7 +28,7 @@ public class Booking implements Serializable {
     @Basic(optional = false)
     @NotNull
     @Column(name = "week_number")
-    private short weekNumber;
+    private String weekNumber;
     
     @Expose
     @JoinColumn(name = "rentable_name", referencedColumnName = "rentable_name")
@@ -47,11 +47,6 @@ public class Booking implements Serializable {
         this.id = id;
     }
 
-    public Booking(Integer id, short weekNumber) {
-        this.id = id;
-        this.weekNumber = weekNumber;
-    }
-
     public Integer getId() {
         return id;
     }
@@ -60,11 +55,11 @@ public class Booking implements Serializable {
         this.id = id;
     }
 
-    public short getWeekNumber() {
+    public String getWeekNumber() {
         return weekNumber;
     }
 
-    public void setWeekNumber(short weekNumber) {
+    public void setWeekNumber(String weekNumber) {
         this.weekNumber = weekNumber;
     }
 
