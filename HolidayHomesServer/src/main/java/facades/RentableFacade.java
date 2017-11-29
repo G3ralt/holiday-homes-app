@@ -22,12 +22,14 @@ public class RentableFacade {
         This method is used to retrieve all rentables from the databse.
         The method also retrieves the ratings for the rentables through the getRatingForRentable method.
         The method also retrieves if the user has already rated this rentable.
+        The method get all the available weeks for this rentable
         Throws DBException if something is wrong with the database.
         Returns a list with all the rentables and their info.
      */
     public List<Rentable> getAllRentables(String userName) throws DBException {
         List<Rentable> toReturn = new ArrayList();
         try {
+            EM.getEntityManagerFactory().getCache().evictAll();
             Query q = EM.createQuery("SELECT r FROM Rentable r");
             toReturn = q.getResultList();
 
@@ -194,11 +196,13 @@ public class RentableFacade {
             bookedWeeks.add(booking.getWeekNumber());
         }
         
-        //Remove the booked weeks
-        availableWeeks.removeAll(bookedWeeks);
-        
         //Remove all after 6 months time
         availableWeeks.subList(25, availableWeeks.size()).clear();
+        
+        //Remove booked weeks
+        availableWeeks.removeAll(bookedWeeks);
+        
+        
         return availableWeeks;
     }
 }
