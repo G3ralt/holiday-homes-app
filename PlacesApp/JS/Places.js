@@ -1,6 +1,7 @@
 import React from "react";
-import { Text, View, FlatList, StyleSheet } from 'react-native';
+import { Text, View, FlatList, StyleSheet, Button } from 'react-native';
 import fetchHelper, {errorChecker} from "./fetchHelpers";
+import openMap from 'react-native-open-maps';
 const URL = require("../package.json").serverURL;
 
 class Places extends React.Component{
@@ -18,13 +19,22 @@ class Places extends React.Component{
 			}
 			this.setState({err:"",data});
 		  });
+
 	}
+
+	_goToLocation(lat, long) {
+		openMap({ latitude: lat, longitude: long });
+	  }
+
 
 	getPlaces = (cb) => {
 		this._errorMessage = "";
 		this._messageFromServer = "";
 		let resFromFirstPromise = null; //Pass on response the "second" promise so we can read errors from server
-		const options = fetchHelper.makeOptions("POST", false);
+		let user = {
+			"username": "unauthorized"
+		}
+		const options = fetchHelper.makeOptions("POST", false, user);
 		console.log(options);
 		fetch(URL + "api/places/all", options)
 			.then((res) => {
@@ -57,18 +67,23 @@ class Places extends React.Component{
 	}
 
 	_renderItem = ({item}) => (
-	//	<ListItem
-	//	roundAvatar
-	//	title={item.placeName}
-	//	subtitle={`${item.gpsLat} ${item.gpsLong}`}
-	//	avatar={{uri : item.imgURL}}
-	//	keyExtractor={item => item.placeName}
-	//	/>
-	<Text style={styles.item}>{item.placeName}, {item.gpsLat}, {item.gpsLong}, {item.description}, {item.rating}</Text>
+	<View>
+	<Image
+	style={{width:300, height:300}}
+		source={{uri: item.imgURL}}
+	/>
+	<Text style={styles.inputHeader}>{item.placeName}</Text>
+	<Text style={styles.inputHeader}>{item.gpsLat}, {item.gpsLong}</Text>
+	<Text style={styles.inputHeader}>{item.description}</Text>
+	<Text style={styles.inputHeader}>{item.rating}</Text>
+	<Button onPress={this._goToLocation()}>See on Maps</Button>
+	</View>
 	);
 	
 	render(){
 		var rows = this.mapData(this.state.data);
+		console.log("ROWS HERE!");
+		console.log(rows);
 		return(
 			<View style={styles.container}>
 			<FlatList
@@ -94,7 +109,12 @@ const styles = StyleSheet.create({
 		padding: 10,
 		fontSize: 20,
 		height: 44,
-	}
+	},
+	inputHeader: {
+		textAlign: "center",
+		fontSize: 18,
+		height: 30,
+	},
   })
 
 export default Places;
