@@ -25,7 +25,7 @@ public class ImgUploadResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadFile(@DefaultValue("") @FormDataParam("file") InputStream file,
             @FormDataParam("file") FormDataContentDisposition fileDisposition,
-            @FormDataParam("locationName") String locationName) {
+            @FormDataParam("placeName") String placeName) {
         
         try {
             //Get the location dynamically
@@ -41,9 +41,8 @@ public class ImgUploadResource {
             }
 
             //Save the file
-            //String imgURL = saveFile(file, locationName, fileType);
-            //return Response.ok("{\"imgURL\": \"" + imgURL + "\"}").build();
-            return Response.ok("{\"imgURL\": \"https://wyncode.co/wp-content/uploads/2014/08/31.jpg\"}").build(); //DELETE THIS and uncomment 52,53
+            String imgURL = saveFile(file, placeName, fileType);
+            return Response.status(200).entity("{\"imgURL\": \"" + imgURL + "\"}").build();
         } catch (Exception e) {
             return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable
         }

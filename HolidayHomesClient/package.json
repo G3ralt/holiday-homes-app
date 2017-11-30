@@ -1,6 +1,6 @@
 {
   "name": "HolidayHomesClient",
-  "serverURL": "http://localhost:8084/HolidayHomesServer/",
+  "serverURL": "https://www.g3ralt.club/HolidayHomesServer-1.0/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
