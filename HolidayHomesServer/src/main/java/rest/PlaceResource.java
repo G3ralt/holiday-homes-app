@@ -28,9 +28,9 @@ public class PlaceResource {
             JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
             String userName = json.get("username").getAsString();
 
-            List<Place> locations = FF.getPlaceFacade().getAllPlaces(userName); //Get the locations from Database.
+            List<Place> places = FF.getPlaceFacade().getAllPlaces(userName); //Get the places from Database.
 
-            return Response.status(200).entity(getJSONfromObject(locations)).build(); //Return the locations as JSON
+            return Response.status(200).entity(getJSONfromObject(places)).build(); //Return the places as JSON
 
         } catch (Exception e) {
             return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable if something is wrong
@@ -38,7 +38,24 @@ public class PlaceResource {
         } finally {
             FF.close();
         }
+    }
+    
+    @Path("/all/{username}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllPlacesForUser(@PathParam("username") String username) {
+        try {
+            List<Place> places = FF.getPlaceFacade().getAllPlaces(username); //Get the place from Database.
 
+            return Response.status(200).entity(getJSONfromObject(places)).build(); //Return the places as JSON
+
+        } catch (Exception e) {
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable if something is wrong
+
+        } finally {
+            FF.close();
+        }
     }
 
     @Path("/create")
@@ -51,7 +68,7 @@ public class PlaceResource {
 
             FF.getPlaceFacade().createNewPlace(place);
 
-            return Response.status(201).entity(getJSONfromObject("Location created!")).build();
+            return Response.status(201).entity(getJSONfromObject("Place created!")).build();
 
         } catch (DBException e) {
             //When the Place name is already in use

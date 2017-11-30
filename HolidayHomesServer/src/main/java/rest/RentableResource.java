@@ -75,7 +75,7 @@ public class RentableResource {
         try {
             boolean existing = FF.getRentableFacade().checkForRentableName(rentableName);
             
-            return existing ? Response.status(409).build() : Response.status(202).build(); //If placeName is used - 409, otherwise 202
+            return existing ? Response.status(409).build() : Response.status(202).build(); //If rentableName is used - 409, otherwise 202
 
         } catch (Exception e) {
             return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable if something is wrong

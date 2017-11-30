@@ -2,7 +2,11 @@ package facades;
 
 import customExceptions.DBException;
 import entity.Booking;
+import entity.Place;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 public class BookingFacade {
     
@@ -25,5 +29,22 @@ public class BookingFacade {
         } catch (Exception e) {
             throw new DBException("facades.BookingFacade.createNewBooking");
         }
+    }
+    /*
+        Gets all the bookings for a specific user
+        Throws DBException if something is wrong with DB
+    */
+    public List<Booking> getBookingsByUser(String username) throws DBException {
+        List<Booking> toReturn;
+        try {
+            Query q = EM.createQuery("SELECT b FROM Booking b WHERE b.user.username = :username", Booking.class);
+            q.setParameter("username", username);
+            toReturn =  q.getResultList();
+            
+        } catch (Exception e) {
+            throw new DBException("facades.BookingFacade.getBookingByUser");
+        }
+        
+        return toReturn;
     }
 }

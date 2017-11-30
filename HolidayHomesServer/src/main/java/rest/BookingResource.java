@@ -1,7 +1,12 @@
 package rest;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
+import customExceptions.DBException;
 import entity.Booking;
 import facades.FacadeFactory;
+import java.util.List;
 import javax.ws.rs.core.*;
 import javax.ws.rs.*;
 import static rest.JSONConverter.getJSONfromObject;
@@ -11,7 +16,7 @@ import static rest.JSONConverter.*;
 public class BookingResource {
 
     private final FacadeFactory FF;
-    
+
     @Context
     private UriInfo context;
 
@@ -39,5 +44,19 @@ public class BookingResource {
         }
     }
 
-    
+    @Path("/allForUser/{username}")
+    @GET
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getAllBookingsForUser(@PathParam("username") String username) {
+        try {
+            List<Booking> list = FF.getBookingFacade().getBookingsByUser(username);
+
+            return Response.status(200).entity(getJSONfromObject(list)).build();
+            
+        } catch (Exception e) {
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable if something is wrong
+        }
+    }
+
 }
