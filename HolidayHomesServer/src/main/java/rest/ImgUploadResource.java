@@ -15,7 +15,7 @@ public class ImgUploadResource {
     private final ArrayList<String> TYPES = new ArrayList(Arrays.asList(".jpg", ".jpeg", ".png"));
     private final String s = File.separator;
     private String imagesFolder = "/var/lib/tomcat8/webapps/uploads/"; //This is the expected location for the images
-    private String host = "www.g3ralt.club"; //Write here the droplet domain
+    private String host = "https://www.g3ralt.club"; //Write here the droplet domain
 
     @Context
     ServletContext context;
