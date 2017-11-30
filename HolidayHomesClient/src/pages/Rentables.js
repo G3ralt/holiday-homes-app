@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Address, Description, Image, RentableName, RatingAvg, Price, CreatedByUser, Zvezdichka } from '../components/importContainers';
+import { Address, Description, Image, RentableName, RatingAvg, RentRentable, CreatedByUser, Zvezdichka } from '../components/importContainers';
 import auth from '../authorization/auth';
 const URL = require("../../package.json").serverURL;
 
@@ -11,10 +11,10 @@ class Rentables extends Component{
     }
     
   componentWillMount() {
-      this.getAllPlaces();
+      this.getAllRentables();
 	}  
 
-	getAllPlaces = (cb) => {
+	getAllRentables = (cb) => {
         let userItself = this.state.userItself;
         /*console.log("Is the user logged in? : ", auth.isloggedIn);*/
         if (auth.isloggedIn) {
@@ -44,8 +44,8 @@ class Rentables extends Component{
 							<CreatedByUser uName={rentable.admin.username} />
                             <RatingAvg avgRating={rentable.rating} />
                             {auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={rentable.userRating} rName={rentable.rentableName} currentUser={this.state.userItself} />) }
-                            <Address street={rentable.street} city={rentable.city}  zipCode={rentable.zipcode} country={rentable.country}/> {/* Passed like address object */}
-                            <Price rPrice={rentable.price} weeks={rentable.availableWeeks} rName={rentable.rentableName} uName={auth.username} />
+                            <Address street={rentable.street} city={rentable.city}  zipCode={rentable.zipCode} country={rentable.country}/> {/* Passed like address object */}
+                            <RentRentable rPrice={rentable.price} weeks={rentable.availableWeeks} rName={rentable.rentableName} uName={auth.username} />
                             <Description desc={rentable.description} />
                         </div>
                     )

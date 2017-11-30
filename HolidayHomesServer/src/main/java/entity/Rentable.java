@@ -36,7 +36,7 @@ public class Rentable implements Serializable {
     @NotNull
     @Expose
     @Column(name = "zipcode")
-    private int zipcode;
+    private int zipCode;
 
     @NotNull
     @Size(min = 1, max = 45)
@@ -88,7 +88,7 @@ public class Rentable implements Serializable {
         this.rentableName = rentableName;
         this.street = street;
         this.city = city;
-        this.zipcode = zipcode;
+        this.zipCode = zipcode;
         this.country = country;
         this.price = price;
         this.imgURL = imgURL;
@@ -136,12 +136,12 @@ public class Rentable implements Serializable {
         this.city = city;
     }
 
-    public int getZipcode() {
-        return zipcode;
+    public int getZipCode() {
+        return zipCode;
     }
 
-    public void setZipcode(int zipcode) {
-        this.zipcode = zipcode;
+    public void setZipCode(int zipcode) {
+        this.zipCode = zipcode;
     }
 
     public String getCountry() {

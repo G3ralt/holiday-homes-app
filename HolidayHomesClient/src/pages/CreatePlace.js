@@ -68,7 +68,7 @@ export default class CreatePlace extends React.Component {
       this.setState({ newPlace });
       switch (status) {
         case 200: //ImgUploaded is free
-          console.log("Tuka sme");
+         
           this.submitCreatePlace();//Next fetch
           break;
         case 415: //Mediatype not supported
