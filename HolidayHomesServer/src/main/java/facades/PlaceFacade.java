@@ -20,18 +20,18 @@ public class PlaceFacade {
         The method also retrieves the ratings for the places through the getRatingForLocation method.
         The method also retrieves the user`s rating (if authorized).
         Throws DBException if something is wrong with the database.
-        Returns a list with all the locations and their info.
+        Returns a list with all the places and their info.
      */
     public List<Place> getAllPlaces(String userName) throws DBException {
         List<Place> toReturn = new ArrayList();
         try {
             Query q = EM.createQuery("SELECT p FROM Place p");
             toReturn = q.getResultList();
-            
+
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.getAllPlaces");
         }
-        
+
         for (Place p : toReturn) {
             double rating = getRatingForPlace(p.getPlaceName()); // Get the rating from Database
             p.setRating(rating);
@@ -45,9 +45,38 @@ public class PlaceFacade {
     }
 
     /*
+        This method is used to retrieve all places a user has created from the database.
+        The method also retrieves the ratings for the places through the getRatingForLocation method.
+        The method also retrieves the user`s rating (if authorized).
+        Throws DBException if something is wrong with the database.
+        Returns a list with all the places and their info.
+     */
+    public List<Place> getAllPlacesForUser(String username) throws DBException {
+        List<Place> toReturn;
+        try {
+            Query q = EM.createQuery("SELECT p FROM Place p WHERE p.user.username = :username", Place.class);
+            q.setParameter("username", username);
+            toReturn = q.getResultList();
+
+        } catch (Exception e) {
+            throw new DBException("facades.PlaceFacade.getAllPlacesForUser");
+        }
+
+        for (Place p : toReturn) {
+            double rating = getRatingForPlace(p.getPlaceName()); // Get the rating from Database
+            p.setRating(rating);
+
+            int userRating = getUserRating(username, p.getPlaceName()); // Get the user vote on this place
+            p.setUserRating(userRating);
+
+        }
+        return toReturn;
+    }
+
+    /*
         Creates new Place in the database
         Throws DBException if the placename already used
-    */
+     */
     public void createNewPlace(Place place) throws DBException {
         try {
             EM.getTransaction().begin();
@@ -58,25 +87,25 @@ public class PlaceFacade {
             throw new DBException("facades.PlaceFacade.createNewPlace");
         }
     }
-    
+
     /*
         Checks the databse for availability of a given placeName.
         Throws DBException if something is wrong with the Database
-    */
+     */
     public boolean checkForPlaceName(String placeName) throws DBException {
         try {
             EM.getTransaction().begin();
             Query q = EM.createQuery("SELECT p FROM Place p WHERE p.placeName = :placeName");
             q.setParameter("placeName", placeName);
             Place p = (Place) q.getSingleResult();
-            
+
         } catch (NoResultException e) {
             return false; //Return false = NON EXISTING NAME
-            
+
         } catch (Exception e) {
             throw new DBException("facades.PlaceFacade.checkForPlaceName");
         }
-        
+
         return true; //Return true if NAME is found
     }
 
@@ -88,10 +117,10 @@ public class PlaceFacade {
         try {
             //Check if current user has already voted
             int userRating = getUserRating(userName, placeName);
-            if(userRating != 0) { // If the rating is different from 0 == user has voted
+            if (userRating != 0) { // If the rating is different from 0 == user has voted
                 throw new Exception();
             }
-            
+
             EM.getTransaction().begin();
             Query q = EM.createNativeQuery("INSERT INTO place_rating (place_name, rating, user_name) VALUES (?, ?, ?);");
             q.setParameter(1, placeName);
@@ -105,7 +134,7 @@ public class PlaceFacade {
         }
 
     }
-    
+
     /*
         This method is used for updating ratings for place given the user and the place name.
         Throws DBException if the Database refuses the creation.
