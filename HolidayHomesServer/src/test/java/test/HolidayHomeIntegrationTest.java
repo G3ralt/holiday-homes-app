@@ -17,18 +17,17 @@ import junit.framework.Assert;
 import org.apache.catalina.LifecycleException;
 import static org.hamcrest.Matchers.*;
 import org.junit.AfterClass;
-import static org.junit.Assert.assertThat;
 import org.junit.Ignore;
 import org.junit.Test;
 import test.utils.EmbeddedTomcat;
 
-public class InitialSeedRestIntegrationTest {
+public class HolidayHomeIntegrationTest {
 
   private static final int SERVER_PORT = 9999;
   private static final String APP_CONTEXT = "/HolidayHomesServer";
   private static EmbeddedTomcat tomcat;
 
-  public InitialSeedRestIntegrationTest() {
+  public HolidayHomeIntegrationTest() {
   }
   private static String securityToken;
 
@@ -66,8 +65,31 @@ public class InitialSeedRestIntegrationTest {
   }
 
   @Test
-  
   public void testRestGetAllPlaces() {
+   
+    Map<String, String> user = new HashMap<>();
+    user.put("username", "unauthorized");
+      Response response = 
+            given()
+            .contentType(ContentType.JSON)
+            .body(user)
+            .post("/api/places/all")
+            .then()
+            .contentType(ContentType.JSON).
+            extract().response();
+    
+    String jsonAsString = response.asString();
+    System.out.println("Our response from site as String: " + jsonAsString);
+    ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
+
+    // now we count the number of entries in the JSON file, each entry is 1 ride
+    boolean isEmpty = jsonAsArrayList.isEmpty();
+    Assert.assertFalse(isEmpty);
+            
+  }
+
+  @Test
+  public void testRestGetAllRentables() {
    
     Map<String, String> user = new HashMap<>();
     user.put("username", "unauthorized");
@@ -89,32 +111,53 @@ public class InitialSeedRestIntegrationTest {
     Assert.assertFalse(isEmpty);
             
   }
-
+  
+  
   @Test
-  @Ignore
-  public void tesRestForAdmin() {
-    login("admin","test");
-    given()
+  public void testRestAdminPageGetUserList() {
+    login("user","test");
+    Response response = given()
             .contentType("application/json")
             .header("Authorization", "Bearer " + securityToken)
             .when()
             .get("/api/demoadmin").then()
             .statusCode(200)
-            .body("message", equalTo("Hello Admin from server (call accesible by only authenticated ADMINS)"))
-            .body("serverTime",notNullValue());
+            .contentType(ContentType.JSON).
+            extract().response();
+    
+     String jsonAsString = response.asString();
+    System.out.println("Our response from site as String: " + jsonAsString);
+      System.out.println("Security token: " + securityToken);
+    ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
+    
+    boolean isEmpty = jsonAsArrayList.isEmpty();
+    Assert.assertFalse(isEmpty);
   }
 
   @Test
-  @Ignore
-  public void testRestForUser() {
-    login("user","test");
-    given()
+  public void testRestForUserPage() {
+    String username = "user";
+    String password = "test";
+    login(username,password);
+    Map<String, String> user = new HashMap<>();
+    user.put("username", "user");
+    Response response = given()
+            .pathParam("username", username)
             .contentType("application/json")
             .header("Authorization", "Bearer " + securityToken)
+            .body(user)
             .when()
-            .get("/api/demouser").then()
-            .statusCode(200)
-            .body("message", equalTo("Hello User from Server (Accesible by only authenticated USERS)"));
+            .post("/api/allForUser/{username}").then()
+            .contentType(ContentType.JSON).
+            extract().response();
+    
+    String jsonAsString = response.asString();
+    System.out.println("Our response from site as String: " + jsonAsString);
+    System.out.println("Security token: " + securityToken);
+    ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
+    
+    boolean isEmpty = jsonAsArrayList.isEmpty();
+    Assert.assertFalse(isEmpty);
   }
   
   @Test
