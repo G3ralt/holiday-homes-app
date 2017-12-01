@@ -135,7 +135,7 @@ public class RentableFacade {
         This method is used to check if the user has already voted for a specific rentable.
         Return the user`s rating or 0 if the user hasn`t voted
      */
-    private int getUserRating(String userName, String rentableName) throws DBException {
+    public int getUserRating(String userName, String rentableName) throws DBException {
         try {
             Query q = EM.createNativeQuery("SELECT rating FROM rentable_rating WHERE rentable_name = ? AND user_name = ?;");
             q.setParameter(1, rentableName);

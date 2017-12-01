@@ -11,7 +11,6 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 import static rest.JSONConverter.*;
 
-
 @Path("rentables")
 public class RentableResource {
 
@@ -74,7 +73,7 @@ public class RentableResource {
     public Response checkPlaceName(@PathParam("rentableName") String rentableName) {
         try {
             boolean existing = FF.getRentableFacade().checkForRentableName(rentableName);
-            
+
             return existing ? Response.status(409).build() : Response.status(202).build(); //If rentableName is used - 409, otherwise 202
 
         } catch (Exception e) {
@@ -84,7 +83,7 @@ public class RentableResource {
             FF.close();
         }
     }
-    
+
     @Path("/addRating")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -93,37 +92,25 @@ public class RentableResource {
         try {
             //Get the information from the request
             JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
-            String placeName = json.get("placeName").getAsString();
-            String userName = json.get("username").getAsString();
-            int rating = json.get("rating").getAsInt();
-
-            FF.getRentableFacade().addRatingForRentable(placeName, rating, userName);
-
-            return Response.status(201).entity(getJSONfromObject("Rating added!")).build();
-
-        } catch (Exception e) {
-            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
-        }
-    }
-    
-    @Path("/updateRating")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateNewRatingForRentable(String jsonString) {
-        try {
-            //Get the information from the request
-            JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
             String rentableName = json.get("rentableName").getAsString();
-            String userName = json.get("username").getAsString();
+            String username = json.get("username").getAsString();
             int rating = json.get("rating").getAsInt();
 
-            FF.getRentableFacade().updateRatingForRentable(rentableName, rating, userName);
+            int userRating = FF.getRentableFacade().getUserRating(username, rentableName);
 
-            return Response.status(201).entity(getJSONfromObject("Rating updated!")).build();
+            String message;
+            if (userRating == 0) { //If user hasn`t rated the rentable yet
+                FF.getRentableFacade().addRatingForRentable(rentableName, rating, username);
+                message = "created!";
+            } else { //if user has rated update the rating
+                FF.getRentableFacade().updateRatingForRentable(rentableName, rating, username);
+                message = "updated!";
+            }
+            return Response.status(201).entity(getJSONfromObject("Rating " + message)).build();
 
         } catch (Exception e) {
             return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
         }
     }
+
 }

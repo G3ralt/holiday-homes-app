@@ -66,7 +66,6 @@ public class InitialSeedRestIntegrationTest {
   }
 
   @Test
-  @Ignore
   public void testRestGetAllPlaces() {
    
     Map<String, String> user = new HashMap<>();
@@ -81,7 +80,6 @@ public class InitialSeedRestIntegrationTest {
             extract().response();
     
     String jsonAsString = response.asString();
-    System.out.println("Our response from site as String: " + jsonAsString);
     ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
 
     // now we count the number of entries in the JSON file, each entry is 1 ride
