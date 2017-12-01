@@ -66,7 +66,7 @@ public class InitialSeedRestIntegrationTest {
   }
 
   @Test
-  
+  @Ignore
   public void testRestGetAllPlaces() {
    
     Map<String, String> user = new HashMap<>();
