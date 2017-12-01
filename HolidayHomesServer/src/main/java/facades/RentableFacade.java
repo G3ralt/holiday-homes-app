@@ -120,12 +120,19 @@ public class RentableFacade {
         try {
             DecimalFormat df = new DecimalFormat(".#");
             Query q = EM.createNativeQuery("SELECT AVG(rating) FROM rentable_rating WHERE rentable_name = ?;");
-            q.setParameter(1, rentableName);
-            BigDecimal result = (BigDecimal) q.getSingleResult(); //get the result from DB
+           q.setParameter(1, rentableName);
+            BigDecimal temp = (BigDecimal) q.getSingleResult();
+            if(temp != null){
+            BigDecimal result = temp.setScale(1);
+            
+                     //get the result from DB
+            
             if (result != null) {
-                rating = Double.parseDouble(df.format(result)); //format the result and parse it to double
+                rating = result.doubleValue(); //format the result and parse it to double
+            }
             }
             return rating;
+
 
         } catch (Exception e) {
             throw new DBException("facades.RentableFacade.getRatingForRentable");

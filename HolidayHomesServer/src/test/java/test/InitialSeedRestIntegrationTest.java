@@ -1,15 +1,23 @@
 package test;
 
 import org.junit.BeforeClass;
-import io.restassured.RestAssured;
+import io.restassured.*;
 import static io.restassured.RestAssured.*;
+import io.restassured.http.ContentType;
 import io.restassured.parsing.Parser;
+import static io.restassured.path.json.JsonPath.*;
+import io.restassured.response.Response;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.servlet.ServletException;
+import junit.framework.Assert;
 import org.apache.catalina.LifecycleException;
 import static org.hamcrest.Matchers.*;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertThat;
 import org.junit.Ignore;
 import org.junit.Test;
 import test.utils.EmbeddedTomcat;
@@ -17,7 +25,7 @@ import test.utils.EmbeddedTomcat;
 public class InitialSeedRestIntegrationTest {
 
   private static final int SERVER_PORT = 9999;
-  private static final String APP_CONTEXT = "/seed";
+  private static final String APP_CONTEXT = "/HolidayHomesServer";
   private static EmbeddedTomcat tomcat;
 
   public InitialSeedRestIntegrationTest() {
@@ -58,14 +66,28 @@ public class InitialSeedRestIntegrationTest {
   }
 
   @Test
-  @Ignore
-  public void testRestNoAuthenticationRequired() {
-    given()
-            .contentType("application/json")
-            .when()
-            .get("/api/demoall").then()
-            .statusCode(200)
-            .body("message", equalTo("result for all"));
+  
+  public void testRestGetAllPlaces() {
+   
+    Map<String, String> user = new HashMap<>();
+    user.put("username", "unauthorized");
+      Response response = 
+            given()
+            .contentType(ContentType.JSON)
+            .body(user)
+            .post("/api/rentables/all")
+            .then()
+            .contentType(ContentType.JSON).
+            extract().response();
+    
+    String jsonAsString = response.asString();
+    System.out.println("Our response from site as String: " + jsonAsString);
+    ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
+
+    // now we count the number of entries in the JSON file, each entry is 1 ride
+    boolean isEmpty = jsonAsArrayList.isEmpty();
+    Assert.assertFalse(isEmpty);
+            
   }
 
   @Test
