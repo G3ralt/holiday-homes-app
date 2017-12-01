@@ -2,7 +2,7 @@ import React from 'react';
 
 const RatingAvg = (props) => {
     return (
-        <div key={props.pName} className="col-md-4 placeRating">
+        <div key={props.pName} className="col-md-4">
             <h4>Rating (average)("{props.avgRating}")</h4>
             <p>no stars, just number</p>
         </div>

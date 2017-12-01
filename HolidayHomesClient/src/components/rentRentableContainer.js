@@ -38,7 +38,7 @@ export default class RentRentable extends Component {
 
     render() {
         return (
-            <div className="col-md-4 rentablePrice">
+            <div className="col-md-4">
                 <h4 className="pricePrice">Price("{this.props.rPrice}")</h4>
                 {
                     auth.isloggedIn &&

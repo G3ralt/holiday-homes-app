@@ -2,7 +2,7 @@ import React from 'react';
 
 const GPSinfo = (props) => {
     return (
-        <div className="col-md-4 placeGPS">
+        <div className="col-md-4">
             <h3>GPSinfo:</h3>
             <p>Latitude:   {props.pGPSlat}</p>
             <p>Longtitude: {props.pGPSlong}</p>

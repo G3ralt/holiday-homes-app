@@ -2,7 +2,7 @@ import React from 'react';
 
 const PlaceName = (props) => {
     return (
-        <div className="col-md-4 placeName">
+        <div className="col-md-4">
             <h3>PlaceName("{props.pName}")</h3>
         </div>
     );
