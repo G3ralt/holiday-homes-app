@@ -48,9 +48,8 @@ public class RentableFacade {
             //Check availability
             ArrayList<String> list = getAvailableWeeksForRentable(r);
             r.setAvailableWeeks(list);
-            
+
         }
-        
 
         return toReturn;
     }
@@ -115,24 +114,17 @@ public class RentableFacade {
         Throws DBExceptions if there is something wrong with the Database.
      */
     private double getRatingForRentable(String rentableName) throws DBException {
-        double rating = 0;
-
         try {
-            DecimalFormat df = new DecimalFormat(".#");
             Query q = EM.createNativeQuery("SELECT AVG(rating) FROM rentable_rating WHERE rentable_name = ?;");
-           q.setParameter(1, rentableName);
-            BigDecimal temp = (BigDecimal) q.getSingleResult();
-            if(temp != null){
-            BigDecimal result = temp.setScale(1);
-            
-                     //get the result from DB
-            
-            if (result != null) {
-                rating = result.doubleValue(); //format the result and parse it to double
+            q.setParameter(1, rentableName);
+            BigDecimal result = (BigDecimal) q.getSingleResult(); //get the result from DB
+            if (result == null) { //if there are no ratings
+                return 0;
             }
-            }
-            return rating;
+            result = result.setScale(1); //format the result to #.#
+            double rating = result.doubleValue(); //parse it to double
 
+            return rating;
 
         } catch (Exception e) {
             throw new DBException("facades.RentableFacade.getRatingForRentable");
@@ -196,20 +188,19 @@ public class RentableFacade {
             String week = nextYear + "-" + i;
             availableWeeks.add(week);
         }
-        
+
         //Get the bookings
         ArrayList<String> bookedWeeks = new ArrayList();
         for (Booking booking : rentable.getBookingCollection()) {
             bookedWeeks.add(booking.getWeekNumber());
         }
-        
+
         //Remove all after 6 months time
         availableWeeks.subList(25, availableWeeks.size()).clear();
-        
+
         //Remove booked weeks
         availableWeeks.removeAll(bookedWeeks);
-        
-        
+
         return availableWeeks;
     }
 }

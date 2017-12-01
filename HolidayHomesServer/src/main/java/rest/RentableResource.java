@@ -97,7 +97,7 @@ public class RentableResource {
             String userName = json.get("username").getAsString();
             int rating = json.get("rating").getAsInt();
 
-            FF.getPlaceFacade().addRatingForPlace(placeName, rating, userName);
+            FF.getRentableFacade().addRatingForRentable(placeName, rating, userName);
 
             return Response.status(201).entity(getJSONfromObject("Rating added!")).build();
 

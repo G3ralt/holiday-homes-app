@@ -162,20 +162,15 @@ public class PlaceFacade {
      */
     private double getRatingForPlace(String placeName) throws DBException {
         try {
-            double rating = 0;
-            //DecimalFormat df = new DecimalFormat(".#");
             Query q = EM.createNativeQuery("SELECT AVG(rating) FROM place_rating WHERE place_name = ?;");
             q.setParameter(1, placeName);
-            BigDecimal temp = (BigDecimal) q.getSingleResult();
-            if(temp != null){
-            BigDecimal result = temp.setScale(1);
-            
-                     //get the result from DB
-            
-            if (result != null) {
-                rating = result.doubleValue(); //format the result and parse it to double
+            BigDecimal result = (BigDecimal) q.getSingleResult(); //get the result from DB
+            if (result == null) { //if there are no ratings
+                return 0;
             }
-            }
+            result = result.setScale(1); //format the result to #.#
+            double rating = result.doubleValue(); //parse it to double
+
             return rating;
 
         } catch (Exception e) {
