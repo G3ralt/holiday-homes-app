@@ -30,31 +30,30 @@ class AddPlace extends React.Component{
 	  }
 
 	  addPlace = (cb) => {
-	  		this._errorMessage = "";
-	  		this._messageFromServer = "";
-	  		let resFromFirstPromise = null; //Pass on response the "second" promise so we can read errors from server
-	  		var data = "placeName:" + this.state.placeName + ", description:" + this.state.placeDesc + ", imgURL:" + this.state.placeImg +
-	  			", gpsLat:" + this.state.gpsLat + "gpsLong:" + this.state.gpsLong + ", user{ username:" + this.state.placeUser + "}";
-	  		console.log(data);
-	  		const options = fetchHelper.makeOptions("POST", false, data);
-	  		fetch(URL + "api/places/create", options)
-	  			.then((res) => {
-	  					resFromFirstPromise = res;
-	  					return res.json();
-			}).then((data) => {
-				errorChecker(resFromFirstPromise, data);
-				if (cb) {
-					cb(null, data)
-				}
-			}).catch(err => {
-				console.log(JSON.stringify(err))
-				if (cb) {
-					cb({
-						err: fetchHelper.addJustErrorMessage(err)
-					})
-				}
-			})
-	}
+	  	this._errorMessage = "";
+	  	this._messageFromServer = "";
+	  	let resFromFirstPromise = null; //Pass on response the "second" promise so we can read errors from server
+	  	var data = "placeName:" + this.state.placeName + ", description:" + this.state.placeDesc + ", imgURL:" + this.state.placeImg +
+	  		", gpsLat:" + this.state.gpsLat + "gpsLong:" + this.state.gpsLong + ", user{ username:" + this.state.placeUser + "}";
+	  	const options = fetchHelper.makeOptions("POST", false, data);
+	  	fetch(URL + "api/places/create", options)
+	  		.then((res) => {
+	  			resFromFirstPromise = res;
+	  			return res.json();
+	  		}).then((data) => {
+	  			errorChecker(resFromFirstPromise, data);
+	  			if (cb) {
+	  				cb(null, data)
+	  			}
+	  		}).catch(err => {
+	  			console.log(JSON.stringify(err))
+	  			if (cb) {
+	  				cb({
+	  					err: fetchHelper.addJustErrorMessage(err)
+	  				})
+	  			}
+	  		})
+	  }
 
 	/*{
 	"placeName": "Test Place1",
@@ -79,13 +78,13 @@ class AddPlace extends React.Component{
 			<Text style={styles.inputHeader}>Place Name:</Text>
 			<TextInput
 			style={styles.inputField}
-			onChangeText={(placeName) =>this.setState({placeName})}
+			onChangeText={(placeName) => this.setState({placeName})}
 			value={this.state.placeName}/>
 
 			<Text style={styles.inputHeader}>Place Description</Text>
 			<TextInput
 			style={styles.inputField}
-			onChangeText={(placeDesc) =>this.setState({placeDesc})}
+			onChangeText={(placeDesc) => this.setState({placeDesc})}
 			value={this.state.placeDesc}/>
 			<Text>Location:</Text>
 			<Text>Latitude: {this.state.gpsLat}</Text>
@@ -99,7 +98,6 @@ class AddPlace extends React.Component{
 				latitudeDelta: 0.0922,
 				longitudeDelta: 0.0421,
 			}}/>
-
 			</View>
 		)
 	}
