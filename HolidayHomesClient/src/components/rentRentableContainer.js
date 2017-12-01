@@ -6,8 +6,7 @@ const URL = require("../../package.json").serverURL;
 export default class RentRentable extends Component {
     constructor(props) {
         super(props);
-        this.state = { isBooked: false};
-        console.log('DA VIDIM :', props);
+        this.state = { clientOrigin: window.location.origin };
     }
 
     rent = () => {
@@ -16,7 +15,7 @@ export default class RentRentable extends Component {
         let username = this.props.uName;
         const json = {
             weekNumber: weekNumber,
-            rentableName: {
+            rentable: {
                 rentableName: this.props.rName
             },
             user: {
@@ -34,7 +33,7 @@ export default class RentRentable extends Component {
             console.log(err);
         })
         alert("Booking created");
-        this.setState({ isBooked: true });
+        window.location.href = this.state.clientOrigin+"/#/myDashboard/myBookings";
     }
 
     render() {
@@ -44,7 +43,7 @@ export default class RentRentable extends Component {
                 {
                     auth.isloggedIn &&
                     (
-                        <Link to="/rentables" className="btn btn-danger btn-lg rentButton" onClick={this.rent}>RENT</Link>
+                        <Link to="/myDashboard/myBookings" className="btn btn-danger btn-lg rentButton" onClick={this.rent}>RENT</Link>
                         /*<button type="button" className="btn btn-danger btn-lg rentButton" onClick={this.rent}>RENT</button>*/
                     )
                 }
@@ -52,7 +51,6 @@ export default class RentRentable extends Component {
                 <p>Availability:</p>
                 <select id={this.props.rName}>
                     {this.props.weeks.map(week => {
-
                         return <option key={week} value={week}>{week}</option>
                     })
                     }

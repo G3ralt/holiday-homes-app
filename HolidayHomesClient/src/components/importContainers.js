@@ -8,5 +8,6 @@ import RatingAvg from './ratingContainer';
 import CreatedByUser from "./createdByContainer";
 import RentRentable from './rentRentableContainer';
 import Zvezdichka from './ratingStarsContainer';
+import BookedWeek from './bookedWeekContainer';
 
-export { Address, Description, GPSinfo, Image, PlaceName, RentableName, RatingAvg, CreatedByUser, RentRentable, Zvezdichka };
+export { Address, Description, GPSinfo, Image, PlaceName, RentableName, RatingAvg, CreatedByUser, RentRentable, Zvezdichka, BookedWeek };

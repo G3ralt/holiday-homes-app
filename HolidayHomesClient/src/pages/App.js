@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import Login from "./Login";
 import Logout from "./Logout";
 import Places from "./Places";
@@ -13,13 +13,17 @@ import FutureImplementations from "./FutureImplementations";
 import Rentables from "./Rentables";
 import CreatePlace from './CreatePlace';
 import CreateRentable from './CreateRentable';
-
+import UserDashboard from './UserDashboard';
+import UserBookings from './UserBookings';
+import UserPlaces from './UserPlaces';
+import Welcome from './Welcome';
 
 function App() {
     return (
-            <div>
-                <TopMenu />
-                <Switch>
+        <div>
+            <TopMenu />
+            <Switch>
+                <Route exact path="/" component={Welcome} />
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
                 <Route path="/logout" component={Logout} />
@@ -30,10 +34,13 @@ function App() {
                 <Route path="/features" component={Features} />
                 <Route path="/whodidwhat" component={WhoDidWhat} />
                 <Route path="/downloadapp" component={DownloadApp} />
-				<Route path="/futureimplementations" component={FutureImplementations} />
-				<Route path="/rentables" component={Rentables} />
-                </Switch>
-            </div>
-            );
+                <Route path="/futureimplementations" component={FutureImplementations} />
+                <Route path="/rentables" component={Rentables} />
+                <Route exact path="/myDashboard" component={UserDashboard} />
+                <Route path="/myDashboard/myBookings" component={UserBookings} />
+                <Route path="/myDashboard/myPlaces" component={UserPlaces} />
+            </Switch>
+        </div>
+    );
 }
 export default App;

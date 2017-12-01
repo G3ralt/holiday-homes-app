@@ -2,17 +2,20 @@ import React from 'react';
 import auth from '../authorization/auth';
 const URL = require("../../package.json").serverURL;
 
-
 export default class CreatePlace extends React.Component {
   constructor() {
     super();
-    this.state = { newPlace: { placeName: "", gpsLat: "", gpsLong: "", description: "", user: { username: auth.username }, imgURL: "" } };
-  }
-
-
-
-  componentWillMount() {
-
+    this.state = {
+      newPlace: {
+        placeName: "",
+        gpsLat: "",
+        gpsLong: "",
+        description: "",
+        user: { username: auth.username },
+        imgURL: ""
+      },
+      clientOrigin: window.location.origin
+    };
   }
 
   onChange = (e) => {
@@ -24,7 +27,6 @@ export default class CreatePlace extends React.Component {
   }
 
   checkForPlaceName = (event) => {
-
     event.preventDefault();
     let status;
     fetch(URL + "api/places/checkName/" + this.state.newPlace.placeName)
@@ -32,9 +34,7 @@ export default class CreatePlace extends React.Component {
         status = res.status;
         switch (status) {
           case 202: //placeName is free
-
             this.imgUpload(); //Next fetch
-
             break;
           case 409: //placeName is already used
             alert("PlaceName already used");
@@ -43,10 +43,8 @@ export default class CreatePlace extends React.Component {
             alert("Service unavailable! Please try again later!");
             break;
           default:
-
         }
       })
-
   }
 
   imgUpload = () => {
@@ -54,8 +52,8 @@ export default class CreatePlace extends React.Component {
     let data = new FormData();
     data.append('file', image.files[0]);
     data.append('placeName', this.state.newPlace.placeName);
-    let status;
 
+    let status;
     fetch(URL + 'api/imgUpload', {
       method: 'POST',
       body: data
@@ -68,7 +66,6 @@ export default class CreatePlace extends React.Component {
       this.setState({ newPlace });
       switch (status) {
         case 200: //ImgUploaded is free
-         
           this.submitCreatePlace();//Next fetch
           break;
         case 415: //Mediatype not supported
@@ -80,7 +77,6 @@ export default class CreatePlace extends React.Component {
         default:
       }
     })
-
   }
 
   submitCreatePlace() {
@@ -96,6 +92,7 @@ export default class CreatePlace extends React.Component {
         switch (status) {
           case 201: //Place created
             alert("Place created!");
+            window.location.href = this.state.clientOrigin+"/#/myDashboard/myPlaces";
             break;
           case 406: //PlaceName already used
             alert("The Place Name is already used! Please try again with different name!");

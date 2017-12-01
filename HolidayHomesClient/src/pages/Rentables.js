@@ -3,7 +3,7 @@ import { Address, Description, Image, RentableName, RatingAvg, RentRentable, Cre
 import auth from '../authorization/auth';
 const URL = require("../../package.json").serverURL;
 
-class Rentables extends Component{
+export default class Rentables extends Component{
         
   constructor(){
       super();
@@ -60,18 +60,12 @@ class Rentables extends Component{
   render() {
       return (
         <div>
-		<h2>All Rentables</h2>
+		<h2>All you can Rent</h2>
 		<div className="container-fluid nicePlaces">
 			{this.state.rentableInfo}
 		</div>
-		{this.state.data1 && (
-			<div className="alert alert-danger errmsg-left" role="alert">
-				{this.state.data1}
-			</div>
-		)}
 	</div>
       );
     }
 }
-export default Rentables;
 
