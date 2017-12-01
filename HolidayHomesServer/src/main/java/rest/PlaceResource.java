@@ -46,7 +46,7 @@ public class PlaceResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPlacesForUser(@PathParam("username") String username) {
         try {
-            List<Place> places = FF.getPlaceFacade().getAllPlaces(username); //Get the place from Database.
+            List<Place> places = FF.getPlaceFacade().getAllPlacesForUser(username); //Get the place from Database.
 
             return Response.status(200).entity(getJSONfromObject(places)).build(); //Return the places as JSON
 

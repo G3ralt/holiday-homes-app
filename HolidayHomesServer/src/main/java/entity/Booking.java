@@ -33,7 +33,7 @@ public class Booking implements Serializable {
     @Expose
     @JoinColumn(name = "rentable_name", referencedColumnName = "rentable_name")
     @ManyToOne(optional = false)
-    private Rentable rentableName;
+    private Rentable rentable;
     
     @Expose
     @JoinColumn(name = "user_name", referencedColumnName = "USER_NAME")
@@ -64,11 +64,11 @@ public class Booking implements Serializable {
     }
 
     public Rentable getRentableName() {
-        return rentableName;
+        return rentable;
     }
 
     public void setRentableName(Rentable rentableName) {
-        this.rentableName = rentableName;
+        this.rentable = rentableName;
     }
 
     public User getUser() {
