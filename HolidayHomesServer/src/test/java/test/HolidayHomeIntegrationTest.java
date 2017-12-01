@@ -32,15 +32,15 @@ public class HolidayHomeIntegrationTest {
   private static String securityToken;
 
   //Utility method to login and set the securityToken
-  private static void login(String role, String password) {
-    String json = String.format("{username: \"%s\", password: \"%s\"}",role,password);
+  private static void login(String username, String password) {
+    String json = String.format("{username: \"%s\", password: \"%s\"}",username,password);
     System.out.println(json);
-    securityToken = given()
+    String response = given()
             .contentType("application/json")
             .body(json)
-            .when().post("/api/login")
-            .then()
-            .extract().path("token");
+            .when().post("/api/login").asString();
+    
+    System.out.println(response);
     System.out.println("Token: " + securityToken);
 
   }
@@ -79,7 +79,6 @@ public class HolidayHomeIntegrationTest {
             extract().response();
     
     String jsonAsString = response.asString();
-    System.out.println("Our response from site as String: " + jsonAsString);
     ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
 
     // now we count the number of entries in the JSON file, each entry is 1 ride
@@ -88,6 +87,7 @@ public class HolidayHomeIntegrationTest {
             
   }
 
+  
   @Test
   public void testRestGetAllRentables() {
    
@@ -103,7 +103,6 @@ public class HolidayHomeIntegrationTest {
             extract().response();
     
     String jsonAsString = response.asString();
-    System.out.println("Our response from site as String: " + jsonAsString);
     ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
 
     // now we count the number of entries in the JSON file, each entry is 1 ride
@@ -112,22 +111,19 @@ public class HolidayHomeIntegrationTest {
             
   }
   
-  
+  @Ignore
   @Test
   public void testRestAdminPageGetUserList() {
-    login("user","test");
+    
     Response response = given()
             .contentType("application/json")
-            .header("Authorization", "Bearer " + securityToken)
             .when()
-            .get("/api/demoadmin").then()
-            .statusCode(200)
+            .get("/api/demoadmin")
+            .then()
             .contentType(ContentType.JSON).
             extract().response();
     
-     String jsonAsString = response.asString();
-    System.out.println("Our response from site as String: " + jsonAsString);
-      System.out.println("Security token: " + securityToken);
+    String jsonAsString = response.asString();
     ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
     
     boolean isEmpty = jsonAsArrayList.isEmpty();
@@ -135,41 +131,44 @@ public class HolidayHomeIntegrationTest {
   }
 
   @Test
-  public void testRestForUserPage() {
+  public void testRestForUserBookings() {
     String username = "user";
     String password = "test";
     login(username,password);
-    Map<String, String> user = new HashMap<>();
-    user.put("username", "user");
+    
     Response response = given()
             .pathParam("username", username)
             .contentType("application/json")
-            .header("Authorization", "Bearer " + securityToken)
-            .body(user)
             .when()
-            .post("/api/allForUser/{username}").then()
+            .get("/api/booking/allForUser/{username}").then()
             .contentType(ContentType.JSON).
             extract().response();
     
     String jsonAsString = response.asString();
-    System.out.println("Our response from site as String: " + jsonAsString);
-    System.out.println("Security token: " + securityToken);
     ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
     
     boolean isEmpty = jsonAsArrayList.isEmpty();
     Assert.assertFalse(isEmpty);
   }
   
-  @Test
   @Ignore
+  @Test
   public void userNotAuthenticated() {
     logOut();
-    given()
+    String username = "user";
+    Response response = given()
+            .pathParam("username", username)
             .contentType("application/json")
             .when()
-            .get("/api/demouser").then()
-            .statusCode(401)
-            .body("error.message", equalTo("No authorization header provided"));
+            .get("/api/booking/allForUser/{username}").then()
+            .contentType(ContentType.JSON).
+            extract().response();
+    
+    String jsonAsString = response.asString();
+    ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
+    
+    boolean isEmpty = jsonAsArrayList.isEmpty();
+    Assert.assertFalse(isEmpty);
   }
   
   @Test
