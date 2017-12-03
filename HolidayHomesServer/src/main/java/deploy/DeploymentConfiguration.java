@@ -87,14 +87,8 @@ public class DeploymentConfiguration implements ServletContextListener {
                     FacadeFactory FF = new FacadeFactory();
                     FF.setPlaceFacade();
                     FF.getPlaceFacade().addRatingForPlace("Aloha Beach Camp", 3, "user");
-                    FF.getPlaceFacade().addRatingForPlace("Aloha Beach Camp", 5, "admin");
-                    FF.getPlaceFacade().addRatingForPlace("Aloha Beach Camp", 5, "user_admin");
-                    FF.getPlaceFacade().addRatingForPlace("Green Park International Stadium", 3, "user_admin");
                     FF.getPlaceFacade().addRatingForPlace("Green Park International Stadium", 5, "user");
-                    FF.getPlaceFacade().addRatingForPlace("Green Park International Stadium", 5, "admin");
-                    FF.getPlaceFacade().addRatingForPlace("Mafikeng Game Reserve", 3, "admin");
                     FF.getPlaceFacade().addRatingForPlace("Mafikeng Game Reserve", 5, "user");
-                    FF.getPlaceFacade().addRatingForPlace("Mafikeng Game Reserve", 5, "user_admin");
                     System.out.println("Created Test Ratings for Places");
                     
                     System.out.println("Creating Test Rentables");
@@ -109,11 +103,7 @@ public class DeploymentConfiguration implements ServletContextListener {
                     System.out.println("Creating Test Rating for Rentables");
                     FF.setRentableFacade();
                     FF.getRentableFacade().addRatingForRentable(rent1.getRentableName(), 3, "user");
-                    FF.getRentableFacade().addRatingForRentable(rent1.getRentableName(), 5, "user_admin");
-                    FF.getRentableFacade().addRatingForRentable(rent1.getRentableName(), 2, "admin");
                     FF.getRentableFacade().addRatingForRentable(rent2.getRentableName(), 3, "user");
-                    FF.getRentableFacade().addRatingForRentable(rent2.getRentableName(), 5, "user_admin");
-                    FF.getRentableFacade().addRatingForRentable(rent2.getRentableName(), 3, "admin");
                     System.out.println("Created Test Rating for Rentables");
                     
                     

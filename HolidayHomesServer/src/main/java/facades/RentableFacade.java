@@ -48,9 +48,8 @@ public class RentableFacade {
             //Check availability
             ArrayList<String> list = getAvailableWeeksForRentable(r);
             r.setAvailableWeeks(list);
-            
+
         }
-        
 
         return toReturn;
     }
@@ -115,16 +114,16 @@ public class RentableFacade {
         Throws DBExceptions if there is something wrong with the Database.
      */
     private double getRatingForRentable(String rentableName) throws DBException {
-        double rating = 0;
-
         try {
-            DecimalFormat df = new DecimalFormat(".#");
             Query q = EM.createNativeQuery("SELECT AVG(rating) FROM rentable_rating WHERE rentable_name = ?;");
             q.setParameter(1, rentableName);
             BigDecimal result = (BigDecimal) q.getSingleResult(); //get the result from DB
-            if (result != null) {
-                rating = Double.parseDouble(df.format(result)); //format the result and parse it to double
+            if (result == null) { //if there are no ratings
+                return 0;
             }
+            result = result.setScale(1); //format the result to #.#
+            double rating = result.doubleValue(); //parse it to double
+
             return rating;
 
         } catch (Exception e) {
@@ -136,7 +135,7 @@ public class RentableFacade {
         This method is used to check if the user has already voted for a specific rentable.
         Return the user`s rating or 0 if the user hasn`t voted
      */
-    private int getUserRating(String userName, String rentableName) throws DBException {
+    public int getUserRating(String userName, String rentableName) throws DBException {
         try {
             Query q = EM.createNativeQuery("SELECT rating FROM rentable_rating WHERE rentable_name = ? AND user_name = ?;");
             q.setParameter(1, rentableName);
@@ -189,20 +188,19 @@ public class RentableFacade {
             String week = nextYear + "-" + i;
             availableWeeks.add(week);
         }
-        
+
         //Get the bookings
         ArrayList<String> bookedWeeks = new ArrayList();
         for (Booking booking : rentable.getBookingCollection()) {
             bookedWeeks.add(booking.getWeekNumber());
         }
-        
+
         //Remove all after 6 months time
         availableWeeks.subList(25, availableWeeks.size()).clear();
-        
+
         //Remove booked weeks
         availableWeeks.removeAll(bookedWeeks);
-        
-        
+
         return availableWeeks;
     }
 }

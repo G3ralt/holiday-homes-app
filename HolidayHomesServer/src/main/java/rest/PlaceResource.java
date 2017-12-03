@@ -18,7 +18,7 @@ public class PlaceResource {
         FF = new FacadeFactory();
         FF.setPlaceFacade();
     }
-    
+
     @Path("/all")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -39,14 +39,14 @@ public class PlaceResource {
             FF.close();
         }
     }
-    
+
     @Path("/all/{username}")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPlacesForUser(@PathParam("username") String username) {
         try {
-            List<Place> places = FF.getPlaceFacade().getAllPlaces(username); //Get the place from Database.
+            List<Place> places = FF.getPlaceFacade().getAllPlacesForUser(username); //Get the place from Database.
 
             return Response.status(200).entity(getJSONfromObject(places)).build(); //Return the places as JSON
 
@@ -81,14 +81,14 @@ public class PlaceResource {
             FF.close();
         }
     }
-    
+
     @Path("/checkName/{placeName}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkPlaceName(@PathParam("placeName") String placeName) {
         try {
             boolean existing = FF.getPlaceFacade().checkForPlaceName(placeName);
-            
+
             return existing ? Response.status(409).build() : Response.status(202).build(); //If placeName is used - 409, otherwise 202
 
         } catch (Exception e) {
@@ -103,15 +103,21 @@ public class PlaceResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response addNewRatingForPlace(String jsonString) {
+    public Response addRatingForPlace(String jsonString) {
         try {
             //Get the information from the request
             JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
             String placeName = json.get("placeName").getAsString();
-            String userName = json.get("username").getAsString();
+            String username = json.get("username").getAsString();
             int rating = json.get("rating").getAsInt();
 
-            FF.getPlaceFacade().addRatingForPlace(placeName, rating, userName);
+            int userRating = FF.getPlaceFacade().getUserRating(username, placeName);
+
+            if (userRating == 0) { //If user hasn`t rated the place yet
+                FF.getPlaceFacade().addRatingForPlace(placeName, rating, username);
+            } else { //if user has rated update the rating
+                FF.getPlaceFacade().updateRatingForPlace(placeName, rating, username);
+            }
 
             return Response.status(201).entity(getJSONfromObject("Rating added!")).build();
 
@@ -119,26 +125,4 @@ public class PlaceResource {
             return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
         }
     }
-    
-    @Path("/updateRating")
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response updateNewRatingForPlace(String jsonString) {
-        try {
-            //Get the information from the request
-            JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
-            String rentableName = json.get("placeName").getAsString();
-            String userName = json.get("username").getAsString();
-            int rating = json.get("rating").getAsInt();
-
-            FF.getPlaceFacade().updateRatingForPlace(rentableName, rating, userName);
-
-            return Response.status(201).entity(getJSONfromObject("Rating update!")).build();
-
-        } catch (Exception e) {
-            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build();
-        }
-    }
-
 }

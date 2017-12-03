@@ -18,6 +18,9 @@ public class JSONConverter {
     
     public static Rentable getRentableFromJSON(String json) {
         return GSON.fromJson(json, Rentable.class);
+        
+        
+        
     }
 
     public static User getUserFromJSON(String json) {

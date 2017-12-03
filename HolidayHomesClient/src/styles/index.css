@@ -103,12 +103,15 @@ border-top-right-radius: 0;
 
 .nicePlaces {
 background-color: red;
-
 }
 
 .nicePlace {
 background-color: orange;
 margin-top: 15px;
+}
+
+.noPlacesAndBookingsFound {
+background-color: rgb(206, 206, 206);
 }
 
 .placeName {

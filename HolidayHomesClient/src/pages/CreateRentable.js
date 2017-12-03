@@ -5,11 +5,20 @@ const URL = require("../../package.json").serverURL;
 export default class CreateRentable extends React.Component {
   constructor() {
     super();
-    this.state = { newRentable: { rentableName: "", street: "", city: "", zipCode: 0, country: "", price: 0, imgURL: "", description: "", admin: { username: auth.username } } };
-  }
-
-  componentWillMount() {
-
+    this.state = {
+      newRentable: {
+        rentableName: "",
+        street: "",
+        city: "",
+        zipCode: 0,
+        country: "",
+        price: 0,
+        imgURL: "",
+        description: "",
+        admin: { username: auth.username }
+      },
+      clientOrigin: window.location.origin
+    };
   }
 
   onChange = (e) => {
@@ -21,7 +30,6 @@ export default class CreateRentable extends React.Component {
   }
 
   checkForRentableName = (event) => {
-
     event.preventDefault();
     let status;
     fetch(URL + "api/rentables/checkName/" + this.state.newRentable.rentableName)
@@ -29,9 +37,7 @@ export default class CreateRentable extends React.Component {
         status = res.status;
         switch (status) {
           case 202: //rentableName is free
-
             this.imgUpload(); //Next fetch
-
             break;
           case 409: //rentableName is already used
             alert("Rentable already used");
@@ -43,7 +49,6 @@ export default class CreateRentable extends React.Component {
 
         }
       })
-
   }
 
   imgUpload = () => {
@@ -65,7 +70,6 @@ export default class CreateRentable extends React.Component {
       this.setState({ newRentable });
       switch (status) {
         case 200: //ImgUploaded is done
-         
           this.submitCreateRentable();//Next fetch
           break;
         case 415: //Mediatype not supported
@@ -77,7 +81,6 @@ export default class CreateRentable extends React.Component {
         default:
       }
     })
-
   }
 
   submitCreateRentable() {
@@ -93,6 +96,7 @@ export default class CreateRentable extends React.Component {
         switch (status) {
           case 201: //Rentable created
             alert("Rentable created!");
+            window.location.href = this.state.clientOrigin + "/#/rentables";
             break;
           case 406: //RentableName already used
             alert("The Rentable Name is already used! Please try again with different name!");
@@ -103,7 +107,6 @@ export default class CreateRentable extends React.Component {
           default:
         }
       })
-
   }
 
   render() {
@@ -129,14 +132,13 @@ export default class CreateRentable extends React.Component {
           <hr />
           <div className="well well-sm">
             <label htmlFor="imageUpload">Upload Image</label>
-            <input type="file" name="imageUpload" accept=".png, .jpg, .jpeg" required/>
+            <input type="file" name="imageUpload" accept=".png, .jpg, .jpeg" required />
             <br />
             <p>(We will only take : .png, .jpg, .jpeg)</p>
           </div>
           <button className="btn btn-lg btn-primary btn-block" type="submit"><span className="glyphicon glyphicon-floppy-disk"></span> Create it</button>
           <br />
         </form>
-        
       </div>
     )
   }

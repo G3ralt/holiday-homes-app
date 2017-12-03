@@ -9,9 +9,10 @@ import javax.ws.rs.core.MediaType;
 import entity.User;
 import facades.FacadeFactory;
 import java.util.ArrayList;
+import javax.annotation.security.RolesAllowed;
 
 @Path("demoadmin")
-//@RolesAllowed("AdminResource")
+//@RolesAllowed("Admin")
 public class AdminResource {
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -23,7 +24,7 @@ public class AdminResource {
     }
 
     @GET
-    @Produces(MediaType.APPLICATION_JSON)
+    //@Produces(MediaType.APPLICATION_JSON)
     public String getAllUsers() {
         List<User> users = FF.getUserFacade().getAllUsers();
         List<User_Map> mappedUsers = new ArrayList<>();
