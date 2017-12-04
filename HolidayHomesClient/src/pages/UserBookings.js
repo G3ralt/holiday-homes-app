@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { Image, RentableName, BookedWeek } from '../components/importContainers';
 import auth from '../authorization/auth';
+import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
 
 export default class UserBookings extends Component {
     constructor() {
         super();
-        this.state = { bookingInfo: [], userItself: { username: "user" } };;
+        this.state = { bookingInfo: [], userItself: { username: "unauthorized" } };;
     }
 
     componentWillMount() {
@@ -20,8 +21,8 @@ export default class UserBookings extends Component {
             userItself.username = auth.username;
             this.setState({ userItself: userItself });
         }
-
-        fetch(URL + "api/booking/allForUser/" + this.state.userItself.username)
+        let options = fetchHelper.makeOptions("GET", true)
+        fetch(URL + "api/booking/allForUser/" + this.state.userItself.username, options)
             .then((res) => {
                 return res.json();
             }).then((data) => {

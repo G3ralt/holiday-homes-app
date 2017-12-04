@@ -1,5 +1,6 @@
 import React from 'react';
 import auth from '../authorization/auth';
+import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
 
 export default class CreateRentable extends React.Component {
@@ -31,11 +32,10 @@ export default class CreateRentable extends React.Component {
 
   checkForRentableName = (event) => {
     event.preventDefault();
-    let status;
-    fetch(URL + "api/rentables/checkName/" + this.state.newRentable.rentableName)
+    let options = fetchHelper.makeOptions("GET", true);
+    fetch(URL + "api/rentables/checkName/" + this.state.newRentable.rentableName, options)
       .then(res => {
-        status = res.status;
-        switch (status) {
+        switch (res.status) {
           case 202: //rentableName is free
             this.imgUpload(); //Next fetch
             break;
@@ -58,7 +58,7 @@ export default class CreateRentable extends React.Component {
     data.append('placeName', this.state.newRentable.rentableName);
     let status;
     let headers = {};
-    headers.authorization = `Bearer ${sessionStorage.token}`;
+    headers.Authorization = `Bearer ${sessionStorage.token}`;
     let options = {
       method: "POST",
       headers,
@@ -90,11 +90,7 @@ export default class CreateRentable extends React.Component {
 
   submitCreateRentable() {
     let status;
-    const options = {
-      method: "POST",
-      body: JSON.stringify(this.state.newRentable),
-      headers: { "Content-Type": "application/json" }
-    }
+    let options = fetchHelper.makeOptions("POST", true, this.state.newRentable);
     fetch(URL + "api/rentables/create", options)
       .then(res => {
         status = res.status;

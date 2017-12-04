@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import auth from '../authorization/auth';
+import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
 
 export default class RentRentable extends Component {
@@ -24,11 +25,7 @@ export default class RentRentable extends Component {
             }
         }
         console.log("JSON:", json);
-        const options = {
-            method: "POST",
-            body: JSON.stringify(json),
-            headers: { "Content-Type": "application/json" }
-        }
+        const options = fetchHelper.makeOptions("POST", true, json);
         fetch(URL + "api/booking/create", options).catch(err => {
             console.log(err);
         })

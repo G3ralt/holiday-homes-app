@@ -1,6 +1,7 @@
 import React from 'react';
 import { Description, GPSinfo, Image, PlaceName, RatingAvg, Zvezdichka } from '../components/importContainers';
 import auth from '../authorization/auth';
+import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
 
 export default class UserPlaces extends React.Component {
@@ -23,8 +24,8 @@ export default class UserPlaces extends React.Component {
             userItself.username = auth.username;
             this.setState({ userItself: userItself });
         }
-
-        fetch(URL + "api/places/all/" + this.state.userItself.username)
+        let options = fetchHelper.makeOptions("GET", true);
+        fetch(URL + "api/places/all/" + this.state.userItself.username, options)
             .then((res) => {
                 return res.json();
             }).then((data) => {

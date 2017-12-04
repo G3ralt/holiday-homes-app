@@ -7,6 +7,7 @@ import javax.ws.rs.core.*;
 import entity.Place;
 import facades.FacadeFactory;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import static rest.JSONConverter.*;
 
 @Path("places")
@@ -41,6 +42,7 @@ public class PlaceResource {
     }
 
     @Path("/all/{username}")
+    @RolesAllowed("User")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -59,6 +61,7 @@ public class PlaceResource {
     }
 
     @Path("/create")
+    @RolesAllowed("User")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -83,6 +86,7 @@ public class PlaceResource {
     }
 
     @Path("/checkName/{placeName}")
+    @RolesAllowed("User")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response checkPlaceName(@PathParam("placeName") String placeName) {
@@ -100,6 +104,7 @@ public class PlaceResource {
     }
 
     @Path("/addRating")
+    @RolesAllowed("User")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

@@ -1,5 +1,6 @@
 import React from 'react';
 import auth from '../authorization/auth';
+import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
 
 export default class CreatePlace extends React.Component {
@@ -28,11 +29,10 @@ export default class CreatePlace extends React.Component {
 
   checkForPlaceName = (event) => {
     event.preventDefault();
-    let status;
-    fetch(URL + "api/places/checkName/" + this.state.newPlace.placeName)
+    let options = fetchHelper.makeOptions("GET", true);
+    fetch(URL + "api/places/checkName/" + this.state.newPlace.placeName, options)
       .then(res => {
-        status = res.status;
-        switch (status) {
+        switch (res.status) {
           case 202: //placeName is free
             this.imgUpload(); //Next fetch
             break;
@@ -52,12 +52,16 @@ export default class CreatePlace extends React.Component {
     let data = new FormData();
     data.append('file', image.files[0]);
     data.append('placeName', this.state.newPlace.placeName);
-
+    let headers = {};
+    headers.Authorization = `Bearer ${sessionStorage.token}`;
+    let options = {
+      method: "POST",
+      headers,
+      body: data,
+    }
     let status;
-    fetch(URL + 'api/imgUpload', {
-      method: 'POST',
-      body: data
-    }).then(res => {
+    fetch(URL + 'api/imgUpload', options)
+    .then(res => {
       status = res.status;
       return res.json();
     }).then(json => {
@@ -80,16 +84,10 @@ export default class CreatePlace extends React.Component {
   }
 
   submitCreatePlace() {
-    let status;
-    const options = {
-      method: "POST",
-      body: JSON.stringify(this.state.newPlace),
-      headers: { "Content-Type": "application/json" }
-    }
+    let options = fetchHelper.makeOptions("POST", true, this.state.newPlace);
     fetch(URL + "api/places/create", options)
       .then(res => {
-        status = res.status;
-        switch (status) {
+        switch (res.status) {
           case 201: //Place created
             alert("Place created!");
             window.location.href = this.state.clientOrigin+"/#/myDashboard/myPlaces";

@@ -1,5 +1,6 @@
 import React from 'react';
 import StarRatingComponent from 'react-star-rating-component';
+import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
 
 export default class Zvezdichka extends React.Component {
@@ -31,7 +32,7 @@ export default class Zvezdichka extends React.Component {
     this.setState({ rating: nextValue, userVoted: 'yes' });
 
     let submitNewRatingObject;
-    if(this.state.rentableName !== 'isNotAplaceName') {
+    if (this.state.rentableName !== 'isNotAplaceName') {
       submitNewRatingObject = {
         ['rentableName']: this.state.rentableName,
         rating: nextValue,
@@ -45,19 +46,7 @@ export default class Zvezdichka extends React.Component {
       }
     }
 
-    const options = {
-      method: "POST",
-      body: JSON.stringify(submitNewRatingObject),
-      headers: { "Content-Type": "application/json" }
-    }
-    /*
-    console.log("new rating object to be sent :", submitNewRatingObject);
-    console.log("options headers to be sent :", options);
-    console.log("URL + componentUsedOnPath from state:");
-    console.log(URL + this.state.componentUsedOnPath);
-    console.log("user HAS voted ? : ", this.state.userVoted);
-    */
-    
+    const options = fetchHelper.makeOptions("POST", true, submitNewRatingObject);
     fetch(URL + this.state.componentUsedOnPath, options)
       .catch(err => {
         console.log(JSON.stringify(err));
@@ -68,7 +57,7 @@ export default class Zvezdichka extends React.Component {
     return (
       <div className="col-md-4 reactiveStars">
         <h4>Your Rating (from current user)</h4>
-    {/*{(this.state.userVoted !== 'yes') && (<p>(You haven't rated yet.)</p>)} */}
+        {/*{(this.state.userVoted !== 'yes') && (<p>(You haven't rated yet.)</p>)} */}
         <div style={{ fontSize: 30 }}>
           <StarRatingComponent
             name="cuzYouAreSkyFullOfStars"
