@@ -27,7 +27,7 @@ export default class Zvezdichka extends React.Component {
   }
 
   onStarClick(nextValue, prevValue, name) {
-    console.log('name: %s, nextValue: %s, prevValue: %s', name, nextValue, prevValue);
+    /*console.log('name: %s, nextValue: %s, prevValue: %s', name, nextValue, prevValue);*/
     this.setState({ rating: nextValue, userVoted: 'yes' });
 
     let submitNewRatingObject;
@@ -50,12 +50,13 @@ export default class Zvezdichka extends React.Component {
       body: JSON.stringify(submitNewRatingObject),
       headers: { "Content-Type": "application/json" }
     }
-
+    /*
     console.log("new rating object to be sent :", submitNewRatingObject);
     console.log("options headers to be sent :", options);
     console.log("URL + componentUsedOnPath from state:");
     console.log(URL + this.state.componentUsedOnPath);
     console.log("user HAS voted ? : ", this.state.userVoted);
+    */
     
     fetch(URL + this.state.componentUsedOnPath, options)
       .catch(err => {
@@ -67,7 +68,7 @@ export default class Zvezdichka extends React.Component {
     return (
       <div className="col-md-4 reactiveStars">
         <h4>Your Rating (from current user)</h4>
-        {(this.state.userVoted !== 'yes') && (<p>(You haven't rated yet.)</p>)}
+    {/*{(this.state.userVoted !== 'yes') && (<p>(You haven't rated yet.)</p>)} */}
         <div style={{ fontSize: 30 }}>
           <StarRatingComponent
             name="cuzYouAreSkyFullOfStars"
