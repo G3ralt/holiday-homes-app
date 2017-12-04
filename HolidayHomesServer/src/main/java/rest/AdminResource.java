@@ -5,14 +5,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.util.List;
 import javax.ws.rs.*;
-import javax.ws.rs.core.MediaType;
 import entity.User;
 import facades.FacadeFactory;
 import java.util.ArrayList;
 import javax.annotation.security.RolesAllowed;
 
 @Path("demoadmin")
-//@RolesAllowed("Admin")
+@RolesAllowed("Admin")
 public class AdminResource {
 
     private static Gson gson = new GsonBuilder().setPrettyPrinting().create();

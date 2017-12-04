@@ -57,14 +57,19 @@ export default class CreateRentable extends React.Component {
     data.append('file', image.files[0]);
     data.append('placeName', this.state.newRentable.rentableName);
     let status;
-
-    fetch(URL + 'api/imgUpload', {
-      method: 'POST',
-      body: data
-    }).then(res => {
+    let headers = {};
+    headers.authorization = `Bearer ${sessionStorage.token}`;
+    let options = {
+      method: "POST",
+      headers,
+      body: data,
+    }
+    fetch(URL + 'api/imgUpload', options)
+    .then(res => {
       status = res.status;
       return res.json();
-    }).then(json => {
+    })
+    .then(json => {
       let newRentable = this.state.newRentable;
       newRentable['imgURL'] = json.imgURL;
       this.setState({ newRentable });
