@@ -105,7 +105,6 @@ public class HolidayHomeIntegrationTest {
     String jsonAsString = response.asString();
     ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
 
-    // now we count the number of entries in the JSON file, each entry is 1 ride
     boolean isEmpty = jsonAsArrayList.isEmpty();
     Assert.assertFalse(isEmpty);
             
@@ -134,7 +133,7 @@ public class HolidayHomeIntegrationTest {
   public void testRestForUserBookings() {
     String username = "user";
     String password = "test";
-    login(username,password);
+    //login(username,password);
     
     Response response = given()
             .pathParam("username", username)
@@ -146,7 +145,7 @@ public class HolidayHomeIntegrationTest {
     
     String jsonAsString = response.asString();
     ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
-    
+
     boolean isEmpty = jsonAsArrayList.isEmpty();
     Assert.assertFalse(isEmpty);
   }
