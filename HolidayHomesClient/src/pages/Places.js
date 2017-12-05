@@ -73,7 +73,6 @@ export default class Places extends React.Component{
             .then((res) => {
                 return res.json();
             }).then((data) => {
-                console.log(data);
                 this.setState({ allRentables: data });
             }).catch(err => {
                 console.log(JSON.stringify(err));
