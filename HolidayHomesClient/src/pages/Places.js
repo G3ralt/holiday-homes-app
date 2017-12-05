@@ -5,17 +5,17 @@ import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
 
 
-export default class Places extends React.Component{        
-  constructor(props){
-      super(props);
-	  this.state = { placeInfo: [], userItself: { username: "unauthorized" }, createdByUser: "Not active user!" };;
+export default class Places extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { placeInfo: [], userItself: { username: "unauthorized" }, createdByUser: "Not active user!" };;
     }
-    
-  componentWillMount() {
-      this.getAllPlaces();
-	}  
 
-	getAllPlaces = (cb) => {
+    componentWillMount() {
+        this.getAllPlaces();
+    }
+
+    getAllPlaces = (cb) => {
         let userItself = this.state.userItself;
         /*console.log("Is the user logged in? : ", auth.isloggedIn);*/
         if (auth.isloggedIn) {
@@ -35,17 +35,17 @@ export default class Places extends React.Component{
             }).then((data) => {
                 let pInfo = data.map(place => {
                     if (place.hasOwnProperty("user")) {
-                        this.setState({createdByUser: place.user.username});
+                        this.setState({ createdByUser: place.user.username });
                     }
                     return (
                         <div key={place.placeName} className="row nicePlace">
                             <Image img={place.imgURL} />
-							<PlaceName pName={place.placeName} />
-                            <RatingAvg avgRating={place.rating} pName={place.placeName} />
-                            { auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={place.userRating} pName={place.placeName} currentUser={this.state.userItself}/>) }
+                            <PlaceName pName={place.placeName} />
                             <CreatedByUser uName={this.state.createdByUser} />
-                            <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
-                            <MyMap />
+                            <RatingAvg avgRating={place.rating} pName={place.placeName} />
+                            {auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={place.userRating} pName={place.placeName} currentUser={this.state.userItself} />)}
+                            {/* <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} /> */}
+                            <MyMap pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} pName={place.placeName} />
                             <Description desc={place.description} />
                         </div>
                     )
@@ -57,20 +57,20 @@ export default class Places extends React.Component{
     }
 
 
-  render() {
-      return (
-        <div>
-		<h2>All Nice Places</h2>
-		<div className="container-fluid nicePlaces">
-			{this.state.placeInfo}
-		</div>
-		{this.state.data1 && (
-			<div className="alert alert-danger errmsg-left" role="alert">
-				{this.state.data1}
-			</div>
-		)}
-	</div>
-      );
+    render() {
+        return (
+            <div>
+                <h2>All Nice Places</h2>
+                <div className="container-fluid nicePlaces">
+                    {this.state.placeInfo}
+                </div>
+                {this.state.data1 && (
+                    <div className="alert alert-danger errmsg-left" role="alert">
+                        {this.state.data1}
+                    </div>
+                )}
+            </div>
+        );
     }
 }
 
