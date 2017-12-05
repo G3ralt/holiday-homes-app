@@ -16,6 +16,8 @@ export default class CreateRentable extends React.Component {
         price: 0,
         imgURL: "",
         description: "",
+        gpsLat: "",
+        gpsLong: "",
         admin: { username: auth.username }
       },
       clientOrigin: window.location.origin
@@ -37,7 +39,7 @@ export default class CreateRentable extends React.Component {
       .then(res => {
         switch (res.status) {
           case 202: //rentableName is free
-            this.imgUpload(); //Next fetch
+            this.getGPSlocation(); //Next fetch
             break;
           case 409: //rentableName is already used
             alert("Rentable already used");
@@ -49,6 +51,36 @@ export default class CreateRentable extends React.Component {
 
         }
       })
+  }
+
+  getGPSlocation = () => {
+    //Create the request URL
+    let words = this.state.newRentable.street.split(" ");
+    let streeWithPlus = words.join("+");
+    let URL = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    URL += this.state.newRentable.zipCode + "+";
+    URL += streeWithPlus + ",+";
+    URL += this.state.newRentable.city + ",+";
+    URL += this.state.newRentable.country;
+    URL += "&key=AIzaSyCBkhStVuUZ51OOLMY5YM_npWc_Lxr70Ro";
+    fetch(URL)
+    .then(res => {
+      if(res.status === 200) {
+        return res.json();
+      } else {
+        //If the API returns an error
+        alert("The address you provided is invalid! Please try again with different address!");
+        return;
+      }
+    })
+    .then(json => {
+      let newRentable = this.state.newRentable;
+      newRentable['gpsLat'] = json.results[0].geometry.location.lat;
+      newRentable['gpsLong'] = json.results[0].geometry.location.lng;
+      this.setState({ newRentable });
+      this.imgUpload(); //next fetch
+    })
+
   }
 
   imgUpload = () => {
@@ -96,7 +128,6 @@ export default class CreateRentable extends React.Component {
         status = res.status;
         switch (status) {
           case 201: //Rentable created
-            alert("Rentable created!");
             window.location.href = this.state.clientOrigin + "/#/rentables";
             break;
           case 406: //RentableName already used

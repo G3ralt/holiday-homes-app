@@ -4,7 +4,6 @@ import customExceptions.DBException;
 import entity.Booking;
 import entity.Rentable;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.*;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
