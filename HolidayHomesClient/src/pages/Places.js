@@ -1,5 +1,5 @@
 import React from 'react';
-import { Description, GPSinfo, Image, PlaceName, RatingAvg, CreatedByUser, Zvezdichka } from '../components/importContainers';
+import { Description, GPSinfo, Image, PlaceName, RatingAvg, CreatedByUser, Zvezdichka, MyMap } from '../components/importContainers';
 import auth from '../authorization/auth';
 const URL = require("../../package.json").serverURL;
 
@@ -48,6 +48,7 @@ export default class Places extends React.Component{
                             { auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={place.userRating} pName={place.placeName} currentUser={this.state.userItself}/>) }
                             <CreatedByUser uName={this.state.createdByUser} />
                             <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
+                            <MyMap />
                             <Description desc={place.description} />
                         </div>
                     )

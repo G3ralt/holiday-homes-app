@@ -150,3 +150,8 @@ width: 100%;
 	margin: 10px 0 0 40px;
 	float: right;
 }
+
+.google-map {
+	height: 200px;
+	background-color: rgb(87, 2, 35);
+}

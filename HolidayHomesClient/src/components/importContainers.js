@@ -9,5 +9,6 @@ import CreatedByUser from "./createdByContainer";
 import RentRentable from './rentRentableContainer';
 import Zvezdichka from './ratingStarsContainer';
 import BookedWeek from './bookedWeekContainer';
+import MyMap from './testMapsContainer';
 
-export { Address, Description, GPSinfo, Image, PlaceName, RentableName, RatingAvg, CreatedByUser, RentRentable, Zvezdichka, BookedWeek };
+export { Address, Description, GPSinfo, Image, PlaceName, RentableName, RatingAvg, CreatedByUser, RentRentable, Zvezdichka, BookedWeek, MyMap };
