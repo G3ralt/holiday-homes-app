@@ -11,8 +11,15 @@ import javax.validation.constraints.Size;
 @Table(name = "rentable")
 public class Rentable implements Serializable {
 
+    @NotNull
+    @Expose
+    @Column(name = "gps_lat")
+    private double gpsLat;
     
-    private static final long serialVersionUID = 1L;
+    @NotNull
+    @Expose
+    @Column(name = "gps_long")
+    private double gpsLong;
 
     @Id
     @NotNull
@@ -231,5 +238,21 @@ public class Rentable implements Serializable {
 
     public void setAdminName(User admin) {
         this.admin = admin;
+    }
+
+    public double getGpsLat() {
+        return gpsLat;
+    }
+
+    public void setGpsLat(double gpsLat) {
+        this.gpsLat = gpsLat;
+    }
+
+    public double getGpsLong() {
+        return gpsLong;
+    }
+
+    public void setGpsLong(double gpsLong) {
+        this.gpsLong = gpsLong;
     }
 }

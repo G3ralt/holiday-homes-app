@@ -64,6 +64,7 @@ public class HolidayHomeIntegrationTest {
     tomcat.stop();
   }
 
+  @Ignore
   @Test
   public void testRestGetAllPlaces() {
    
@@ -87,7 +88,7 @@ public class HolidayHomeIntegrationTest {
             
   }
 
-  
+  @Ignore
   @Test
   public void testRestGetAllRentables() {
    
