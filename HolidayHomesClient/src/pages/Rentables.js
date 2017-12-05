@@ -8,10 +8,11 @@ export default class Rentables extends Component{
         
   constructor(){
       super();
-	  this.state = { rentableInfo: [], userItself: { username: "unauthorized" } };;
+	  this.state = { rentableInfo: [], userItself: { username: "unauthorized" }, allPlaces: [] };;
     }
     
-  componentWillMount() {
+  async componentWillMount() {
+      await this.getAllPlaces();
       this.getAllRentables();
 	}  
 
@@ -47,6 +48,31 @@ export default class Rentables extends Component{
                     )
                 });
                 this.setState({ rentableInfo: rInfo });
+            }).catch(err => {
+                console.log(JSON.stringify(err));
+            })
+    }
+
+    getAllPlaces = (cb) => {
+        let userItself = this.state.userItself;
+        /*console.log("Is the user logged in? : ", auth.isloggedIn);*/
+        if (auth.isloggedIn) {
+            userItself.username = auth.username;
+            this.setState({ userItself: userItself });
+        }
+        /*
+        console.log("Username from auth: ", auth.username);
+        console.log("Username from State: ", this.state.userItself.username);
+        */
+
+        const options = fetchHelper.makeOptions("POST", false, userItself);
+
+        fetch(URL + "api/places/all", options)
+            .then((res) => {
+                return res.json();
+            }).then((data) => {
+                this.setState({ allPlaces: data });
+                console.log(this.state.allPlaces);
             }).catch(err => {
                 console.log(JSON.stringify(err));
             })
