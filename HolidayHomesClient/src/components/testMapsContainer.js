@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 
-const AnyReactComponent = ({ text }) => {
+const PlacesMarker = ({ text }) => {
   return (
     <div>
-
-      <div className='pin bounce'></div>
+      <div className='placePin bounce'></div>
       <div className='textLabel'>{text}</div>
-      <div className='pulse'></div>
+      <div className='placePulse'></div>
     </div>
   )
 };
+
+const RentablesMarker = ({ text }) => {
+  return (
+    <div key={text}>
+      <div className='rentablePin bounce'></div>
+      <div className='textLabel'>{text}</div>
+      <div className='rentablePulse'></div>
+    </div>
+  )
+};
+
+let allRentableMarkers;
 
 export default class Map extends Component {
   //   static defaultProps = {
@@ -23,8 +34,14 @@ export default class Map extends Component {
     super(props);
     this.state = {
       center: { lat: this.props.pGPSlat, lng: this.props.pGPSlong },
-      zoom: 15
+      zoom: 15,
+      allTheRentables: []
     }
+    allRentableMarkers = this.props.allRentables.map(rentable => {
+      return (
+          <RentablesMarker key={rentable.rentableName} lat={rentable.gpsLat} lng={rentable.gpsLong} text={rentable.rentableName} />
+      )
+    });
   }
   render() {
     return (
@@ -34,8 +51,8 @@ export default class Map extends Component {
           bootstrapURLKeys={{ key: 'AIzaSyCBkhStVuUZ51OOLMY5YM_npWc_Lxr70Ro' }}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}>
-          <AnyReactComponent lat={this.state.center.lat} lng={this.state.center.lng} text={this.props.pName} />
-          <AnyReactComponent lat={35.121724} lng={-118.630704} text={'hahaha'} />
+          <PlacesMarker lat={this.state.center.lat} lng={this.state.center.lng} text={this.props.pName} />
+          {allRentableMarkers}
         </GoogleMapReact>
       </div>
     )
