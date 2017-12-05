@@ -8,10 +8,11 @@ const URL = require("../../package.json").serverURL;
 export default class Places extends React.Component{        
   constructor(props){
       super(props);
-	  this.state = { placeInfo: [], userItself: { username: "unauthorized" }, createdByUser: "Not active user!" };;
+	  this.state = { placeInfo: [], userItself: { username: "unauthorized" }, createdByUser: "Not active user!", allRentables: {} };;
     }
     
-  componentWillMount() {
+  async componentWillMount() {
+      await this.getAllRentables();
       this.getAllPlaces();
 	}  
 
@@ -44,12 +45,36 @@ export default class Places extends React.Component{
                             <RatingAvg avgRating={place.rating} pName={place.placeName} />
                             { auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={place.userRating} pName={place.placeName} currentUser={this.state.userItself}/>) }
                             <CreatedByUser uName={this.state.createdByUser} />
-                            <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
+                            <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} allRentables = {this.state.allRentables} />
                             <Description desc={place.description} />
                         </div>
                     )
                 });
                 this.setState({ placeInfo: pInfo });
+            }).catch(err => {
+                console.log(JSON.stringify(err));
+            })
+    }
+
+    getAllRentables = (cb) => {
+        let userItself = this.state.userItself;
+        /*console.log("Is the user logged in? : ", auth.isloggedIn);*/
+        if (auth.isloggedIn) {
+            userItself.username = auth.username;
+            this.setState({ userItself: userItself });
+        }
+        /*
+        console.log("USER NAME from auth: ", auth.username);
+        console.log("User Name from State: ", this.state.userItself.username);
+        */
+
+        const options = fetchHelper.makeOptions("POST", true, userItself);
+        fetch(URL + "api/rentables/all", options)
+            .then((res) => {
+                return res.json();
+            }).then((data) => {
+                console.log(data);
+                this.setState({ allRentables: data });
             }).catch(err => {
                 console.log(JSON.stringify(err));
             })
@@ -63,11 +88,6 @@ export default class Places extends React.Component{
 		<div className="container-fluid nicePlaces">
 			{this.state.placeInfo}
 		</div>
-		{this.state.data1 && (
-			<div className="alert alert-danger errmsg-left" role="alert">
-				{this.state.data1}
-			</div>
-		)}
 	</div>
       );
     }
