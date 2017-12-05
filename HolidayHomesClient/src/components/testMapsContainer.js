@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
 
-const AnyReactComponent = () => {
+const AnyReactComponent = ({ text }) => {
   return (
     <div>
+
       <div className='pin bounce'></div>
+      <div className='textLabel'>{text}</div>
       <div className='pulse'></div>
     </div>
   )
@@ -28,14 +30,12 @@ export default class Map extends Component {
     return (
       <div className='col-md-4 google-map'>
         <GoogleMapReact
+          options={{ fullscreenControl: false }}
           bootstrapURLKeys={{ key: 'AIzaSyCBkhStVuUZ51OOLMY5YM_npWc_Lxr70Ro' }}
           defaultCenter={this.state.center}
           defaultZoom={this.state.zoom}>
-          <AnyReactComponent
-            lat={this.state.center.lat}
-            lng={this.state.center.lng}
-            key={this.props.pName}
-          />
+          <AnyReactComponent lat={this.state.center.lat} lng={this.state.center.lng} text={this.props.pName} />
+          <AnyReactComponent lat={35.121724} lng={-118.630704} text={'hahaha'} />
         </GoogleMapReact>
       </div>
     )
