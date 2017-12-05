@@ -129,6 +129,7 @@ public class HolidayHomeIntegrationTest {
     Assert.assertFalse(isEmpty);
   }
 
+  @Ignore
   @Test
   public void testRestForUserBookings() {
     String username = "user";
