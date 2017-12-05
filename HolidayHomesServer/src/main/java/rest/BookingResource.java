@@ -1,18 +1,16 @@
 package rest;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import customExceptions.DBException;
 import entity.Booking;
 import facades.FacadeFactory;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.core.*;
 import javax.ws.rs.*;
 import static rest.JSONConverter.getJSONfromObject;
 import static rest.JSONConverter.*;
 
 @Path("booking")
+@RolesAllowed("User")
 public class BookingResource {
 
     private final FacadeFactory FF;
@@ -26,6 +24,7 @@ public class BookingResource {
     }
 
     @Path("/create")
+    @RolesAllowed("User")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createBooking(String jsonString) {
@@ -45,6 +44,7 @@ public class BookingResource {
     }
 
     @Path("/allForUser/{username}")
+    @RolesAllowed("User")
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

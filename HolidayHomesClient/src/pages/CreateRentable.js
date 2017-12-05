@@ -1,5 +1,6 @@
 import React from 'react';
 import auth from '../authorization/auth';
+import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
 
 export default class CreateRentable extends React.Component {
@@ -31,11 +32,10 @@ export default class CreateRentable extends React.Component {
 
   checkForRentableName = (event) => {
     event.preventDefault();
-    let status;
-    fetch(URL + "api/rentables/checkName/" + this.state.newRentable.rentableName)
+    let options = fetchHelper.makeOptions("GET", true);
+    fetch(URL + "api/rentables/checkName/" + this.state.newRentable.rentableName, options)
       .then(res => {
-        status = res.status;
-        switch (status) {
+        switch (res.status) {
           case 202: //rentableName is free
             this.imgUpload(); //Next fetch
             break;
@@ -57,14 +57,19 @@ export default class CreateRentable extends React.Component {
     data.append('file', image.files[0]);
     data.append('placeName', this.state.newRentable.rentableName);
     let status;
-
-    fetch(URL + 'api/imgUpload', {
-      method: 'POST',
-      body: data
-    }).then(res => {
+    let headers = {};
+    headers.Authorization = `Bearer ${sessionStorage.token}`;
+    let options = {
+      method: "POST",
+      headers,
+      body: data,
+    }
+    fetch(URL + 'api/imgUpload', options)
+    .then(res => {
       status = res.status;
       return res.json();
-    }).then(json => {
+    })
+    .then(json => {
       let newRentable = this.state.newRentable;
       newRentable['imgURL'] = json.imgURL;
       this.setState({ newRentable });
@@ -85,11 +90,7 @@ export default class CreateRentable extends React.Component {
 
   submitCreateRentable() {
     let status;
-    const options = {
-      method: "POST",
-      body: JSON.stringify(this.state.newRentable),
-      headers: { "Content-Type": "application/json" }
-    }
+    let options = fetchHelper.makeOptions("POST", true, this.state.newRentable);
     fetch(URL + "api/rentables/create", options)
       .then(res => {
         status = res.status;

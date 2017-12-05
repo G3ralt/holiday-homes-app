@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { Address, Description, Image, RentableName, RatingAvg, RentRentable, CreatedByUser, Zvezdichka } from '../components/importContainers';
 import auth from '../authorization/auth';
+import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
 
 export default class Rentables extends Component{
@@ -26,12 +27,7 @@ export default class Rentables extends Component{
         console.log("User Name from State: ", this.state.userItself.username);
         */
 
-        const options = {
-            method: "POST",
-            body: JSON.stringify(this.state.userItself),
-            headers: { "Content-Type": "application/json" }
-        }
-
+        const options = fetchHelper.makeOptions("POST", true, userItself);
         fetch(URL + "api/rentables/all", options)
             .then((res) => {
                 return res.json();

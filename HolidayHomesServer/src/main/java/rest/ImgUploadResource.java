@@ -3,6 +3,7 @@ package rest;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import javax.annotation.security.RolesAllowed;
 import javax.servlet.ServletContext;
 import javax.ws.rs.*;
 import javax.ws.rs.core.*;
@@ -10,6 +11,7 @@ import org.glassfish.jersey.media.multipart.*;
 import static rest.JSONConverter.getJSONfromObject;
 
 @Path("imgUpload")
+@RolesAllowed({"Admin","User"})
 public class ImgUploadResource {
 
     private final ArrayList<String> TYPES = new ArrayList(Arrays.asList(".jpg", ".jpeg", ".png"));

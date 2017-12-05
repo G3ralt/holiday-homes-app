@@ -8,6 +8,7 @@ import javax.ws.rs.core.MediaType;
 import entity.Rentable;
 import facades.FacadeFactory;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.core.Response;
 import static rest.JSONConverter.*;
 
@@ -44,6 +45,7 @@ public class RentableResource {
     }
 
     @Path("/create")
+    @RolesAllowed("Admin")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -68,9 +70,10 @@ public class RentableResource {
     }
 
     @Path("/checkName/{rentableName}")
+    @RolesAllowed("Admin")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response checkPlaceName(@PathParam("rentableName") String rentableName) {
+    public Response checkRentableName(@PathParam("rentableName") String rentableName) {
         try {
             boolean existing = FF.getRentableFacade().checkForRentableName(rentableName);
 
@@ -85,6 +88,7 @@ public class RentableResource {
     }
 
     @Path("/addRating")
+    @RolesAllowed("User")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
