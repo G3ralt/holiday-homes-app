@@ -9,6 +9,21 @@ import CreatedByUser from "./createdByContainer";
 import RentRentable from './rentRentableContainer';
 import Zvezdichka from './ratingStarsContainer';
 import BookedWeek from './bookedWeekContainer';
-import MyMap from './testMapsContainer';
+import PlacesMapWithRentablesAround from './placesMap';
+import RentablesMapWithPlacesAround from './rentablesMap';
 
-export { Address, Description, GPSinfo, Image, PlaceName, RentableName, RatingAvg, CreatedByUser, RentRentable, Zvezdichka, BookedWeek, MyMap };
+export {
+    Address,
+    Description,
+    GPSinfo,
+    Image,
+    PlaceName,
+    RentableName,
+    RatingAvg,
+    CreatedByUser,
+    RentRentable,
+    Zvezdichka,
+    BookedWeek,
+    PlacesMapWithRentablesAround,
+    RentablesMapWithPlacesAround
+};

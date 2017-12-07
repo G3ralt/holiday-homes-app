@@ -1,0 +1,33 @@
+.price-tag {
+    font-size: 15px;
+    color: #fff;
+    background-color: #eb9027;  
+    padding: 18px 30px;
+    display: inline-block;
+    position: relative;
+    margin-left: 35px;
+    border-radius: 0 5px 5px 0;
+    box-shadow: 0 6px 20px 0px rgb(73, 73, 73);
+    text-shadow: 1px 1px 1px #000000;
+    font-family: 'Changa', sans-serif;
+  }
+  .price-tag:before {
+    content: '';
+    position: absolute;
+    border-top: 29px solid transparent;
+    border-bottom: 29px solid transparent; 
+    border-right: 35px solid #eb9027;
+    top: 0;
+    left: -35px;
+  }
+  .price-tag:after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border-radius: 8px;
+    top: 21px;
+    left: -8px;
+    box-shadow: 1px 1px rgb(124, 124, 124);
+  }

@@ -1,22 +1,21 @@
-import React, {Component} from "react";
-import { Address, Description, Image, RentableName, RatingAvg, RentRentable, CreatedByUser, Zvezdichka } from '../components/importContainers';
+import React, { Component } from "react";
+import { RentablesMapWithPlacesAround, Description, Image, RentableName, RatingAvg, RentRentable, CreatedByUser, Zvezdichka } from '../components/importContainers';
 import auth from '../authorization/auth';
 import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
 
-export default class Rentables extends Component{
-        
-  constructor(){
-      super();
-	  this.state = { rentableInfo: [], userItself: { username: "unauthorized" }, allPlaces: [] };;
-    }
-    
-  async componentWillMount() {
-      await this.getAllPlaces();
-      this.getAllRentables();
-	}  
+export default class Rentables extends Component {
 
-	getAllRentables = (cb) => {
+    constructor() {
+        super();
+        this.state = { rentableInfo: [], userItself: { username: "unauthorized" }, allPlaces: [] };;
+    }
+
+    componentWillMount() {
+        this.getAllPlaces();
+    }
+
+    getAllRentables = (cb) => {
         let userItself = this.state.userItself;
         /*console.log("Is the user logged in? : ", auth.isloggedIn);*/
         if (auth.isloggedIn) {
@@ -36,12 +35,13 @@ export default class Rentables extends Component{
                 let rInfo = data.map(rentable => {
                     return (
                         <div key={rentable.rentableName} className="row nicePlace">
+                            <hr />
                             <Image img={rentable.imgURL} />
-							<RentableName rName={rentable.rentableName} />
-							{auth.isloggedIn && auth.isAdmin && (<CreatedByUser uName={rentable.admin.username} />)}
+                            <RentableName rName={rentable.rentableName} />
+                            {auth.isloggedIn && auth.isAdmin && (<CreatedByUser uName={rentable.admin.username} />)}
                             <RatingAvg avgRating={rentable.rating} />
-                            {auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={rentable.userRating} rName={rentable.rentableName} currentUser={this.state.userItself} />) }
-                            <Address street={rentable.street} city={rentable.city}  zipCode={rentable.zipCode} country={rentable.country}/> {/* Passed like address object */}
+                            {auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={rentable.userRating} rName={rentable.rentableName} currentUser={this.state.userItself} />)}
+                            <RentablesMapWithPlacesAround rGPSlat={rentable.gpsLat} rGPSlong={rentable.gpsLong} rName={rentable.rentableName} allPlaces={this.state.allPlaces} />
                             <RentRentable rPrice={rentable.price} weeks={rentable.availableWeeks} rName={rentable.rentableName} uName={auth.username} />
                             <Description desc={rentable.description} />
                         </div>
@@ -53,7 +53,7 @@ export default class Rentables extends Component{
             })
     }
 
-    getAllPlaces = (cb) => {
+    getAllPlaces = async (cb) => {
         let userItself = this.state.userItself;
         /*console.log("Is the user logged in? : ", auth.isloggedIn);*/
         if (auth.isloggedIn) {
@@ -65,28 +65,29 @@ export default class Rentables extends Component{
         console.log("Username from State: ", this.state.userItself.username);
         */
 
-        const options = fetchHelper.makeOptions("POST", false, userItself);
+        const options = fetchHelper.makeOptions("POST", true, userItself);
 
-        fetch(URL + "api/places/all", options)
+        await fetch(URL + "api/places/all", options)
             .then((res) => {
                 return res.json();
             }).then((data) => {
                 this.setState({ allPlaces: data });
             }).catch(err => {
                 console.log(JSON.stringify(err));
-            })
+            });
+        this.getAllRentables();
     }
 
 
-  render() {
-      return (
-        <div>
-		<h2>All you can Rent</h2>
-		<div className="container-fluid nicePlaces">
-			{this.state.rentableInfo}
-		</div>
-	</div>
-      );
+    render() {
+        return (
+            <div>
+                <h2 style={{ fontFamily: 'Changa' }}>All you can Rent</h2>
+                <div className="container-fluid nicePlaces">
+                    {this.state.rentableInfo}
+                </div>
+            </div>
+        );
     }
 }
 
