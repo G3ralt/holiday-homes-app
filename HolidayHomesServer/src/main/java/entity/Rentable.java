@@ -91,6 +91,10 @@ public class Rentable implements Serializable {
     public Rentable() {
     }
 
+    public Rentable(String rentableName) {
+        this.rentableName = rentableName;
+    }
+    
     public Rentable(String rentableName, String street, String city, int zipcode, String country, double price, String imgURL, String description, User admin) {
         this.rentableName = rentableName;
         this.street = street;
@@ -230,14 +234,6 @@ public class Rentable implements Serializable {
     @Override
     public String toString() {
         return "entity.Rentable[ rentableName=" + rentableName + " ]";
-    }
-
-    public User getAdminName() {
-        return admin;
-    }
-
-    public void setAdminName(User admin) {
-        this.admin = admin;
     }
 
     public double getGpsLat() {
