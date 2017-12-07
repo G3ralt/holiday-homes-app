@@ -105,7 +105,6 @@ public class HolidayHomeIntegrationTest {
     
     String jsonAsString = response.asString();
     ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
-
     boolean isEmpty = jsonAsArrayList.isEmpty();
     Assert.assertFalse(isEmpty);
             
@@ -114,16 +113,22 @@ public class HolidayHomeIntegrationTest {
   @Ignore
   @Test
   public void testRestAdminPageGetUserList() {
-    
+    Map<String, String> admin = new HashMap<>();
+    admin.put("admin", "test");
+    securityToken = "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsInJvbGVzIjpbIkFkbWluIl0sImV4cCI6MTUxMjY0NjQyMywiaWF0IjoxNTEyNjQyODIzLCJpc3N1ZXIiOiJzZW1lc3RlcjNkZW1vLWNwaGJ1c2luZXNzLmRrLWNvbXB1dGVyU2NpZW5jZSIsInVzZXJuYW1lIjoiYWRtaW4ifQ.k9MExy7O-4xSJ0klrx0vUts1Z2hGHg7LbCc8_kAjB4Y";
     Response response = given()
+            .auth().oauth2(securityToken)
             .contentType("application/json")
+            .body(admin)
             .when()
             .get("/api/demoadmin")
             .then()
             .contentType(ContentType.JSON).
             extract().response();
     
+      
     String jsonAsString = response.asString();
+    System.out.println(jsonAsString);
     ArrayList<Map<String,?>> jsonAsArrayList = from(jsonAsString).get("");
     
     boolean isEmpty = jsonAsArrayList.isEmpty();
@@ -172,8 +177,8 @@ public class HolidayHomeIntegrationTest {
     Assert.assertFalse(isEmpty);
   }
   
-  @Test
   @Ignore
+  @Test
   public void adminNotAuthenticated() {
     logOut();
     given()
