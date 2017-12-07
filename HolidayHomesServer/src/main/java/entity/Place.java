@@ -67,6 +67,10 @@ public class Place implements Serializable {
         this.user = user;
     }
 
+    public Place(String name) {
+        this.placeName = name;
+    }
+
     public String getDescription() {
         return description;
     }
