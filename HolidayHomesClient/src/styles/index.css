@@ -102,11 +102,11 @@ border-top-right-radius: 0;
 }
 
 .nicePlaces {
-background-color: red;
+/* background-color: red; */
 }
 
 .nicePlace {
-background-color: orange;
+/* background-color: orange; */
 margin-top: 15px;
 }
 
@@ -115,19 +115,21 @@ background-color: rgb(206, 206, 206);
 }
 
 .placeName {
-background-color: greenyellow;
+/* background-color: greenyellow; */
+font-family: 'Changa', sans-serif;
 }
 
 .createdBy {
-	background-color: bisque;
+	/* background-color: bisque; */
 }
 
 .placeRating {
-background-color: blueviolet;
+/* background-color: blueviolet; */
+font-family: 'Changa', sans-serif;
 }
 
 .placeAddress {
-background-color: wheat;
+/* background-color: wheat; */
 }
 
 .placeGPS {
@@ -135,7 +137,9 @@ background-color: rgb(53, 178, 236)
 }
 
 .placeDesc {
-background-color: rgb(197, 92, 145);
+/* background-color: rgb(197, 92, 145); */
+font-family: 'Changa', sans-serif;
+font-size: 1.2em;
 }
 
 img {
@@ -143,15 +147,51 @@ width: 100%;
 }
 
 .rentablePrice{
-	background-color: greenyellow;
+	/* background-color: greenyellow; */
 }
 
 .rentButton {
-	margin: 10px 0 0 40px;
-	float: right;
+	margin: 0 0 0 20px;
+	box-shadow: 0 6px 20px 0px rgb(73, 73, 73);
+	font-family: 'Changa', sans-serif;
 }
 
 .google-map {
 	height: 200px;
-	background-color: rgb(87, 2, 35);
+	/* background-color: rgb(87, 2, 35); */
+}
+
+hr {
+  border:none;
+ 	width: 100%;
+	height: 50px;
+	margin-top: 0;
+	border-bottom: 1px solid #db681b;
+	box-shadow: 0 20px 20px -20px #333;
+  margin: -50px auto 10px; 
+}
+
+.fa
+{
+    color:rgb(255, 251, 1);
+    animation: colorchange1 1.2s;
+		-webkit-animation: colorchange1 1.2s;
+		animation-iteration-count: infinite;
+}
+
+@keyframes colorchange1
+{
+0%   {color: #fccb2a;}
+25% {color: #f8ce0b;}
+50% {color: #fbff00;}
+75% {color: #f8ce0b;}
+100% {color: #fccb2a;}
+}
+@-webkit-keyframes colorchange1 /* Safari and Chrome - necessary duplicate */
+{
+	0%   {color: #fccb2a;}
+	25% {color: #f8ce0b;}
+	50% {color: #fbff00;}
+	75% {color: #f8ce0b;}
+	100% {color: #fccb2a;}
 }

@@ -56,7 +56,7 @@ export default class Zvezdichka extends React.Component {
   render() {
     return (
       <div className="col-md-4 reactiveStars">
-        <h4>Your Rating (from current user)</h4>
+        <h4>Your Rating, {this.state.userItself.username}</h4>
         {/*{(this.state.userVoted !== 'yes') && (<p>(You haven't rated yet.)</p>)} */}
         <div style={{ fontSize: 30 }}>
           <StarRatingComponent

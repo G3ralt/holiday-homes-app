@@ -29,7 +29,7 @@ class TopMenu extends Component {
             </div>
             <ul className="nav navbar-nav">
 			  <li><Link to="/places">Places</Link></li>
-			  <li><Link to="/rentables">Rentables</Link></li>
+			  <li><Link to="/rentables">Rent a Home</Link></li>
 			  <li><Link to="/features">Features</Link></li>
 			  <li><Link to="/futureimplementations">Future Implementations</Link></li>
 			  <li><Link to="/whodidwhat">Who Did What</Link></li>
