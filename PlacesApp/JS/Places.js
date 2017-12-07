@@ -1,6 +1,7 @@
 import React from "react";
-import { Text, View, FlatList, StyleSheet, Button, Image, ScrollView } from 'react-native';
+import { Text, View, FlatList, StyleSheet, Button, Image, ScrollView, AsyncStorage } from 'react-native';
 import openMap from 'react-native-open-maps';
+import { readAsStringAsync } from "expo/src/FileSystem";
 const URL = require("../package.json").serverURL;
 
 class Places extends React.Component{
@@ -38,30 +39,9 @@ class Places extends React.Component{
 
 		}
 
-	  getPlaces = () => {
-	  	let data = {
-	  		method: 'POST',
-	  		headers: {
-	  			Accept: 'application/json',
-	  			'Content-Type': 'application/json'
-	  		},
-	  		body: JSON.stringify({
-	  			username: "unauthorized"
-	  		}),
-
-	  	}
-	  	return fetch(URL + "api/places/all", data)
-	  		.then(response => response.json())
-	  		.then(responseJson => {
-				  console.log("RESPONSE JSON");
-	  			return responseJson;
-	  		})
-	  		.catch(error => {
-	  			console.log("error");
-	  			console.error(error);
-	  		});
-
-	  }
+		async _getToken(){
+			return await AsyncStorage.getItem("token");
+		}
 
 	render(){
 		const locations = this.state.data.map((item) =>{
