@@ -10,8 +10,14 @@ const Touchable = (props) => (
 	<TouchableOpacity style={styles.button} onPress={props.onPress}>
     <Text style={styles.buttonText}>{props.title}</Text>
 	</TouchableOpacity>)
-	
 	class HomeScreen extends React.Component {
+			constructor() {
+				super();
+				this.state = {
+					loggedIn: false, 
+					username: "unauthorized"
+				}
+			}
 		static navigationOptions = { title: 'PlacesApp - Group 8' };
 		render() {
 			const { navigate } = this.props.navigation;
@@ -20,7 +26,8 @@ const Touchable = (props) => (
 				<Text style={{ textAlign: "center", fontSize: 20 }}>Places App</Text>
 				<Text style={{ textAlign: "center", fontSize: 16 }}>by Kasper, Anton, Andrian and Alexander</Text>
 				<Touchable onPress={() => navigate("places")} title="Places" />
-				<Touchable onPress={() => navigate("addPlace")} title="Add Place"/>
+				{this.state.loggedIn && <Touchable onPress={() => navigate("addPlace")} title="Add Place"/>}
+				{!this.state.loggedIn && <Touchable onPress={() => navigate("login")} title="Log in" />}
 				<Text style={{ textAlign: "center", fontSize: 16 }}>https://github.com/G3ralt/GROUP8-SP</Text>
 				</ScrollView>
 			)
