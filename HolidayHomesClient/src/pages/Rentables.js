@@ -38,7 +38,7 @@ export default class Rentables extends Component{
                         <div key={rentable.rentableName} className="row nicePlace">
                             <Image img={rentable.imgURL} />
 							<RentableName rName={rentable.rentableName} />
-							<CreatedByUser uName={rentable.admin.username} />
+							{auth.isloggedIn && auth.isAdmin && (<CreatedByUser uName={rentable.admin.username} />)}
                             <RatingAvg avgRating={rentable.rating} />
                             {auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={rentable.userRating} rName={rentable.rentableName} currentUser={this.state.userItself} />) }
                             <Address street={rentable.street} city={rentable.city}  zipCode={rentable.zipCode} country={rentable.country}/> {/* Passed like address object */}
@@ -72,7 +72,6 @@ export default class Rentables extends Component{
                 return res.json();
             }).then((data) => {
                 this.setState({ allPlaces: data });
-                console.log(this.state.allPlaces);
             }).catch(err => {
                 console.log(JSON.stringify(err));
             })

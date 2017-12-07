@@ -8,12 +8,11 @@ const URL = require("../../package.json").serverURL;
 export default class Places extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { placeInfo: [], userItself: { username: "unauthorized" }, createdByUser: "Not active user!", allRentables: {} };
+        this.state = { placeInfo: [], userItself: { username: "unauthorized" }, createdByUser: "Not active user!", allRentables: [] };
     }
 
-    async componentWillMount() {
-        await this.getAllRentables();
-        this.getAllPlaces();
+    componentWillMount() {
+        this.getAllRentables();
     }
 
     getAllPlaces = (cb) => {
@@ -27,7 +26,6 @@ export default class Places extends React.Component {
         console.log("Username from auth: ", auth.username);
         console.log("Username from State: ", this.state.userItself.username);
         */
-
         const options = fetchHelper.makeOptions("POST", false, userItself);
 
         fetch(URL + "api/places/all", options)
@@ -56,7 +54,7 @@ export default class Places extends React.Component {
             })
     }
 
-    getAllRentables = (cb) => {
+    getAllRentables = async (cb) => {
         let userItself = this.state.userItself;
         /*console.log("Is the user logged in? : ", auth.isloggedIn);*/
         if (auth.isloggedIn) {
@@ -69,18 +67,20 @@ export default class Places extends React.Component {
         */
 
         const options = fetchHelper.makeOptions("POST", true, userItself);
-        fetch(URL + "api/rentables/all", options)
+        await fetch(URL + "api/rentables/all", options)
             .then((res) => {
                 return res.json();
             }).then((data) => {
                 this.setState({ allRentables: data });
             }).catch(err => {
                 console.log(JSON.stringify(err));
-            })
+            });
+            this.getAllPlaces();
     }
 
 
     render() {
+        // console.log('####  RENDER');
         return (
             <div>
                 <h2>All Nice Places</h2>

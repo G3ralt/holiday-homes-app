@@ -34,13 +34,13 @@ export default class Zvezdichka extends React.Component {
     let submitNewRatingObject;
     if (this.state.rentableName !== 'isNotAplaceName') {
       submitNewRatingObject = {
-        ['rentableName']: this.state.rentableName,
+        rentableName: this.state.rentableName,
         rating: nextValue,
         username: this.state.userItself.username
       }
     } else {
       submitNewRatingObject = {
-        ['placeName']: this.state.placeName,
+        placeName: this.state.placeName,
         rating: nextValue,
         username: this.state.userItself.username
       }

@@ -2,7 +2,14 @@ body {
     background: #e6e6e6;
   }
   
-  .pin {
+    .textLabel {
+    color: black;
+    display: none;
+    background-color: white;
+    font-size: 1.3em;
+    }
+
+  .placePin {
     width: 30px;
     height: 30px;
     border-radius: 50% 50% 50% 0;
@@ -14,14 +21,51 @@ body {
     margin: -20px 0 0 -20px;
   }
   
-  .pin:after {
+  .placePin:after {
     content: "";
     width: 14px;
     height: 14px;
     margin: 8px 0 0 8px;
-    background: #e6e6e6;
+    background: #ebebeb;
     position: absolute;
     border-radius: 50%;
+  }
+
+  .placePin:active ~ .textLabel {
+    display: inline-block;
+    margin: -22px 0 0 10px;
+    padding: 10px;
+    position: absolute;
+    z-index: 8;
+  }
+
+  .rentablePin {
+    width: 30px;
+    height: 30px;
+    border-radius: 50% 50% 50% 0;
+    background: #0e79dd;
+    position: absolute;
+    transform: rotate(-45deg);
+    left: 50%;
+    top: 50%;
+    margin: -20px 0 0 -20px;
+  }
+  
+  .rentablePin:after {
+    content: "";
+    width: 14px;
+    height: 14px;
+    margin: 8px 0 0 8px;
+    background: #f8dc3b;
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .rentablePin:active ~ .textLabel {
+    display: inline-block;
+    margin: -22px 0 0 10px;
+    padding: 10px;
+    position: absolute;
   }
   
   .bounce {
@@ -30,8 +74,8 @@ body {
     animation-duration: 0.5s;
   }
   
-  .pulse {
-    background: #d6d4d4;
+  .placePulse {
+    background: #aaaaaa;
     border-radius: 50%;
     height: 14px;
     width: 14px;
@@ -43,7 +87,7 @@ body {
     z-index: -2;
   }
   
-  .pulse:after {
+  .placePulse:after {
     content: "";
     border-radius: 50%;
     height: 40px;
@@ -54,6 +98,33 @@ body {
     animation-iteration-count: infinite;
     opacity: 0;
     box-shadow: 0 0 1px 2px #e90061;
+    animation-delay: 1.1s;
+  }
+
+  .rentablePulse {
+    background: #aaaaaa;
+    border-radius: 50%;
+    height: 14px;
+    width: 14px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: 11px 0px 0px -12px;
+    transform: rotateX(55deg);
+    z-index: -2;
+  }
+  
+  .rentablePulse:after {
+    content: "";
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    margin: -13px 0 0 -13px;
+    animation: pulsate 1s ease-out;
+    animation-iteration-count: infinite;
+    opacity: 0;
+    box-shadow: 0 0 1px 2px #0e79dd;
     animation-delay: 1.1s;
   }
   
