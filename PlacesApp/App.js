@@ -22,21 +22,6 @@ const Touchable = (props) => (
 		}
 		static navigationOptions = { title: 'PlacesApp - Group 8' };
 		
-		async _isLoggedIn() {
-			var token = await AsyncStorage.getItem("token");
-
-			if (token.length > 5) {
-				this.setState({
-					loggedIn: true
-				})
-			}
-		}
-
-		async _getToken(){
-			var token = await AsyncStorage.getItem("token");
-			return token;
-		}
-		
 		render() {
 			const { navigate } = this.props.navigation;
 			return (
@@ -44,9 +29,8 @@ const Touchable = (props) => (
 				<Text style={{ textAlign: "center", fontSize: 20 }}>Places App</Text>
 				<Text style={{ textAlign: "center", fontSize: 16 }}>by Kasper, Anton, Andrian and Alexander</Text>
 				<Touchable onPress={() => navigate("places")} title="Places" />
-				{this.state.loggedIn && <Touchable onPress={() => navigate("addPlace")} title="Add Place"/>}
-				{this.state.loggedIn && <Text>{this._getToken}</Text>}
-				{!this.state.loggedIn && <Touchable onPress={() => navigate("login")} title="Log in" />}
+				<Touchable onPress={() => navigate("addPlace")} title="Add Place"/>
+				<Touchable onPress={() => navigate("login")} title="Log in" />
 				<Text style={{ textAlign: "center", fontSize: 16 }}>https://github.com/G3ralt/GROUP8-SP</Text>
 				</ScrollView>
 			)

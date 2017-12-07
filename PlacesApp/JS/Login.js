@@ -7,7 +7,7 @@ class Login extends React.Component{
 
 	constructor(){
 		super();
-		this.state = {data:"", err:"", username:"", password:""};
+		this.state = {data:"", err:"", username:"", password:"", loggedIn:false};
 	}
 
 	async _tokenSave (item, value) {
@@ -18,11 +18,25 @@ class Login extends React.Component{
 		}
 	}
 	
-	async _getToken(){
+	saveData = (key, value) => {
+		AsyncStorage.setItem(key, value);
+		this.setState({key:value});
+	}
+
+	getData = (key) => {
+		AsyncStorage.getItem(key).then((value) =>{
+			this.setState({key: value});
+		}).done();
+	}
+
+	async logout() {
 		try{
-			await AsyncStorage.getItem("token");
+			await AsyncStorage.removeItem("username");
+			await AsyncStorage.removeItem("token");
+			await AsyncStorage.setItem("loggedIn", false);
+			this.setState({username:"", password:"", loggedIn:false});
 		} catch (error){
-			console.log("Async storage: " + error.message);
+			console.log(error.message);
 		}
 	}
 
@@ -41,9 +55,12 @@ userLogin = () => {
 	fetch (URL + "api/login", data)
 			.then((response) => response.json())
 			.then((responseData) => {
-				console.log("TOKEN vvvv BELOW")
+				console.log("TOKEN vvvv BELOW");
 				console.log(responseData.token);
-				this._tokenSave("token", responseData.token)
+				this.saveData("token", responseData.token);
+				this.saveData("username", this.state.username);
+				this.saveData("loggedIn", true);
+				this.setState({loggedIn:true});
 			})
 			.done();
 }
@@ -51,6 +68,7 @@ userLogin = () => {
 	render(){
 		return(
 			<View style={styles.container}>
+			{!this.state.loggedIn && <View>
 			<Text style={styles.inputHeader}>Username:</Text>
 			<TextInput
 			style={styles.inputField}
@@ -64,7 +82,13 @@ userLogin = () => {
 			onChangeText={(password) => this.setState({password})}
 			value={this.state.password}/>
 			<Button style={styles.button} onPress={() => this.userLogin()} title="Login"/>
-			<Button title="FUCKING TOKEN PLS" onPress={() => {console.log(this._getToken())}}/>
+			</View>
+		}
+		{this.state.loggedIn && <View>
+			<Text style={styles.inputHeader}>Logged in as: {this.state.username}</Text>
+			<Button title="logout" onPress={() => this.logout()}/>
+			</View>
+		}
 			</View>
 		)
 	}
