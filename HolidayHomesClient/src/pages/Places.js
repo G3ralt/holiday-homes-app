@@ -1,5 +1,5 @@
 import React from 'react';
-import { Description, MyMap, Image, PlaceName, RatingAvg, CreatedByUser, Zvezdichka } from '../components/importContainers';
+import { Description, PlacesMapWithRentablesAround, Image, PlaceName, RatingAvg, CreatedByUser, Zvezdichka } from '../components/importContainers';
 import auth from '../authorization/auth';
 import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
@@ -43,7 +43,7 @@ export default class Places extends React.Component {
                             <RatingAvg avgRating={place.rating} pName={place.placeName} />
                             {auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={place.userRating} pName={place.placeName} currentUser={this.state.userItself} />)}
                             <CreatedByUser uName={this.state.createdByUser} />
-                            <MyMap pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} pName={place.placeName} allRentables={this.state.allRentables} />
+                            <PlacesMapWithRentablesAround pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} pName={place.placeName} allRentables={this.state.allRentables} />
                             <Description desc={place.description} />
                         </div>
                     )
