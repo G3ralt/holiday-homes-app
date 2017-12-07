@@ -14,6 +14,28 @@ public class PlaceFacade {
         this.EM = EM;
     }
 
+    public Place getPlaceByName(String username, String placeName) throws DBException {
+        Place toReturn;
+        try {
+            Query q = EM.createQuery("SELECT p FROM Place p WHERE p.placeName = :placeName");
+            q.setParameter("placeName", placeName);
+            toReturn = (Place) q.getSingleResult();
+
+        } catch (Exception e) {
+            throw new DBException("facades.PlaceFacade.getPlaceByName");
+        }
+
+        double rating = getRatingForPlace(placeName); // Get the rating from Database
+        toReturn.setRating(rating);
+
+        if (!username.equals("unauthorized")) { //If the user is logged in
+            int userRating = getUserRating(username, toReturn.getPlaceName()); // Get the user vote on this place
+            toReturn.setUserRating(userRating);
+        }
+
+        return toReturn;
+    }
+
     /*
         This method is used to retrieve all places from the database.
         The method also retrieves the ratings for the places through the getRatingForLocation method.
@@ -71,7 +93,7 @@ public class PlaceFacade {
         }
         return toReturn;
     }
-    
+
     /*
         This method is used to check if the user has already voted for a specific place.
         Return the user`s rating or 0 if the user hasn`t voted
@@ -197,5 +219,4 @@ public class PlaceFacade {
         }
     }
 
-    
 }

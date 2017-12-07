@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
+import { Link } from "react-router-dom";
 
 const PlaceMarkers = ({ text }) => {
+  let path = "/places/" + text;
   return (
     <div>
-      <div className='placePin bounce'></div>
+      <Link to={path} className='placePin bounce'></Link>
       <div className='textLabel'>{text}</div>
       <div className='placePulse'></div>
     </div>

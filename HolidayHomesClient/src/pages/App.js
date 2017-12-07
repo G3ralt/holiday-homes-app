@@ -17,6 +17,8 @@ import UserDashboard from './UserDashboard';
 import UserBookings from './UserBookings';
 import UserPlaces from './UserPlaces';
 import Welcome from './Welcome';
+import Rentable from "./Rentable";
+import Place from "./Place";
 
 function App() {
     return (
@@ -35,10 +37,13 @@ function App() {
                 <Route path="/whodidwhat" component={WhoDidWhat} />
                 <Route path="/downloadapp" component={DownloadApp} />
                 <Route path="/futureimplementations" component={FutureImplementations} />
-                <Route path="/rentables" component={Rentables} />
+                <Route exact path="/rentables" component={Rentables} />
                 <Route exact path="/myDashboard" component={UserDashboard} />
                 <Route path="/myDashboard/myBookings" component={UserBookings} />
                 <Route path="/myDashboard/myPlaces" component={UserPlaces} />
+                <Route path="/rentables/:rentableName" component={Rentable}/>
+                <Route path="/places/:placeName" component={Place}/>
+                
             </Switch>
         </div>
     );

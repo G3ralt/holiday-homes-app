@@ -220,6 +220,7 @@ public class DeploymentConfiguration implements ServletContextListener {
                     em.persist(rent4);
                     em.persist(rent5);
                     em.persist(rent6);
+                    em.persist(rent7);
                     em.getTransaction().commit();
                     System.out.println("Created Test Rentables");
                     

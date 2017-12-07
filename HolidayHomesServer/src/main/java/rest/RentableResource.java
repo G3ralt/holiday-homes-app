@@ -22,6 +22,28 @@ public class RentableResource {
         FF.setRentableFacade();
     }
 
+    @Path("/rentable")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getRentableByName(String jsonString) {
+        try {
+            JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
+            String username = json.get("username").getAsString();
+            String rentableName = json.get("rentableName").getAsString();
+
+            Rentable rentable = FF.getRentableFacade().getRentableByName(rentableName, username); //Get the locations from Database.
+
+            return Response.status(200).entity(getJSONfromObject(rentable)).build(); //Return the locations as JSON
+
+        } catch (Exception e) {
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable if something is wrong
+
+        } finally {
+            FF.close();
+        }
+    }
+    
     @Path("/all")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -29,14 +51,14 @@ public class RentableResource {
     public Response getAllRentables(String jsonString) {
         try {
             JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
-            String userName = json.get("username").getAsString();
+            String username = json.get("username").getAsString();
 
-            List<Rentable> rentables = FF.getRentableFacade().getAllRentables(userName); //Get the locations from Database.
+            List<Rentable> rentables = FF.getRentableFacade().getAllRentables(username); //Get the locations from Database.
 
             return Response.status(200).entity(getJSONfromObject(rentables)).build(); //Return the locations as JSON
 
         } catch (Exception e) {
-            return Response.status(503).entity(getJSONfromObject(getJSONfromObject(e.getMessage()))).build(); //Service unavailable if something is wrong
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable if something is wrong
 
         } finally {
             FF.close();
