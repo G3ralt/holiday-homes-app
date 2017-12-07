@@ -1,6 +1,5 @@
 import React from "react";
-import { Text, View, FlatList, StyleSheet, Button } from 'react-native';
-import fetchHelper, {errorChecker} from "./fetchHelpers";
+import { Text, View, FlatList, StyleSheet, Button, Image, ScrollView } from 'react-native';
 import openMap from 'react-native-open-maps';
 const URL = require("../package.json").serverURL;
 
@@ -8,89 +7,85 @@ class Places extends React.Component{
 	static navigationOptions = {title:"All the places!"};
 
 
-	constructor(){
-		super();
-		this.state = {data: "", err:""};
+	constructor(props){
+		super(props);
+		this.state = {data: [], err:""};
 	}
+
 	componentWillMount(){
-		this.getPlaces((e,data)=>{
-			if(e){
-			  return this.setState({err:e.err});
-			}
-			this.setState({err:"",data});
-		  });
+		let data = {
+			method: 'POST',
+			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({
+				username: "unauthorized"
+			}),
 
-	}
+		}
+		fetch(URL + "api/places/all", data)
+			.then(response => response.json())
+			.then(responseJson => {
+				console.log("RESPONSE JSON");
+				this.setState({
+					data: responseJson
+				});
+			}).catch(error => {
+				console.log("error");
+				console.error(error);
+			});
 
-	_goToLocation(lat, long) {
-		openMap({ latitude: lat, longitude: long });
+		}
+
+	  getPlaces = () => {
+	  	let data = {
+	  		method: 'POST',
+	  		headers: {
+	  			Accept: 'application/json',
+	  			'Content-Type': 'application/json'
+	  		},
+	  		body: JSON.stringify({
+	  			username: "unauthorized"
+	  		}),
+
+	  	}
+	  	return fetch(URL + "api/places/all", data)
+	  		.then(response => response.json())
+	  		.then(responseJson => {
+				  console.log("RESPONSE JSON");
+	  			return responseJson;
+	  		})
+	  		.catch(error => {
+	  			console.log("error");
+	  			console.error(error);
+	  		});
+
 	  }
 
-
-	getPlaces = (cb) => {
-		this._errorMessage = "";
-		this._messageFromServer = "";
-		let resFromFirstPromise = null; //Pass on response the "second" promise so we can read errors from server
-		let user = {
-			"username": "unauthorized"
-		}
-		const options = fetchHelper.makeOptions("POST", false, user);
-		console.log(options);
-		fetch(URL + "api/places/all", options)
-			.then((res) => {
-				resFromFirstPromise = res;
-				console.log(res.json());
-				return res.json();
-			}).then((data) => {
-				errorChecker(resFromFirstPromise, data);
-				if (cb) {
-					cb(null, data)
-				}
-			}).catch(err => {
-				console.log(JSON.stringify(err))
-				if (cb) {
-					cb({
-						err: err
-					})
-				}
-			})
-	}
-
-	mapData = (a) => {
-		if(a === ""){
-			return "";
-		}
-		var rows = a.map(function(p){
-			return p;
-		})
-		return rows;
-	}
-
-	_renderItem = ({item}) => (
-	<View>
-	<Image
-	style={{width:300, height:300}}
-		source={{uri: item.imgURL}}
-	/>
-	<Text style={styles.inputHeader}>{item.placeName}</Text>
-	<Text style={styles.inputHeader}>{item.gpsLat}, {item.gpsLong}</Text>
-	<Text style={styles.inputHeader}>{item.description}</Text>
-	<Text style={styles.inputHeader}>{item.rating}</Text>
-	<Button onPress={this._goToLocation()}>See on Maps</Button>
-	</View>
-	);
-	
 	render(){
-		var rows = this.mapData(this.state.data);
-		console.log("ROWS HERE!");
-		console.log(rows);
+		const locations = this.state.data.map((item) =>{
+			return (
+				<View style={styles.item}>
+				<Image
+				style={{width:300, height:300}}
+					source={{uri: item.imgURL}}
+				/>
+				<Text style={styles.inputHeader}>{item.placeName}</Text>
+				<Text style={styles.inputHeader}>Latitude:{item.gpsLat}, Longitude:{item.gpsLong}</Text>
+				<Text style={styles.description}>{item.description}</Text>
+				<Text style={styles.rating}>Average rating: {item.rating}/5</Text>
+				<Button style={styles.button} onPress={() =>
+					openMap({latitude: item.gpsLat, longitude: item.gpsLong})} 
+					title="See on Map"/>
+				</View>
+			)
+		})
+		
 		return(
-			<View style={styles.container}>
-			<FlatList
-			data = {rows}
-			renderItem={this._renderItem}
-			/>
-			</View>
+			<ScrollView style={styles.container}>
+			{locations}
+			</ScrollView>
 		)
 	}
 }
@@ -101,19 +96,27 @@ const styles = StyleSheet.create({
 	 paddingTop: 22
 	},
 	item: {
-	  padding: 1,
+	  padding: 5,
 	  fontSize: 18,
-	  height: 44,
+	  alignItems: "center",
 	},
-	header: {
-		padding: 10,
-		fontSize: 20,
-		height: 44,
+	description: {
+		textAlign: "center",
+		fontSize: 12,
 	},
+	rating: {
+		textAlign:"center",
+		color:"orange",
+	},
+	button: {
+		margin: 3,
+		alignItems: 'center',
+		backgroundColor: '#ff650c'
+	  },
 	inputHeader: {
 		textAlign: "center",
 		fontSize: 18,
-		height: 30,
+		margin: 5,
 	},
   })
 

@@ -1,6 +1,5 @@
 import React from "react";
 import { Text, View, FlatList, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
-import fetchHelper, {errorChecker} from "./fetchHelpers";
 import MapView from 'react-native-maps';
 const URL = require("../package.json").serverURL;
 
@@ -29,44 +28,36 @@ class AddPlace extends React.Component{
 	  })
 	  }
 
-	  addPlace = (cb) => {
-	  	this._errorMessage = "";
-	  	this._messageFromServer = "";
-	  	let resFromFirstPromise = null; //Pass on response the "second" promise so we can read errors from server
-	  	var data = "placeName:" + this.state.placeName + ", description:" + this.state.placeDesc + ", imgURL:" + this.state.placeImg +
-	  		", gpsLat:" + this.state.gpsLat + "gpsLong:" + this.state.gpsLong + ", user{ username:" + this.state.placeUser + "}";
-	  	const options = fetchHelper.makeOptions("POST", false, data);
-	  	fetch(URL + "api/places/create", options)
-	  		.then((res) => {
-	  			resFromFirstPromise = res;
-	  			return res.json();
-	  		}).then((data) => {
-	  			errorChecker(resFromFirstPromise, data);
-	  			if (cb) {
-	  				cb(null, data)
-	  			}
-	  		}).catch(err => {
-	  			console.log(JSON.stringify(err))
-	  			if (cb) {
-	  				cb({
-	  					err: fetchHelper.addJustErrorMessage(err)
-	  				})
-	  			}
-	  		})
-	  }
+	  addPlace = () => {
+	  	let data = {
+	  		method: 'POST',
+	  		headers: {
+	  			Accept: 'application/json',
+	  			'Content-Type': 'application/json'
+	  		},
+	  		body: JSON.stringify({
+				placeName: this.state.placeName,
+				description: this.state.placeDesc,
+				imgURL: this.state.placeImg,
+				gpsLat: this.state.gpsLat,
+				gpsLong: this.state.gpsLong,
+				user: {
+					username: this.state.placeUser
+				}
+	  		}),
 
-	/*{
-	"placeName": "Test Place1",
-	"description": "description",
-	"imgURL": "URL",
-	"gpsLat": 34.25,
-	"gpsLong": 45.65,
-	"user": {
-		"username": "user"
-		
-	}
-}
-*/
+	  	}
+	  	return fetch(URL + "api/places/create", data)
+	  		.then(response => response.json())
+	  		.then(responseJson => {
+	  			console.log("RESPONSE JSON");
+	  			return responseJson;
+	  		})
+	  		.catch(error => {
+	  			console.log("error");
+	  			console.error(error);
+	  		});
+	  }
 	
 	render(){
 		return(
