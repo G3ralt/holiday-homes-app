@@ -23,6 +23,7 @@ public class RentableFacade {
     public Rentable getRentableByName(String rentableName, String username) throws DBException {
         Rentable toReturn;
         try {
+            EM.getEntityManagerFactory().getCache().evictAll();
             Query q = EM.createQuery("SELECT r FROM Rentable r WHERE r.rentableName = :rentableName");
             q.setParameter("rentableName", rentableName);
             toReturn = (Rentable) q.getSingleResult();

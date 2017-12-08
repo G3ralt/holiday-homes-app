@@ -37,6 +37,7 @@ public class BookingFacade {
     public List<Booking> getBookingsByUser(String username) throws DBException {
         List<Booking> toReturn;
         try {
+            EM.getEntityManagerFactory().getCache().evictAll();
             Query q = EM.createQuery("SELECT b FROM Booking b WHERE b.user.username = :username", Booking.class);
             q.setParameter("username", username);
             toReturn =  q.getResultList();

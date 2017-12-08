@@ -26,11 +26,14 @@ export default class RentRentable extends Component {
         }
         // console.log("JSON:", json);
         const options = fetchHelper.makeOptions("POST", true, json);
-        fetch(URL + "api/booking/create", options).catch(err => {
+        fetch(URL + "api/booking/create", options)
+        .then(
+            window.location.href = this.state.clientOrigin + "/#/myDashboard/myBookings"
+        )
+        .catch(err => {
             console.log(err);
         })
-        alert("Booking created");
-        window.location.href = this.state.clientOrigin + "/#/myDashboard/myBookings";
+        
     }
 
     render() {
