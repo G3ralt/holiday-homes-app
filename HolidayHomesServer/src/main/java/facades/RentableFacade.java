@@ -18,6 +18,34 @@ public class RentableFacade {
     }
 
     /*
+        Get the Rentable for a specific name.
+     */
+    public Rentable getRentableByName(String rentableName, String username) throws DBException {
+        Rentable toReturn;
+        try {
+            Query q = EM.createQuery("SELECT r FROM Rentable r WHERE r.rentableName = :rentableName");
+            q.setParameter("rentableName", rentableName);
+            toReturn = (Rentable) q.getSingleResult();
+
+        } catch (Exception e) {
+            throw new DBException("facades.RentableFacade.getRentableByName");
+        }
+
+        double rating = getRatingForRentable(rentableName); // Get the rating from Databae
+        toReturn.setRating(rating);
+
+        if (!username.equals("unauthorized")) { //If the user is logged in
+            int userRating = getUserRating(username, toReturn.getRentableName()); // Get the user vote on this location
+            toReturn.setUserRating(userRating);
+        }
+        //Check availability
+        ArrayList<String> list = getAvailableWeeksForRentable(toReturn);
+        toReturn.setAvailableWeeks(list);
+
+        return toReturn;
+    }
+
+    /*
         This method is used to retrieve all rentables from the databse.
         The method also retrieves the ratings for the rentables through the getRatingForRentable method.
         The method also retrieves if the user has already rated this rentable.
@@ -25,7 +53,7 @@ public class RentableFacade {
         Throws DBException if something is wrong with the database.
         Returns a list with all the rentables and their info.
      */
-    public List<Rentable> getAllRentables(String userName) throws DBException {
+    public List<Rentable> getAllRentables(String username) throws DBException {
         List<Rentable> toReturn = new ArrayList();
         try {
             EM.getEntityManagerFactory().getCache().evictAll();
@@ -40,8 +68,8 @@ public class RentableFacade {
             double rating = getRatingForRentable(r.getRentableName()); // Get the rating from Databae
             r.setRating(rating);
 
-            if (!userName.equals("unauthorized")) { //If the user is logged in
-                int userRating = getUserRating(userName, r.getRentableName()); // Get the user vote on this location
+            if (!username.equals("unauthorized")) { //If the user is logged in
+                int userRating = getUserRating(username, r.getRentableName()); // Get the user vote on this location
                 r.setUserRating(userRating);
             }
             //Check availability

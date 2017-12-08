@@ -20,6 +20,28 @@ public class PlaceResource {
         FF.setPlaceFacade();
     }
 
+    @Path("/place")
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPlace(String jsonString) {
+        try {
+            JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
+            String username = json.get("username").getAsString();
+            String placeName = json.get("placeName").getAsString();
+
+            Place place = FF.getPlaceFacade().getPlaceByName(username, placeName); //Get the place from Database.
+
+            return Response.status(200).entity(getJSONfromObject(place)).build(); //Return the place as JSON
+
+        } catch (Exception e) {
+            return Response.status(503).entity(getJSONfromObject(e.getMessage())).build(); //Service unavailable if something is wrong
+
+        } finally {
+            FF.close();
+        }
+    }
+    
     @Path("/all")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -27,9 +49,9 @@ public class PlaceResource {
     public Response getAllPlaces(String jsonString) {
         try {
             JsonObject json = new JsonParser().parse(jsonString).getAsJsonObject();
-            String userName = json.get("username").getAsString();
+            String username = json.get("username").getAsString();
 
-            List<Place> places = FF.getPlaceFacade().getAllPlaces(userName); //Get the places from Database.
+            List<Place> places = FF.getPlaceFacade().getAllPlaces(username); //Get the places from Database.
 
             return Response.status(200).entity(getJSONfromObject(places)).build(); //Return the places as JSON
 

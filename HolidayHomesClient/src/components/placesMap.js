@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
+import { Link } from "react-router-dom";
 
 const PlaceMarker = ({ text }) => {
   return (
@@ -11,11 +12,12 @@ const PlaceMarker = ({ text }) => {
   )
 };
 
-const RentableMarkers = ({ text }) => {
+const RentableMarkers = ({ text, allRentables }) => {
+  let path = "/rentables/" + text;
   return (
     <div key={text}>
-      <div className='rentablePin bounce'></div>
-      <div className='textLabel'>{text}</div>
+      <Link to={path} className='rentablePin bounce'></Link>
+      <div  className='textLabel'>{text}</div>
       <div className='rentablePulse'></div>
     </div>
   )
@@ -38,13 +40,13 @@ export default class Map extends Component {
     }
     allRentableMarkers = this.props.allRentables.map(rentable => {
       return (
-          <RentableMarkers key={rentable.rentableName} lat={rentable.gpsLat} lng={rentable.gpsLong} text={rentable.rentableName} />
+          <RentableMarkers key={rentable.rentableName} lat={rentable.gpsLat} lng={rentable.gpsLong} text={rentable.rentableName} allRentables={this.props.allRentables} />
       )
     });
   }
   render() {
     return (
-      <div className='col-md-4 google-map'>
+      <div className='col-md-4 nopadding google-map'>
         <GoogleMapReact
           options={{ fullscreenControl: false }}
           bootstrapURLKeys={{ key: 'AIzaSyCBkhStVuUZ51OOLMY5YM_npWc_Lxr70Ro' }}

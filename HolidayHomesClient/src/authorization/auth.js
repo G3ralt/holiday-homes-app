@@ -42,7 +42,7 @@ class AuthenticationHandler {
     if (!sessionStorage.token) {
       return;
     }
-    console.log("Initializing Data From Token");
+    // console.log("Initializing Data From Token");
     this._token = sessionStorage.token;
     var decoded = jwtDecode(this._token);
     this._username = decoded.username;
@@ -110,7 +110,7 @@ class AuthenticationHandler {
         }
       })
       .catch(err => {
-        console.log(err);
+        // console.log(err);
         if (cb) {
           cb({ errorMessage: fetchHelper.addJustErrorMessage(err) });
         }
@@ -129,8 +129,8 @@ class AuthenticationHandler {
 		  headers: new Headers({
 			  "Content-Type": "application/json"
 		  })
-	  }
-          console.log(options)
+    };
+    
 	  fetch(URL + "api/register", options)
 	  .then(res => {
 		  return res.json();
@@ -150,8 +150,8 @@ class AuthenticationHandler {
 		  headers: new Headers({
 			  "Content-Type": "application/json"
 		  })
-	  }
-          console.log(options)
+    };
+    
 	  fetch(URL + "api/places", options)
 	  .then(res => {
 		  return res.json();
@@ -172,8 +172,8 @@ class AuthenticationHandler {
 		headers: new Headers({
 			"Content-Type": "application/json"
 		})
-	}
-		console.log(options)
+  };
+  
 	fetch(URL + "api/places", options)
 	.then(res => {
 		return res.json();

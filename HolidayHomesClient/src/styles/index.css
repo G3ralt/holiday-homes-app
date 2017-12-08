@@ -103,11 +103,24 @@ border-top-right-radius: 0;
 
 .nicePlaces {
 /* background-color: red; */
+background: -webkit-radial-gradient(center, ellipse cover, rgba(255,236,68,0.47) 0%,rgba(255,236,68,0.47) 1%,rgba(255,236,68,0.5) 19%,rgba(233,0,19,0.59) 66%,rgba(233,0,19,0.71) 100%);
+}
+
+.rentHomes {
+	background: -webkit-radial-gradient(center, ellipse cover, rgba(255,236,68,1) 1%,rgba(255,236,68,1) 13%,rgba(64,179,232,1) 56%,rgba(64,179,232,1) 100%);
 }
 
 .nicePlace {
 /* background-color: orange; */
 margin-top: 15px;
+}
+
+.userBookings {
+	background-color: #fff8ea;
+}
+
+.userPlaces {
+	background-color: #fff8ea;
 }
 
 .noPlacesAndBookingsFound {
@@ -121,15 +134,12 @@ font-family: 'Changa', sans-serif;
 
 .createdBy {
 	/* background-color: bisque; */
+	font-family: 'Changa', sans-serif;
 }
 
 .placeRating {
 /* background-color: blueviolet; */
 font-family: 'Changa', sans-serif;
-}
-
-.placeAddress {
-/* background-color: wheat; */
 }
 
 .placeGPS {
@@ -144,10 +154,20 @@ font-size: 1.2em;
 
 img {
 width: 100%;
+max-height: 450px;
+}
+
+.nopadding {
+	padding: 0 !important;
+	margin: 0 !important;
 }
 
 .rentablePrice{
-	/* background-color: greenyellow; */
+	background-color: greenyellow;
+}
+
+.testInlineNow {
+	background-color: rgb(190, 25, 240);
 }
 
 .rentButton {
@@ -157,7 +177,9 @@ width: 100%;
 }
 
 .google-map {
-	height: 200px;
+	height: 250px;
+	border:solid 7px #41403E;
+	border-radius: 5%;
 	/* background-color: rgb(87, 2, 35); */
 }
 
