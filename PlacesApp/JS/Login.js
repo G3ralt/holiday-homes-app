@@ -44,35 +44,43 @@ userLogin = () => {
 	let data = {
 		method: 'POST',
 		headers: {
-				Accept: 'application/json',
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify({
-				username: this.state.username,
-				password: this.state.password
+			Accept: 'application/json',
+			'Content-Type': 'application/json'
+		},
+		body: JSON.stringify({
+			username: this.state.username,
+			password: this.state.password
+		})
+	}
+	fetch(URL + "api/login", data)
+		.then((response) => response.json())
+		.then((responseData) => {
+			console.log("TOKEN vvvv BELOW");
+			console.log(responseData.token);
+			var auth1 = "";
+			if (responseData.token != undefined) {
+				auth1 = responseData.token;
+			}
+			if (auth1.length > 10) {
+				this.saveData("loggedIn", true);
+				this.setState({
+					loggedIn: true
+				});
+				this.saveData("token", responseData.token);
+				this.saveData("username", this.state.username);
+				Alert.alert(
+					"Login Successfull!",
+					"logged in as: " + this.state.username
+				)
+			} else {
+				Alert.alert(
+					"Login Failed",
+					"Login Failed"
+				)
+			}
 			})
-		}
-		fetch(URL + "api/login", data)
-			.then((response) => response.json())
-			.then((responseData) => {
-				console.log("TOKEN vvvv BELOW");
-				console.log(responseData.token);
-				var auth1 = responseData.token;
-				if (auth1.length > 10) {
-					this.saveData("loggedIn", true);
-					this.setState({
-						loggedIn: true
-					});
-					this.saveData("token", responseData.token);
-					this.saveData("username", this.state.username);
-					Alert.alert(
-						"Login Successfull!",
-						"logged in as: " + this.state.username
-					)
-				}
-			})
-			.done();
-		}
+		.done();
+}
 
 	render(){
 		return(
