@@ -44,7 +44,7 @@ export default class Map extends Component {
   }
   render() {
     return (
-      <div className='col-md-4 google-map'>
+      <div className='col-md-4 nopadding google-map'>
         <GoogleMapReact
           options={{ fullscreenControl: false }}
           bootstrapURLKeys={{ key: 'AIzaSyCBkhStVuUZ51OOLMY5YM_npWc_Lxr70Ro' }}

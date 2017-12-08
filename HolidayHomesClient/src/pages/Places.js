@@ -22,10 +22,7 @@ export default class Places extends React.Component {
             userItself.username = auth.username;
             this.setState({ userItself: userItself });
         }
-        /*
-        console.log("Username from auth: ", auth.username);
-        console.log("Username from State: ", this.state.userItself.username);
-        */
+        console.log('Places/ vednaga sled seta :', this.state.userItself);
         const options = fetchHelper.makeOptions("POST", false, userItself);
 
         fetch(URL + "api/places/all", options)
@@ -38,11 +35,12 @@ export default class Places extends React.Component {
                     }
                     return (
                         <div key={place.placeName} className="row nicePlace">
+                            <hr />
                             <Image img={place.imgURL} />
                             <PlaceName pName={place.placeName} />
+                            <CreatedByUser uName={this.state.createdByUser} />
                             <RatingAvg avgRating={place.rating} pName={place.placeName} />
                             {auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={place.userRating} pName={place.placeName} currentUser={this.state.userItself} />)}
-                            <CreatedByUser uName={this.state.createdByUser} />
                             <PlacesMapWithRentablesAround pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} pName={place.placeName} allRentables={this.state.allRentables} />
                             <Description desc={place.description} />
                         </div>
@@ -60,7 +58,7 @@ export default class Places extends React.Component {
         if (auth.isloggedIn) {
             userItself.username = auth.username;
             this.setState({ userItself: userItself });
-        }
+        };
         /*
         console.log("USER NAME from auth: ", auth.username);
         console.log("User Name from State: ", this.state.userItself.username);
@@ -75,7 +73,7 @@ export default class Places extends React.Component {
             }).catch(err => {
                 console.log(JSON.stringify(err));
             });
-            this.getAllPlaces();
+        this.getAllPlaces();
     }
 
 

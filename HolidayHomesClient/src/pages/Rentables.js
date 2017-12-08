@@ -34,7 +34,7 @@ export default class Rentables extends Component {
             }).then((data) => {
                 let rInfo = data.map(rentable => {
                     return (
-                        <div key={rentable.rentableName} className="row nicePlace">
+                        <div key={rentable.rentableName} className="row rentHomes">
                             <hr />
                             <Image img={rentable.imgURL} />
                             <RentableName rName={rentable.rentableName} />

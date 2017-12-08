@@ -29,6 +29,7 @@ export default class UserBookings extends Component {
                 let rInfo = data.map(booking => {
                     return (
                         <div key={booking.weekNumber + booking.rentable.rentableName} className="row nicePlace">
+                            <hr />
                             <Image img={booking.rentable.imgURL} />
                             <RentableName rName={booking.rentable.rentableName} />
                             <BookedWeek bWeek={booking.weekNumber} />
@@ -44,9 +45,9 @@ export default class UserBookings extends Component {
     render() {
         return (
             <div>
-                <button onClick={() => {window.history.back()}}>Go Back</button>
-                <h2>All My Bookings</h2>
-                <div className="container-fluid noPlacesAndBookingsFound">
+                <button className="btn btn-primary" onClick={() => { window.history.back() }}>Go Back</button>
+                <h2 style={{ fontFamily: 'Changa' }}>All My Bookings</h2>
+                <div className="container-fluid userBookings">
                     {this.state.bookingInfo}
                     {(this.state.bookingInfo.length === 0) && (<p>(You haven't booked anything yet.)</p>)}
                 </div>

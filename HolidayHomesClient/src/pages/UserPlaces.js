@@ -1,5 +1,5 @@
 import React from 'react';
-import { Description, GPSinfo, Image, PlaceName, RatingAvg, Zvezdichka } from '../components/importContainers';
+import { Description, PlacesMapWithRentablesAround, Image, PlaceName, RatingAvg, Zvezdichka } from '../components/importContainers';
 import auth from '../authorization/auth';
 import fetchHelper from "../facades/fetchHelpers";
 const URL = require("../../package.json").serverURL;
@@ -10,12 +10,13 @@ export default class UserPlaces extends React.Component {
         this.state = {
             placeInfo: [],
             userItself: { username: "unauthorized" },
-            createdByUser: "Not active user!"
+            createdByUser: "Not active user!",
+            allRentables: []
         };
     }
 
     componentWillMount() {
-        this.getAllPlaces();
+       this.getAllRentables();
     }
 
     getAllPlaces = (cb) => {
@@ -23,8 +24,8 @@ export default class UserPlaces extends React.Component {
         if (auth.isloggedIn) {
             userItself.username = auth.username;
             this.setState({ userItself: userItself });
-        }
-        let options = fetchHelper.makeOptions("GET", true);
+        };
+        const options = fetchHelper.makeOptions("GET", true);
         fetch(URL + "api/places/all/" + this.state.userItself.username, options)
             .then((res) => {
                 return res.json();
@@ -35,11 +36,12 @@ export default class UserPlaces extends React.Component {
                     }
                     return (
                         <div key={place.placeName} className="row nicePlace">
+                            <hr />
                             <Image img={place.imgURL} />
                             <PlaceName pName={place.placeName} />
                             <RatingAvg avgRating={place.rating} pName={place.placeName} />
                             {auth.isloggedIn && auth.isUser && (<Zvezdichka userRating={place.userRating} pName={place.placeName} currentUser={this.state.userItself} />)}
-                            <GPSinfo pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} />
+                            <PlacesMapWithRentablesAround pGPSlat={place.gpsLat} pGPSlong={place.gpsLong} pName={place.placeName} allRentables={this.state.allRentables} />
                             <Description desc={place.description} />
                         </div>
                     )
@@ -50,12 +52,31 @@ export default class UserPlaces extends React.Component {
             })
     }
 
+    getAllRentables = async (cb) => {
+        let userItself = this.state.userItself;
+        /*console.log("Is the user logged in? : ", auth.isloggedIn);*/
+        if (auth.isloggedIn) {
+            userItself.username = auth.username;
+            this.setState({ userItself: userItself });
+        };
+        const options = fetchHelper.makeOptions("POST", true, userItself);
+        await fetch(URL + "api/rentables/all", options)
+            .then((res) => {
+                return res.json();
+            }).then((data) => {
+                this.setState({ allRentables: data });
+            }).catch(err => {
+                console.log(JSON.stringify(err));
+            });
+            this.getAllPlaces();
+    }
+
     render() {
         return (
             <div>
-                <button onClick={() => { window.history.back() }}>Go Back</button>
+                <button className="btn btn-primary" onClick={() => { window.history.back() }}>Go Back</button>
                 <h2>All Places created by Me</h2>
-                <div className="container-fluid noPlacesAndBookingsFound">
+                <div className="container-fluid userPlaces">
                     {this.state.placeInfo}
                     {(this.state.placeInfo.length === 0) && (<p>(You haven't created a Place yet.)</p>)}
                 </div>
