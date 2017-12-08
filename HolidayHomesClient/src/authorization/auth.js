@@ -104,7 +104,7 @@ class AuthenticationHandler {
       })
       .then(data => {
         errorChecker(resFromFirstPromise, data);
-        this.setToken(data.token);
+		this.setToken(data.token);
         if (this._token != null) {
           this._userWasLoggenIn(cb);
         }
