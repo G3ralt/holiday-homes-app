@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, AsyncStorage, StyleSheet, TextInput, Button } from 'react-native';
+import { Text, View, AsyncStorage, StyleSheet, TextInput, Button, Alert } from 'react-native';
 const URL = require("../package.json").serverURL;
 
 class Login extends React.Component{
@@ -52,17 +52,34 @@ userLogin = () => {
 			password: this.state.password
 		})
 	}
-	fetch (URL + "api/login", data)
-			.then((response) => response.json())
-			.then((responseData) => {
-				console.log("TOKEN vvvv BELOW");
-				console.log(responseData.token);
+	fetch(URL + "api/login", data)
+		.then((response) => response.json())
+		.then((responseData) => {
+			console.log("TOKEN vvvv BELOW");
+			console.log(responseData.token);
+			var auth1 = "";
+			if (responseData.token != undefined) {
+				auth1 = responseData.token;
+			}
+			if (auth1.length > 10) {
+				this.saveData("loggedIn", true);
+				this.setState({
+					loggedIn: true
+				});
 				this.saveData("token", responseData.token);
 				this.saveData("username", this.state.username);
-				this.saveData("loggedIn", true);
-				this.setState({loggedIn:true});
+				Alert.alert(
+					"Login Successfull!",
+					"logged in as: " + this.state.username
+				)
+			} else {
+				Alert.alert(
+					"Login Failed",
+					"Login Failed"
+				)
+			}
 			})
-			.done();
+		.done();
 }
 
 	render(){
