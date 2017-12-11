@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, FlatList, StyleSheet, TextInput, Button, Image, AsyncStorage } from 'react-native';
+import { Text, View, FlatList, StyleSheet, TextInput, Button, Image, AsyncStorage, Alert } from 'react-native';
 import { readAsStringAsync } from "expo/src/FileSystem";
 const URL = require("../package.json").serverURL;
 class AddPlace extends React.Component {
@@ -17,7 +17,7 @@ class AddPlace extends React.Component {
 				gpsLong: 0,
 				placeDesc: "",
 				placeImg: "https://loremflickr.com/300/300/city",
-				user: "user"
+				user: ""
 			};
 		}
 
@@ -74,6 +74,10 @@ class AddPlace extends React.Component {
 				.then(response => response.json())
 				.then(responseJson => {
 					return responseJson;
+					Alert.alert(
+						"Place created!",
+						"Place added to database"
+					)
 				})
 				.catch(error => {
 					console.log("error");
