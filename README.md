@@ -3,6 +3,8 @@
 # GROUP8-SP
 Semester project of COS - Group 8
 
+https://docs.google.com/document/d/1BvAuS9SNMncvuiVgw2ugAcej7gZK7tSqPz_z2B0qpT0/edit
+
 Schedule:
 
 Week 1.
